@@ -1,0 +1,45 @@
+Its important to declare destructor of base class as virtual in order for the inherited class destructor to be called.
+Example of class A and B who inherits from A. First A's destructor is called but if its not virtual B's will never be called.
+Normally, base class functions take priority over inheriting class functions.
+
+List vs vector: when reallocating elements from a vector you need to reallocate the new item and copy all the new ones into the newly
+allocated emory, in that regard, using a list is much better since you only allocate the new item and put a point to it on the last item
+of the list. However its a lot more efficient to iterate through vector items because you know that they are contiguously allocated in memory.
+
+Map: <KEY,VALUE>. Implemented internally like a tree, you have optimal access because its sorted in some way that 
+the access to one key value is not linear, its logarythmic.
+
+Unordered map is more like a hash table. You have a key and a value but with the key there is an algorythm that computes the hash value, integer, that for each key is different
+and this function gives you an integer for each value and this integer gives you direct access to the value. The cost of an unordered map is thus 
+a lot lower computanionally in exchange for memory cost.
+
+static_class has to find in compiling time that both classes are related by inheritance.
+reinterpret_cast changes from type A to B and doesnt care about anything.
+
+
+float f = 1.5f;
+int t = reinterpret_cast>int>(f);
+
+This doesnt go from 1.5 to 1. This goes to where 1.5f is allocated in memory and tells the compiler theres an integer now here, but it could
+be the binary representation of 1.5, for example.
+
+
+dynamic_cast: running time vs static_cast: compile time. dynamic cast uses RTTI. Because of multiple inheritance when you do a dyamic cast
+the objects address can change. Never use it. Why? RTTI wastes a lot of memory so its disabled. And usually its considered  that when you need to use it
+is because you are doing a bad design.
+
+You can do a const_cast, its bad practice to use this cast but const is highly encouraged since it allows compiler to optimize.
+
+Internal linkage >> Can be the same value but the address its stored in its different for every CU.
+
+
+When is better foo(int& i) than foo(int* i) ?
+Reference vs pointer: both stores addresses but pointer can be null and reference cant. When you assign a value to a reference you can never change it
+References are used to pass arguments to functions.
+
+Dont use references for built in types because their size is smaller than the direction that goes into reference. for example:
+int 32 bits vs address 64 bits
+
+inline functions should be defined in the header function. Use them for getter or setters, or other short functions.
+
+Use assert to check if the pointer is not null, etc. If it hits an exception a warning will pop. Adding them will help you debugg since its defensive coding.

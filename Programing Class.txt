@@ -1,3 +1,6 @@
+
+ /*** 18-10-2021 ***/
+ 
 Its important to declare destructor of base class as virtual in order for the inherited class destructor to be called.
 Example of class A and B who inherits from A. First A's destructor is called but if its not virtual B's will never be called.
 Normally, base class functions take priority over inheriting class functions.
@@ -43,3 +46,5 @@ int 32 bits vs address 64 bits
 inline functions should be defined in the header function. Use them for getter or setters, or other short functions.
 
 Use assert to check if the pointer is not null, etc. If it hits an exception a warning will pop. Adding them will help you debugg since its defensive coding.
+
+

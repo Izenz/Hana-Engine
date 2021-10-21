@@ -26,6 +26,11 @@ bool ModuleInput::Init()
 	return ret;
 }
 
+update_status ModuleInput::PreUpdate()
+{
+	return UPDATE_CONTINUE;
+}
+
 // Called every draw update
 update_status ModuleInput::Update()
 {
@@ -40,6 +45,11 @@ update_status ModuleInput::Update()
 		return UPDATE_STOP;
 	}
 
+	return UPDATE_CONTINUE;
+}
+
+update_status ModuleInput::PostUpdate()
+{
 	return UPDATE_CONTINUE;
 }
 

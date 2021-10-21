@@ -35,6 +35,11 @@ update_status ModuleInput::Update()
 
 	// TODO 1: Make the application properly close when ESC is pressed (do not use exit())
 
+	if (keyboard[SDL_SCANCODE_ESCAPE]) {
+		// escape is pressed
+		return UPDATE_STOP;
+	}
+
 	return UPDATE_CONTINUE;
 }
 

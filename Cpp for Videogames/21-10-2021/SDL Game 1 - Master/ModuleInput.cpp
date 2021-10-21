@@ -23,6 +23,8 @@ bool ModuleInput::Init()
 		ret = false;
 	}
 
+	keyboard = SDL_GetKeyboardState(NULL);
+
 	return ret;
 }
 
@@ -36,7 +38,7 @@ update_status ModuleInput::Update()
 {
 	SDL_PumpEvents();
 
-	keyboard = SDL_GetKeyboardState(NULL);
+
 
 	// TODO 1: Make the application properly close when ESC is pressed (do not use exit())
 

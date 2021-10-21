@@ -17,7 +17,7 @@ enum main_states
 
 Application* App = NULL;
 
-int main(int argc, char ** argv)
+int main(int argc, char** argv)
 {
 	int main_return = EXIT_FAILURE;
 	main_states state = MAIN_CREATION;
@@ -43,16 +43,8 @@ int main(int argc, char ** argv)
 			}
 			else
 			{
-				if (App->Start() == false)
-				{
-					LOG("Application Start exits with error -----");
-					state = MAIN_EXIT;
-				}
-				else
-				{
-					state = MAIN_UPDATE;
-					LOG("Application Update --------------");
-				}
+				state = MAIN_UPDATE;
+				LOG("Application Update --------------");
 			}
 
 			break;
@@ -70,7 +62,7 @@ int main(int argc, char ** argv)
 			if (update_return == UPDATE_STOP)
 				state = MAIN_FINISH;
 		}
-			break;
+		break;
 
 		case MAIN_FINISH:
 

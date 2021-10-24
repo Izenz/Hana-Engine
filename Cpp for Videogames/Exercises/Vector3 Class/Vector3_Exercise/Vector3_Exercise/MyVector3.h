@@ -22,6 +22,16 @@ public:
 	MyVector3<T> cross_product(const MyVector3<T>& vec) const;
 	const T angle_between(const MyVector3<T>& vec) const;
 
+	MyVector3<T>& operator+=(const T value);
+	MyVector3<T>& operator-=(const T value);
+	MyVector3<T>& operator*=(const T value);
+	MyVector3<T>& operator/=(const T value);
+
+	MyVector3<T>& operator+=(const MyVector3<T>& vec);
+	MyVector3<T>& operator-=(const MyVector3<T>& vec);
+	MyVector3<T>& operator*=(const MyVector3<T>& vec);
+	MyVector3<T>& operator/=(const MyVector3<T>& vec);
+
 };
 
 template <class T>
@@ -62,6 +72,78 @@ const T MyVector3<T>::angle_between(const MyVector3<T>& vec) const {
 	T dot_prod = this->dot_product(vec);
 	T temp = (this->Magnitude() * vec.Magnitude());
 	return (T)acos(dot_prod / temp) * _RADSTODEG;
+}
+
+template <class T>
+MyVector3<T>& MyVector3<T>::operator+=(const T value) {
+	x += value;
+	y += value;
+	z += value;
+
+	return *this;
+}
+
+template <class T>
+MyVector3<T>& MyVector3<T>::operator-=(const T value) {
+	x -= value;
+	y -= value;
+	z -= value;
+
+	return *this;
+}
+
+template <class T>
+MyVector3<T>& MyVector3<T>::operator*=(const T value) {
+	x *= value;
+	y *= value;
+	z *= value;
+
+	return *this;
+}
+
+template <class T>
+MyVector3<T>& MyVector3<T>::operator/=(const T value) {
+	x /= value;
+	y /= value;
+	z /= value;
+
+	return *this;
+}
+
+template <class T>
+MyVector3<T>& MyVector3<T>::operator+=(const MyVector3<T>& vec) {
+	x += vec.x;
+	y += vec.y;
+	z += vec.z;
+
+	return *this;
+}
+
+template <class T>
+MyVector3<T>& MyVector3<T>::operator-=(const MyVector3<T>& vec) {
+	x -= vec.x;
+	y -= vec.y;
+	z -= vec.z;
+
+	return *this;
+}
+
+template <class T>
+MyVector3<T>& MyVector3<T>::operator*=(const MyVector3<T>& vec) {
+	x *= vec.x;
+	y *= vec.y;
+	z *= vec.z;
+
+	return *this;
+}
+
+template <class T>
+MyVector3<T>& MyVector3<T>::operator/=(const MyVector3<T>& vec) {
+	x /= vec.x;
+	y /= vec.y;
+	z /= vec.z;
+
+	return *this;
 }
 
 template class MyVector3<int>;

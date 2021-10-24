@@ -26,4 +26,14 @@ int main()
 	std::cout << "Angle between V2 and V3: " << example_2.angle_between(example_3) << std::endl;
 	std::cout << "DotP between V2 and V3: " << example_2.dot_product(example_3) << std::endl;
 	std::cout << "CrossP between V2 and V3: " << example_2.cross_product(example_3) << std::endl;
+
+	example_2 += 1.0f;
+	std::cout << "V2 + '1.0f' = " << example_2 << std::endl;
+
+	example_1 += MyVector3<int>(4,2,3);
+	std::cout << "V1 + <4,2,3> = " << example_1 << std::endl;
+
+	example_2 *= example_3;
+	std::cout << "V2 * V3 = " << example_2 << std::endl;
+
 }

@@ -1,6 +1,8 @@
+#define _USE_MATH_DEFINES
 #include "MyVector3.h"
 #include <iostream>
 #include <cassert>
+#include <cmath>
 
 template <typename T>
 std::ostream& operator << (std::ostream& out, MyVector3<T> vec) {
@@ -23,7 +25,7 @@ int main()
 	std::cout << "Normalized V3: " << norm_e3;
 
 	std::cout << "Distance between V2 and V3: " << example_2.distance_to(example_3) << std::endl;
-	std::cout << "Angle between V2 and V3: " << example_2.angle_between(example_3) << std::endl;
+	std::cout << "Angle between V2 and V3: " << example_2.angle_between(example_3) * (180 / M_PI) << std::endl;
 	std::cout << "DotP between V2 and V3: " << example_2.dot_product(example_3) << std::endl;
 	std::cout << "CrossP between V2 and V3: " << example_2.cross_product(example_3) << std::endl;
 

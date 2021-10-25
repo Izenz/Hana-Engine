@@ -1,26 +1,29 @@
 #ifndef MYVECTOR3_H
 #define MYVECTOR3_H
-#include <cmath>
 
-#define _RADSTODEG 57.2958f;
+#include <cmath>
+#include <numbers>
 
 template <class T>
 class MyVector3 {
 public:
 	T x, y, z;
 public:
-	MyVector3() : x(T(0)), y(T(0)), z(T(0)) {};
-	MyVector3(const T value) : x(value), y(value), z(value) {};
-	MyVector3(const T x_value, const T y_value, const T z_value) : x(x_value), y(y_value), z(z_value) {};
+	MyVector3() : x(T(0)), y(T(0)), z(T(0)) {};							// In the industry  this kind of class is usually no initialized.
+																		// Although that doesnt mean we should have non initialized variables
+	// const not needed when you pass by values because if you change them nobody cares
+	MyVector3(T value) : x(value), y(value), z(value) {};
+	MyVector3(T x_value, T y_value, T z_value) : x(x_value), y(y_value), z(z_value) {};
 	MyVector3(const MyVector3<T>& vec) : x(vec.x), y(vec.y), z(vec.z) {};
 
 	MyVector3<T>& Normalize();
-	const T Magnitude() const;
+	T Magnitude() const;
 
-	const T distance_to(const MyVector3<T>& point) const;
-	const T dot_product(const MyVector3<T>& vec) const;
+	T distance_to(const MyVector3<T>& point) const;
+	T dot_product(const MyVector3<T>& vec) const;
+	// If you return by value makes no sense to return const it makes no difference
 	MyVector3<T> cross_product(const MyVector3<T>& vec) const;
-	const T angle_between(const MyVector3<T>& vec) const;
+	T angle_between(const MyVector3<T>& vec) const;
 
 	MyVector3<T>& operator+=(const T value);
 	MyVector3<T>& operator-=(const T value);
@@ -31,7 +34,8 @@ public:
 	MyVector3<T>& operator-=(const MyVector3<T>& vec);
 	MyVector3<T>& operator*=(const MyVector3<T>& vec);
 	MyVector3<T>& operator/=(const MyVector3<T>& vec);
-
+private:
+		T square(T value) const;
 };
 
 template <class T>
@@ -44,18 +48,19 @@ MyVector3<T>& MyVector3<T>::Normalize() {
 }
 
 template <class T>
-inline const T MyVector3<T>::Magnitude() const{
+inline T MyVector3<T>::Magnitude() const{
 	return (T)sqrt(pow(x, 2) + pow(y, 2) + pow(z, 2));
 }
 
 template <class T>
-inline const T MyVector3<T>::distance_to(const MyVector3<T>& point) const {
-	return (T) sqrt(pow(point.x - x,2) + pow(point.y - y, 2) + pow(point.z - z, 2));
+inline T MyVector3<T>::distance_to(const MyVector3<T>& point) const {
+	return (T) sqrt(square(point.x - x) + square(point.y - y) + square(point.z - z));
 }
 
 template <class T>
-inline const T MyVector3<T>::dot_product(const MyVector3<T>& vec) const {
-	return (T)x * vec.x + y * vec.y + z * vec.z;
+inline T MyVector3<T>::dot_product(const MyVector3<T>& vec) const {
+	// Refactorize using minus operator.
+	return (T)(x * vec.x + y * vec.y + z * vec.z);
 }
 
 template <class T>
@@ -68,10 +73,11 @@ MyVector3<T> MyVector3<T>::cross_product(const MyVector3<T>& vec) const {
 }
 
 template <class T>
-const T MyVector3<T>::angle_between(const MyVector3<T>& vec) const {
+T MyVector3<T>::angle_between(const MyVector3<T>& vec) const {
 	T dot_prod = this->dot_product(vec);
 	T temp = (this->Magnitude() * vec.Magnitude());
-	return (T)acos(dot_prod / temp) * _RADSTODEG;
+	// Move rads outside to main since its only used to show values. Engine uses radians.
+	return (T)acos(dot_prod / temp);
 }
 
 template <class T>
@@ -146,9 +152,34 @@ MyVector3<T>& MyVector3<T>::operator/=(const MyVector3<T>& vec) {
 	return *this;
 }
 
+template <class T>
+inline T MyVector3<T>::square(T value) const {
+	return value * value;
+}
+
 template class MyVector3<int>;
 template class MyVector3<short>;
 template class MyVector3<double>;
 template class MyVector3<float>;
 
 #endif
+
+// Its better to have an inline function that squares a number instead of calling pow
+/*
+
+inline auto square (const auto a) {
+	return a*a;
+} // Has to be inline to not be an overhead.
+
+normalize{
+	T n = sqrt(square(x)....)
+	assert(n > T(EPSILON));
+	// #define EPSILON 1e-5
+	T invN = T(1)/n;
+	return...;
+}
+
+pow > expensive than writing your own square func.
+
+
+*/

@@ -40,6 +40,9 @@ bool ModuleRender::Init()
 
 	glEnable(GL_DEPTH_TEST); // Enable depth test
 	glEnable(GL_CULL_FACE); // Enable cull backward faces
+	glDisable(GL_SCISSOR_TEST);
+	glDisable(GL_STENCIL_TEST);
+
 	glFrontFace(GL_CCW); // Front faces will be counter clockwise
 
 	return true;

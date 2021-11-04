@@ -3,8 +3,8 @@
 
 // Default constructor
 MyString::MyString() {
-	characters = new char[1];
-	characters[0] = '\0';
+	characters = nullptr;
+	// Check everywhere that pointer is not null
 }
 
 // Constructor with one parameter
@@ -45,7 +45,10 @@ int MyString::length() const {
 }
 
 void MyString::clear() {
-	characters = nullptr;
+	if(characters != null)
+		delete characters;
+	characters = new char[1];
+	characters[0] = '\0';
 }
 
 int MyString::strlen(const char* value) const{
@@ -69,6 +72,7 @@ char* MyString::strcpy(char* destination, const char* source) {
 	return start;
 }
 
+// Also need this function for rvalues.
 MyString& MyString::operator=(const MyString& value){
 	if (this == &value)
 		return *this;
@@ -113,6 +117,10 @@ bool operator==(const MyString& string1, const MyString& string2){
 		}
 	}
 	
+}
+
+bool MyString::compare(const char* buffer, length){
+	// ...
 }
 
 

@@ -7,7 +7,6 @@ class MyString {
 
 	friend MyString operator+(const MyString& string1, const MyString& string2);
 	friend std::ostream& operator<<(std::ostream& os, const MyString& string);
-	friend bool operator==(const MyString& string1, const MyString& string2);
 
 public:
 	MyString();
@@ -17,12 +16,15 @@ public:
 	~MyString();
 
 	MyString& operator=(const MyString& value);
+	bool operator==(const MyString& string1);
+	bool operator==(const char* string1);
 
 	int length() const;
 	void clear();
 private:
 	int strlen(const char* value) const;
 	char* strcpy(char* destination, const char* source);
+	bool compare(const char* buffer, int length)
 
 private:
 	char* characters;

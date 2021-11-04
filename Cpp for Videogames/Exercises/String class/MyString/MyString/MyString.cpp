@@ -69,3 +69,50 @@ char* MyString::strcpy(char* destination, const char* source) {
 	return start;
 }
 
+MyString& MyString::operator=(const MyString& value){
+	if (this == &value)
+		return *this;
+	delete[] characters;
+	characters = new char[strlen(value.characters) + 1];
+	strcpy(characters, value.characters);
+	return *this;
+}
+
+std::ostream& operator<<(std::ostream& os, const MyString& string){
+	os << string.characters;
+	return os;
+}
+
+MyString operator+(const MyString& string1, const MyString& string2){
+	int length = strlen(string1.characters)
+		+ strlen(string2.characters);
+
+	char* buff = new char[length + 1];
+
+	//strcpy(buff, string1.characters);
+	//strncat_s(buff, string2.characters, strlen(string2.characters));
+
+	MyString temp{ buff };
+
+	delete[] buff;
+
+	return temp;
+}
+
+bool operator==(const MyString& string1, const MyString& string2){
+	int it = 0;
+	if (strlen(string1.characters) != strlen(string2.characters)) {
+		return false;
+	}
+	else {
+		while (string1.characters[it] != '\0') {
+			if (string1.characters[it] != string2.characters[it])
+				return false;
+			else
+				++it;
+		}
+	}
+	
+}
+
+

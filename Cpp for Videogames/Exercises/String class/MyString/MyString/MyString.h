@@ -1,8 +1,14 @@
 #pragma once
+#include <iostream>
 
 // Documentation: https://www.geeksforgeeks.org/how-to-create-a-custom-string-class-in-c-with-basic-functionalities/
 // Install RenderDock
 class MyString {
+
+	friend MyString operator+(const MyString& string1, const MyString& string2);
+	friend std::ostream& operator<<(std::ostream& os, const MyString& string);
+	friend bool operator==(const MyString& string1, const MyString& string2);
+
 public:
 	MyString();
 	MyString(const char* value);
@@ -10,7 +16,8 @@ public:
 	MyString(MyString&& str) noexcept;
 	~MyString();
 
-	//MyString& push_back();
+	MyString& operator=(const MyString& value);
+
 	int length() const;
 	void clear();
 private:

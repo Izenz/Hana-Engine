@@ -90,7 +90,7 @@ update_status ModuleSceneKen::Update()
 		App->fade->FadeToBlack((Module*)App->scene_honda, this);
 	}
 
-	return UPDATE_CONTINUE;
+	return update_status::UPDATE_CONTINUE;
 }
 
 void ModuleSceneKen::UpdateShipPosition()
@@ -122,5 +122,5 @@ update_status ModuleSceneKen::PostUpdate()
 
 	App->renderer->Blit(graphics, 0, 170, &ground);
 
-	return UPDATE_CONTINUE;
+	return update_status::UPDATE_CONTINUE;
 }

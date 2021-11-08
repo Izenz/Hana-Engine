@@ -58,7 +58,7 @@ update_status ModuleFadeToBlack::Update()
 		}
 	}
 
-	return UPDATE_CONTINUE;
+	return update_status::UPDATE_CONTINUE;
 }
 
 update_status ModuleFadeToBlack::PostUpdate()
@@ -70,7 +70,7 @@ update_status ModuleFadeToBlack::PostUpdate()
 		SDL_RenderFillRect(App->renderer->renderer, NULL);
 	}
 
-	return UPDATE_CONTINUE;
+	return update_status::UPDATE_CONTINUE;
 }
 
 // Fade to black. At mid point deactivate one module, then activate the other

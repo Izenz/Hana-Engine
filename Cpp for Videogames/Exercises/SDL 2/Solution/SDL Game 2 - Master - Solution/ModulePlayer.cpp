@@ -81,7 +81,7 @@ update_status ModulePlayer::Update()
 		position.x -= speed;
 	}
 
-	return UPDATE_CONTINUE;
+	return update_status::UPDATE_CONTINUE;
 }
 
 update_status ModulePlayer::PostUpdate()
@@ -92,5 +92,5 @@ update_status ModulePlayer::PostUpdate()
 	SDL_Rect rect = currentAnimation->GetCurrentFrame();
 	App->renderer->Blit(graphics, position.x, position.y - rect.h, &rect);
 
-	return UPDATE_CONTINUE;
+	return update_status::UPDATE_CONTINUE;
 }

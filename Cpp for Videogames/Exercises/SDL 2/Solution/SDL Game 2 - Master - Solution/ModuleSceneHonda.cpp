@@ -61,7 +61,7 @@ update_status ModuleSceneHonda::Update()
 		App->fade->FadeToBlack((Module*)App->scene_ken, this);
 	}
 
-	return UPDATE_CONTINUE;
+	return update_status::UPDATE_CONTINUE;
 }
 
 update_status ModuleSceneHonda::PostUpdate()
@@ -70,5 +70,5 @@ update_status ModuleSceneHonda::PostUpdate()
 	App->renderer->Blit(graphics, -115, 160, &ground);
 	App->renderer->Blit(graphics, 155, 145, &pool); // sea and sky
 
-	return UPDATE_CONTINUE;
+	return update_status::UPDATE_CONTINUE;
 }

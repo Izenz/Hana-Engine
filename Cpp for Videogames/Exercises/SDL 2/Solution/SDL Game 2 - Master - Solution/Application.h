@@ -39,7 +39,7 @@ public:
 	ModuleSceneHonda* scene_honda;
 
 private:
-
+	// Would be better to use a vector since we are not adding modules in execution time.
 	std::list<Module*> modules;
 
 };

@@ -78,7 +78,12 @@ void ModuleFadeToBlack::FadeToBlack(Module* module_on, Module* module_off, float
 {
 	fading_in = (module_off != nullptr) ? true : false;
 	start_time = SDL_GetTicks();
-	total_time = (Uint32) (time  * 0.5f * 1000.0f);
+	
+	// If we have three seconds to do the fade  this will make half of that time fade in and half of the other time fade out.
+	static float HalfTime = 0.5f;
+	static float SecToMsec = 1000.0f;
+
+	total_time = (Uint32) (time  * HalfTime * SecToMsec);
 
 	this->module_on = module_on;
 	this->module_off = module_off;

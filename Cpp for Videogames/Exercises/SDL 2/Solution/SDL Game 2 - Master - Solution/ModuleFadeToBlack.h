@@ -14,6 +14,7 @@ public:
 	update_status Update();
 	update_status PostUpdate();
 	void FadeToBlack(Module* module_on, Module* module_off = nullptr, float time = 1.0f);
+	// Correct capitals to IsFading()...
 	bool isFading() const;
 
 private:

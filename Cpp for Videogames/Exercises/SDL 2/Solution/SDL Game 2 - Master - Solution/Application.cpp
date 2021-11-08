@@ -20,6 +20,9 @@ Application::Application()
 	modules.push_back(textures = new ModuleTextures());
 	modules.push_back(audio = new ModuleAudio());
 
+	// const bool StartEnabled = true;
+	// modules.push_back(scene_ken = new ModuleSceneKen(StartEnabled));
+
 	modules.push_back(scene_ken = new ModuleSceneKen(false));
 	modules.push_back(scene_honda = new ModuleSceneHonda(false));
 	modules.push_back(player = new ModulePlayer(false));

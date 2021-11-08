@@ -27,7 +27,8 @@ public:
 	bool CleanUp();
 
 public:
-	ModuleRender* renderer;
+	// Should initialize variables.
+	ModuleRender* renderer = nullptr;
 	ModuleWindow* window;
 	ModuleTextures* textures;
 	ModuleInput* input;

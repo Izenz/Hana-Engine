@@ -15,5 +15,5 @@ public:
 	bool CleanUp();
 
 private:
-	char* file_names[];
+	unsigned shader_id;
 };

@@ -6,14 +6,12 @@
 
 bool ModuleRenderExercise::Init() {
 	GLfloat vertices[] = { -1, -1, 0,	1, -1, 0,	0, 1, 0 };
-	const int dataLength = 9;
-
-	program = glCreateProgram();
+	GLint success;
 
 	// Create VBO and load triangle within it
 	glGenBuffers(1, &vbo);
 	glBindBuffer(GL_ARRAY_BUFFER, vbo);
-	glBufferData(GL_ARRAY_BUFFER, dataLength, vertices, GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
 
 	// At Init method creates a program with Hello World vertex and fragment shaders
 	char* vsData = App->program->LoadShaderSource("vertex_shader.glsl");
@@ -22,8 +20,18 @@ bool ModuleRenderExercise::Init() {
 	char* fsData = App->program->LoadShaderSource("fragm_shader.glsl");
 	unsigned fragm_shader = App->program->CompileShader(GL_FRAGMENT_SHADER, fsData);
 
+	program = glCreateProgram();
+
 	glAttachShader(program, vert_shader);
 	glAttachShader(program, fragm_shader);
+	glLinkProgram(program);
+	glGetProgramiv(program, GL_LINK_STATUS, &success);
+	if (!success) {
+		char* logs = (char*)malloc(512);
+		glGetProgramInfoLog(program, 512, NULL, logs);
+		free(logs);
+		glDeleteProgram(program);
+	}
 
 	return true;
 }

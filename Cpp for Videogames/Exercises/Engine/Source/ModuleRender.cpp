@@ -4,6 +4,9 @@
 #include "ModuleWindow.h"
 #include "SDL.h"
 #include "GL/glew.h"
+#include "imgui.h"
+#include "imgui_impl_sdl.h"
+#include "imgui_impl_opengl3.h"
 
 ModuleRender::ModuleRender()
 {
@@ -31,6 +34,7 @@ bool ModuleRender::Init()
 	//glewInit();
 	
 	GLenum err = glewInit();
+	//ImGui::CreateContext();
 	LOG("Using Glew %s", glewGetString(GLEW_VERSION));
 
 	LOG("Vendor: %s", glGetString(GL_VENDOR));

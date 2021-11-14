@@ -34,26 +34,42 @@ bool ModuleEditor::Init()
 	context = SDL_GL_CreateContext(App->window->window);
 
 	// Init Dear ImGui Context
+	IMGUI_CHECKVERSION();
 	ImGui::CreateContext();
 	ImGui_ImplSDL2_InitForOpenGL(App->window->window, App->renderer);
-	ImGui_ImplOpenGL3_Init();
+	ImGui_ImplOpenGL3_Init("#version 120");
+
+	ImGui::StyleColorsDark();
 
 	return update_status::UPDATE_CONTINUE;
 }
 
 update_status ModuleEditor::PreUpdate()
 {
+	ImGui_ImplOpenGL3_NewFrame();
+	ImGui_ImplSDL2_NewFrame();
+	ImGui::NewFrame();
+
 	return update_status::UPDATE_CONTINUE;
 }
 
 // Called every draw update
 update_status ModuleEditor::Update()
 {
+	ImGui::ShowDemoWindow();
+	ImGui::Begin("My name is window");
+	ImGui::Text("Hi");
+	ImGui::End();
+
 	return update_status::UPDATE_CONTINUE;
 }
 
 update_status ModuleEditor::PostUpdate()
 {
+	ImGui::Render();
+	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+	//SwapBuffers();
+
 	return update_status::UPDATE_CONTINUE;
 }
 
@@ -64,6 +80,7 @@ bool ModuleEditor::CleanUp()
 	ImGui_ImplSDL2_Shutdown();
 	ImGui::DestroyContext();
 
+	
 	return true;
 }
 

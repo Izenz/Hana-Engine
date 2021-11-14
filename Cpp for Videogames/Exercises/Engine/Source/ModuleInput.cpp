@@ -3,6 +3,9 @@
 #include "ModuleInput.h"
 #include "ModuleRender.h"
 #include "SDL/include/SDL.h"
+#include "imgui.h"
+#include "imgui_impl_sdl.h"
+#include "imgui_impl_opengl3.h"
 
 ModuleInput::ModuleInput()
 {}
@@ -46,6 +49,8 @@ update_status ModuleInput::Update()
     }
 
     keyboard = SDL_GetKeyboardState(NULL);
+
+	ImGui_ImplSDL2_ProcessEvent(&sdlEvent);
 
     return UPDATE_CONTINUE;
 }

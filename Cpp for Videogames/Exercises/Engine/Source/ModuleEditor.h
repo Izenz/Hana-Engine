@@ -2,6 +2,8 @@
 #include "Module.h"
 #include "Globals.h"
 
+class ModuleEditorCamera;
+
 struct SDL_Texture;
 struct SDL_Renderer;
 struct SDL_Rect;
@@ -20,6 +22,7 @@ public:
 	void WindowResized(unsigned width, unsigned height);
 
 private:
+	ModuleEditorCamera* cam;
 	void* context;
 	bool b = false;
 	bool p_open = true;

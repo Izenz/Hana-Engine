@@ -2,6 +2,7 @@
 #include "Application.h"
 #include "ModuleEditor.h"
 #include "ModuleWindow.h"
+#include "ModuleEditorCamera.h"
 #include "ModuleRender.h"
 #include "SDL.h"
 #include "GL/glew.h"
@@ -11,6 +12,7 @@
 
 ModuleEditor::ModuleEditor()
 {
+	cam = new ModuleEditorCamera();
 }
 
 // Destructor
@@ -44,6 +46,7 @@ bool ModuleEditor::Init()
 
 	ImGui::StyleColorsDark();
 	
+	cam->Init();
 
 	return update_status::UPDATE_CONTINUE;
 }
@@ -55,6 +58,7 @@ update_status ModuleEditor::PreUpdate()
 	ImGui_ImplSDL2_NewFrame();
 	ImGui::NewFrame();
 	
+	cam->PreUpdate();
 
 	return update_status::UPDATE_CONTINUE;
 }
@@ -89,12 +93,15 @@ update_status ModuleEditor::Update()
 	ImGui::Render();
 	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 	
+	cam->Update();
+
 	return update_status::UPDATE_CONTINUE;
 }
 
 update_status ModuleEditor::PostUpdate()
 {
 
+	cam->PostUpdate();
 	
 	return update_status::UPDATE_CONTINUE;
 }
@@ -102,7 +109,8 @@ update_status ModuleEditor::PostUpdate()
 // Called before quitting
 bool ModuleEditor::CleanUp()
 {
-	
+	delete cam;
+
 	ImGui_ImplOpenGL3_Shutdown();
 	ImGui_ImplSDL2_Shutdown();
 	ImGui::DestroyContext();

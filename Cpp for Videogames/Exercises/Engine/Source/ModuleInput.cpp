@@ -50,10 +50,11 @@ update_status ModuleInput::Update()
 
     keyboard = SDL_GetKeyboardState(NULL);
 
-	ImGui_ImplSDL2_ProcessEvent(&sdlEvent);
+    //ImGui_ImplSDL2_ProcessEvent(&sdlEvent);
 
     return UPDATE_CONTINUE;
 }
+
 
 // Called before quitting
 bool ModuleInput::CleanUp()

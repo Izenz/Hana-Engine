@@ -50,26 +50,30 @@ update_status ModuleEditor::PreUpdate()
 	ImGui_ImplSDL2_NewFrame();
 	ImGui::NewFrame();
 
+	ImGui::ShowDemoWindow();
+
 	return update_status::UPDATE_CONTINUE;
 }
 
 // Called every draw update
 update_status ModuleEditor::Update()
 {
-	ImGui::ShowDemoWindow();
+	
 	ImGui::Begin("My name is window");
 	ImGui::Text("Hi");
 	ImGui::End();
+
+	ImGui::Render();
+	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+	//SwapBuffers(nullptr);
 
 	return update_status::UPDATE_CONTINUE;
 }
 
 update_status ModuleEditor::PostUpdate()
 {
-	ImGui::Render();
-	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
-	//SwapBuffers();
 
+	
 	return update_status::UPDATE_CONTINUE;
 }
 

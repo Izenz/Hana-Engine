@@ -28,11 +28,11 @@ public:
 	ModuleRender* renderer = nullptr;
 	ModuleWindow* window = nullptr;
 	ModuleInput* input = nullptr;
-	ModuleEditor* editor = nullptr;
+	
 	ModuleProgram* program = nullptr;
 	ModuleRenderExercise* exercise = nullptr;
+	ModuleEditor* editor = nullptr;
 	
-
 private:
 
 	std::list<Module*> modules;

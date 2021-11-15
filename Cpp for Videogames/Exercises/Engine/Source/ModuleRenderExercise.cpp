@@ -25,13 +25,14 @@ bool ModuleRenderExercise::Init() {
 	glAttachShader(program, vert_shader);
 	glAttachShader(program, fragm_shader);
 	glLinkProgram(program);
-	glGetProgramiv(program, GL_LINK_STATUS, &success);
+
+	/*glGetProgramiv(program, GL_LINK_STATUS, &success);
 	if (!success) {
 		char* logs = (char*)malloc(512);
 		glGetProgramInfoLog(program, 512, NULL, logs);
 		free(logs);
 		glDeleteProgram(program);
-	}
+	}*/
 
 	return true;
 }

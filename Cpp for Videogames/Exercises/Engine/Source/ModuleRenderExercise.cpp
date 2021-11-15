@@ -5,13 +5,18 @@
 #include "GL/glew.h"
 
 bool ModuleRenderExercise::Init() {
-	GLfloat vertices[] = { -1, -1, 0,	1, -1, 0,	0, 1, 0 };
+	//GLfloat vertices[] = { -1, -1, 0,	1, -1, 0,	0, 1, 0 };
+
+	GLfloat wColors[] = {	-1, -1, 0,		1, 0, 0,
+							1, -1, 0,		0, 1, 0,
+							0, 1, 0,		0, 0, 1	};
 	GLint success;
 
 	// Create VBO and load triangle within it
 	glGenBuffers(1, &vbo);
 	glBindBuffer(GL_ARRAY_BUFFER, vbo);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+	//glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(wColors), wColors, GL_STATIC_DRAW);
 
 	// At Init method creates a program with Hello World vertex and fragment shaders
 	char* vsData = App->program->LoadShaderSource("vertex_shader.glsl");
@@ -45,11 +50,14 @@ update_status ModuleRenderExercise::Update() {
 
 void ModuleRenderExercise::RenderVBO(unsigned vbo, unsigned program) {
 	glBindBuffer(GL_ARRAY_BUFFER, vbo);
-	glEnableVertexAttribArray(0);
 
-	// size = 3 float per vertex
-	// stride = 0 is equivalent to stride = sizeof(float)*3
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, (void*)0);
+	// https://computingonplains.wordpress.com/opengl-shaders/
+	glEnableVertexAttribArray(0);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6*sizeof(GLfloat), (void*)0);
+
+	glEnableVertexAttribArray(1);
+	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6*sizeof(GLfloat), (void*)(3 * sizeof(GLfloat)));
+
 	glUseProgram(program);
 
 	// 1 triangle to draw = 3 vertices

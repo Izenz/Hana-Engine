@@ -21,4 +21,6 @@ public:
 
 private:
 	void* context;
+	bool b = false;
+	bool p_open = true;
 };

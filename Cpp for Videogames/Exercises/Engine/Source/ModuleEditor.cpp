@@ -58,9 +58,25 @@ update_status ModuleEditor::PreUpdate()
 // Called every draw update
 update_status ModuleEditor::Update()
 {
+	ImGui::Begin("TriAngle Editor", 0, ImGuiWindowFlags_MenuBar);
+
+	if (ImGui::BeginMenuBar()) {
+		if (ImGui::BeginMenu("Files")) {
+			//IMGUI_DEMO_MARKER("Menu/Files");
+			ImGui::MenuItem("Save", NULL, true);
+			ImGui::MenuItem("Load", NULL, true);
+
+			ImGui::EndMenu();
+		}
+		ImGui::EndMenuBar();
+	}
+
 	
-	ImGui::Begin("My name is window");
-	ImGui::Text("Hi");
+	ImGui::Text("Engine: TriAngle Engine.");
+	ImGui::Text("Author: Joel Herraiz Marti.");
+	ImGui::Text("Engine used for Game Development during UPC's AAA Videogame Development Master.");
+	ImGui::Text("Built using SDL 2.0 and OpenGL 2.1");
+	ImGui::Checkbox("Read?", &b);
 	ImGui::End();
 
 	ImGui::Render();

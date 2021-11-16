@@ -3,6 +3,8 @@
 #include "Application.h"
 #include "SDL.h"
 #include "GL/glew.h"
+#include "Geometry\Frustum.h"
+#include "MathGeoLib.h"
 
 bool ModuleRenderExercise::Init() {
 	//GLfloat vertices[] = { -1, -1, 0,	1, -1, 0,	0, 1, 0 };
@@ -39,11 +41,22 @@ bool ModuleRenderExercise::Init() {
 		glDeleteProgram(program);
 	}*/
 
+	///* Frustum setup
+	frustum.SetKind(FrustumSpaceGL, FrustumRightHanded);
+	frustum.SetViewPlaneDistances(0.1f, 200.0f);
+	frustum.SetHorizontalFovAndAspectRatio(DEGTORAD * 90.0f, 1.3f);
+
+	frustum.SetPos(float3(0.0f, 1.0f, -2.0f));
+	frustum.SetFront(float3::unitZ);
+	frustum.SetUp(float3::unitY);
+	//*/
+
 	return true;
 }
 
 update_status ModuleRenderExercise::Update() {
-	RenderVBO(vbo, program);
+	//RenderVBO(vbo, program);
+	RenderTriangle();
 
 	return UPDATE_CONTINUE;
 }
@@ -63,6 +76,36 @@ void ModuleRenderExercise::RenderVBO(unsigned vbo, unsigned program) {
 	// 1 triangle to draw = 3 vertices
 	glDrawArrays(GL_TRIANGLES, 0, 3);
 
+}
+
+void ModuleRenderExercise::RenderTriangle() {
+	
+	// Get matrices
+	projection = frustum.ProjectionMatrix().Transposed();
+	//view = float4x4(frustum.ViewMatrix()).Transposed();
+	view = float4x4::LookAt(float3(0.0f, 0.0f, 1.0f), float3(0.0f, 0.0f, 0.0f), float3::unitY, float3::unitY).Transposed();
+	model = float4x4::FromTRS(float3(0.0f, 0.0f, 0.0f), float4x4::RotateZ(0), float3(0.0f, 0.0f, 0.0f)).Transposed();
+
+	//glUseProgram(program);
+
+	glUniformMatrix4fv(glGetUniformLocation(program, "model"), 1, GL_TRUE, &model[0][0]);
+	glUniformMatrix4fv(glGetUniformLocation(program, "view"), 1, GL_TRUE, &view[0][0]);
+	glUniformMatrix4fv(glGetUniformLocation(program, "proj"), 1, GL_TRUE, &projection[0][0]);
+
+	//Bind buffer and vertex attributes
+
+	glBindBuffer(GL_ARRAY_BUFFER, vbo);
+
+	glEnableVertexAttribArray(0);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(GLfloat), (void*)0);
+
+	glEnableVertexAttribArray(1);
+	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(GLfloat), (void*)(3 * sizeof(GLfloat)));
+
+	glUseProgram(program);
+
+	// Draw
+	glDrawArrays(GL_TRIANGLES, 0, 3);
 }
 
 bool ModuleRenderExercise::CleanUp() {

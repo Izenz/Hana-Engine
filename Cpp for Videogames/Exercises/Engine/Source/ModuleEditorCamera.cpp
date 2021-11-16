@@ -36,7 +36,7 @@ update_status ModuleEditorCamera::Update() {
 
 	frustum.SetPos(float3(0.0f, 10.0f, 5.0f));
 
-	float3x3 rotationMatrix = float3x3::FromEulerXYZ(DegToRad(0), DegToRad(0), DegToRad(-75));
+	float3x3 rotationMatrix = float3x3::FromEulerXYZ(DegToRad(0), DegToRad(0), DegToRad(-45));
 
 	frustum.SetFront(rotationMatrix.WorldX());
 	frustum.SetUp(rotationMatrix.WorldY());

@@ -4,6 +4,10 @@
 #include "MathGeoLib.h"
 #include "GL/glew.h"
 #include "SDL.h"
+#include "Application.h"
+#include "ModuleRenderExercise.h"
+#include "ModuleEditor.h"
+#include "ModuleDebugDraw.h"
 
 
 bool ModuleEditorCamera::Init() {
@@ -44,16 +48,20 @@ update_status ModuleEditorCamera::Update() {
 	// Send the frustum VIEW matrix to openGL
 
 	//Direct mode:
+	
 	float4x4 viewGL = float4x4(frustum.ViewMatrix()).Transposed();
 	glMatrixMode(GL_MODELVIEW);
 	glLoadMatrixf(*viewGL.v);
+	
 
+	// Through shaders
+	/*glUniformMatrix4fv(glGetUniformLocation(App->exercise->program, "proj"), 1, GL_FALSE, &App->editor->cam->GetProjMatrix()[0][0]);
+	glUniformMatrix4fv(glGetUniformLocation(App->exercise->program, "view"), 1, GL_FALSE, &App->editor->cam->GetViewMatrix()[0][0]);
+	*/
 	return UPDATE_CONTINUE;
 }
 
 update_status ModuleEditorCamera::PostUpdate() {
-
-
 	return UPDATE_CONTINUE;
 }
 

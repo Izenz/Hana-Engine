@@ -455,12 +455,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <None Include="fragm_shader.glsl">
-      <Filter>Shaders</Filter>
-    </None>
-    <None Include="vertex_shader.glsl">
-      <Filter>Shaders</Filter>
-    </None>
     <None Include="MathGeoLib_Source\Math\float2.inl">
       <Filter>MathGeoLib\Math</Filter>
     </None>
@@ -481,6 +475,12 @@
     </None>
     <None Include="MathGeoLib_Source\Geometry\TriangleMesh_IntersectRay_SSE.inl">
       <Filter>MathGeoLib\Geometry</Filter>
+    </None>
+    <None Include="..\Game\fragm_shader.glsl">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="..\Game\vertex_shader.glsl">
+      <Filter>Shaders</Filter>
     </None>
   </ItemGroup>
 </Project>

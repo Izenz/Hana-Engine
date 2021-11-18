@@ -12,15 +12,17 @@ public:
 	bool Init();
 	bool CleanUp();
 	update_status Update();
-
+	update_status PostUpdate();
+	GLuint program;
 	
 private:
 	void RenderVBO(unsigned vbo, unsigned program);
 	void RenderTriangle();
+	
 private:
 	GLuint vbo;
-	GLuint program;
+	
 
-	//float4x4 model, view, projection;
-	//Frustum frustum;
+	float4x4 model, view, projection;
+	Frustum frustum;
 };

@@ -7,6 +7,8 @@
 #include "GL/glew.h"
 #include "Geometry\Frustum.h"
 #include "MathGeoLib.h"
+#include "ModuleDebugDraw.h"
+#include "debugdraw.h"
 
 bool ModuleRenderExercise::Init() {
 	//GLfloat vertices[] = { -1, -1, 0,	1, -1, 0,	0, 1, 0 };
@@ -43,16 +45,16 @@ bool ModuleRenderExercise::Init() {
 		glDeleteProgram(program);
 	}*/
 
-	/* Frustum setup
+	// Frustum setup
 	frustum.SetKind(FrustumSpaceGL, FrustumRightHanded);
-	frustum.SetViewPlaneDistances(0.1f, 200.0f);
-	frustum.SetHorizontalFovAndAspectRatio(DEGTORAD * 90.0f, 1.3f);
+	frustum.SetViewPlaneDistances(0.1f, 100.0f);
+	frustum.SetHorizontalFovAndAspectRatio(DEGTORAD * 90.0f, float(SCREEN_WIDTH) / float(SCREEN_HEIGHT));
 
-	frustum.SetPos(float3(0.0f, 1.0f, -2.0f));
+	//frustum.SetPos(float3(0.0f, 1.0f, -2.0f));
+	frustum.SetPos(float3::zero);
 	frustum.SetFront(float3::unitZ);
 	frustum.SetUp(float3::unitY);
-	//*/
-
+	
 	return true;
 }
 
@@ -64,6 +66,8 @@ update_status ModuleRenderExercise::Update() {
 }
 
 void ModuleRenderExercise::RenderVBO(unsigned vbo, unsigned program) {
+
+
 	glBindBuffer(GL_ARRAY_BUFFER, vbo);
 
 	// https://computingonplains.wordpress.com/opengl-shaders/
@@ -83,21 +87,28 @@ void ModuleRenderExercise::RenderVBO(unsigned vbo, unsigned program) {
 }
 
 void ModuleRenderExercise::RenderTriangle() {
-	
+
+	dd::axisTriad(float4x4::identity, 1.0f, 1.0f);
+	dd::xzSquareGrid(-100, 100, 0.0f, 1.0f, dd::colors::White);
+
 	// Get matrices
-	//projection = frustum.ProjectionMatrix().Transposed();
-	//view = float4x4(frustum.ViewMatrix()).Transposed();
-	//view = float4x4::LookAt(float3(0.0f, 0.0f, 1.0f), float3(0.0f, 0.0f, 0.0f), float3::unitY, float3::unitY).Transposed();
-	//model = float4x4::FromTRS(float3(0.0f, 0.0f, 0.0f), float4x4::RotateZ(0), float3(0.0f, 0.0f, 0.0f)).Transposed();
-	//model = float4x4::identity;
+	projection = frustum.ComputeProjectionMatrix();
+	//view = float4x4::LookAt(float3(0.0f, 1.0f, 4.0f), float3(0.0f, -2.0f, 0.0f), float3::unitZ, float3::unitY, float3::unitZ);
+	view = frustum.ViewMatrix();
+	//view = float4x4::FromTRS(float3(0.0f, 1.0f, 4.0f), float4x4::identity, float3(0.0f, 0.0f, 0.0f));
+	//model = float4x4::FromTRS(float3(2.0f, 0.0f, 0.0f), float4x4::RotateZ(pi / 4.0f), float3(2.0f, 1.0f, 0.0f)).Transposed();
+	model = float4x4::identity;
 
 	glUseProgram(program);
-
-	float4x4 model = float4x4::identity;
-
+	/*
 	glUniformMatrix4fv(glGetUniformLocation(program, "model"), 1, GL_FALSE, &model[0][0]);
 	glUniformMatrix4fv(glGetUniformLocation(program, "view"), 1, GL_FALSE, &App->editor->cam->GetViewMatrix()[0][0]);
 	glUniformMatrix4fv(glGetUniformLocation(program, "proj"), 1, GL_FALSE, &App->editor->cam->GetProjMatrix()[0][0]);
+	*/
+
+	glUniformMatrix4fv(glGetUniformLocation(program, "model"), 1, GL_TRUE, &model[0][0]);
+	glUniformMatrix4fv(glGetUniformLocation(program, "view"), 1, GL_TRUE, &view[0][0]);
+	glUniformMatrix4fv(glGetUniformLocation(program, "proj"), 1, GL_TRUE, &projection[0][0]);
 
 	//Bind buffer and vertex attributes
 
@@ -113,6 +124,13 @@ void ModuleRenderExercise::RenderTriangle() {
 	glDrawArrays(GL_TRIANGLES, 0, 3);
 
 	glUseProgram(0);
+	App->debugDraw->Draw(view, projection, SCREEN_WIDTH, SCREEN_HEIGHT);
+
+}
+
+update_status ModuleRenderExercise::PostUpdate() {
+
+	return UPDATE_CONTINUE;
 }
 
 bool ModuleRenderExercise::CleanUp() {

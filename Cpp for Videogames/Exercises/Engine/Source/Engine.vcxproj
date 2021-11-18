@@ -304,7 +304,8 @@
     <ClInclude Include="ModuleWindow.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="fragm_shader.glsl" />
+    <None Include="..\Game\fragm_shader.glsl" />
+    <None Include="..\Game\vertex_shader.glsl" />
     <None Include="MathGeoLib_Source\Geometry\KDTree.inl" />
     <None Include="MathGeoLib_Source\Geometry\QuadTree.inl" />
     <None Include="MathGeoLib_Source\Geometry\TriangleMesh_IntersectRay_AVX.inl" />
@@ -312,7 +313,6 @@
     <None Include="MathGeoLib_Source\Geometry\TriangleMesh_IntersectRay_SSE.inl" />
     <None Include="MathGeoLib_Source\Math\float2.inl" />
     <None Include="MathGeoLib_Source\Math\Matrix.inl" />
-    <None Include="vertex_shader.glsl" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

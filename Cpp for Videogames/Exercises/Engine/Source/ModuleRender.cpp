@@ -83,14 +83,13 @@ update_status ModuleRender::Update()
 	glEnd();
 	*/
 
-
 	
 	return UPDATE_CONTINUE;
 }
 
 update_status ModuleRender::PostUpdate()
 {
-	App->debugDraw->Draw(App->editor->cam->GetProjMatrix(), App->editor->cam->GetViewMatrix(), SCREEN_WIDTH, SCREEN_HEIGHT);
+	//App->debugDraw->Draw(App->editor->cam->GetProjMatrix(), App->editor->cam->GetViewMatrix(), SCREEN_WIDTH, SCREEN_HEIGHT);
 	SDL_GL_SwapWindow(App->window->window);
 	return UPDATE_CONTINUE;
 }

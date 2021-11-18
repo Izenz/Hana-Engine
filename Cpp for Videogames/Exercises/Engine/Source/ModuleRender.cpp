@@ -1,6 +1,9 @@
 #include "Globals.h"
 #include "Application.h"
 #include "ModuleRender.h"
+#include "ModuleEditor.h"
+#include "ModuleEditorCamera.h"
+#include "ModuleDebugDraw.h"
 #include "ModuleWindow.h"
 #include "SDL.h"
 #include "GL/glew.h"
@@ -65,7 +68,8 @@ update_status ModuleRender::PreUpdate()
 // Called every draw update
 update_status ModuleRender::Update()
 {
-	
+	/*
+	glColor3f(1.0f, 1.0f, 1.0f);
 	glLineWidth(1.0f);
 	float d = 200.0f;
 	glBegin(GL_LINES);
@@ -77,12 +81,16 @@ update_status ModuleRender::Update()
 		glVertex3f(d, 0.0f, i);
 	}
 	glEnd();
+	*/
+
+
 	
 	return UPDATE_CONTINUE;
 }
 
 update_status ModuleRender::PostUpdate()
 {
+	App->debugDraw->Draw(App->editor->cam->GetProjMatrix(), App->editor->cam->GetViewMatrix(), SCREEN_WIDTH, SCREEN_HEIGHT);
 	SDL_GL_SwapWindow(App->window->window);
 	return UPDATE_CONTINUE;
 }

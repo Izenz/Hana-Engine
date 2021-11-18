@@ -20,9 +20,9 @@ public:
 	update_status PostUpdate();
 	bool CleanUp();
 	void WindowResized(unsigned width, unsigned height);
-
-private:
 	ModuleEditorCamera* cam;
+private:
+	
 	void* context;
 	bool b = false;
 	bool p_open = true;

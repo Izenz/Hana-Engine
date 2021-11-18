@@ -56,3 +56,11 @@ update_status ModuleEditorCamera::PostUpdate() {
 
 	return UPDATE_CONTINUE;
 }
+
+float4x4 ModuleEditorCamera::GetProjMatrix() {
+	return frustum.ProjectionMatrix().Transposed();
+}
+
+float4x4 ModuleEditorCamera::GetViewMatrix() {
+	return float4x4(frustum.ViewMatrix()).Transposed();
+}

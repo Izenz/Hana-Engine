@@ -21,6 +21,6 @@ private:
 	GLuint vbo;
 	GLuint program;
 
-	float4x4 model, view, projection;
-	Frustum frustum;
+	//float4x4 model, view, projection;
+	//Frustum frustum;
 };

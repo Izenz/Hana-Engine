@@ -16,7 +16,8 @@
 	@author Jukka Jylänki
 	@brief Implementation for the KDTree object. */
 #pragma once
-
+#define NOMINMAX
+#include <algorithm>
 #include "AABB.h"
 #include "OBB.h"
 #include "Ray.h"

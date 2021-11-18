@@ -97,7 +97,7 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>_DEBUG;_CONSOLE;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_DEBUG;_CONSOLE;_CRT_SECURE_NO_WARNINGS;NOMINMAX;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>$(ProjectDir)\MathGeoLib_Source;$(ProjectDir)\ImGui;.\glew-2.1.0\include;.\SDL\include</AdditionalIncludeDirectories>
     </ClCompile>
@@ -194,6 +194,7 @@
     <ClCompile Include="MathGeoLib_Source\Math\SSEMath.cpp" />
     <ClCompile Include="MathGeoLib_Source\Math\TransformOps.cpp" />
     <ClCompile Include="MathGeoLib_Source\Time\Clock.cpp" />
+    <ClCompile Include="ModuleDebugDraw.cpp" />
     <ClCompile Include="ModuleEditor.cpp" />
     <ClCompile Include="ModuleEditorCamera.cpp" />
     <ClCompile Include="ModuleInput.cpp" />
@@ -204,6 +205,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
+    <ClInclude Include="debugdraw.h" />
+    <ClInclude Include="debug_draw.hpp" />
     <ClInclude Include="Dummy.h" />
     <ClInclude Include="Globals.h" />
     <ClInclude Include="ImGui\imconfig.h" />
@@ -291,6 +294,7 @@
     <ClInclude Include="MathGeoLib_Source\Math\vec2d.h" />
     <ClInclude Include="MathGeoLib_Source\Time\Clock.h" />
     <ClInclude Include="Module.h" />
+    <ClInclude Include="ModuleDebugDraw.h" />
     <ClInclude Include="ModuleEditor.h" />
     <ClInclude Include="ModuleEditorCamera.h" />
     <ClInclude Include="ModuleInput.h" />

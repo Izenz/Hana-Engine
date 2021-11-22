@@ -37,28 +37,26 @@ bool ModuleRenderExercise::Init() {
 	glAttachShader(program, fragm_shader);
 	glLinkProgram(program);
 
-	/*glGetProgramiv(program, GL_LINK_STATUS, &success);
-	if (!success) {
-		char* logs = (char*)malloc(512);
-		glGetProgramInfoLog(program, 512, NULL, logs);
-		free(logs);
-		glDeleteProgram(program);
-	}*/
-
 	// Frustum setup
 	frustum.SetKind(FrustumSpaceGL, FrustumRightHanded);
 	frustum.SetViewPlaneDistances(0.1f, 100.0f);
 	frustum.SetHorizontalFovAndAspectRatio(DEGTORAD * 90.0f, float(SCREEN_WIDTH) / float(SCREEN_HEIGHT));
 
-	//frustum.SetPos(float3(0.0f, 1.0f, -2.0f));
-	frustum.SetPos(float3::zero);
-	frustum.SetFront(float3::unitZ);
+	float3 pos(2.0f, 4.0f, 6.0f);
+	float3 targetDir = (float3::zero - pos).Normalized();
+
+	frustum.SetPos(pos);
+	frustum.SetFront(targetDir);
 	frustum.SetUp(float3::unitY);
 	
 	return true;
 }
 
 update_status ModuleRenderExercise::Update() {
+
+	dd::axisTriad(float4x4::identity, 0.1f, 1.0f);
+	dd::xzSquareGrid(-100, 100, 0.0f, 1.0f, dd::colors::White);
+
 	//RenderVBO(vbo, program);
 	RenderTriangle();
 
@@ -88,23 +86,13 @@ void ModuleRenderExercise::RenderVBO(unsigned vbo, unsigned program) {
 
 void ModuleRenderExercise::RenderTriangle() {
 
-	dd::axisTriad(float4x4::identity, 1.0f, 1.0f);
-	dd::xzSquareGrid(-100, 100, 0.0f, 1.0f, dd::colors::White);
-
 	// Get matrices
 	projection = frustum.ComputeProjectionMatrix();
-	//view = float4x4::LookAt(float3(0.0f, 1.0f, 4.0f), float3(0.0f, -2.0f, 0.0f), float3::unitZ, float3::unitY, float3::unitZ);
-	view = frustum.ViewMatrix();
-	//view = float4x4::FromTRS(float3(0.0f, 1.0f, 4.0f), float4x4::identity, float3(0.0f, 0.0f, 0.0f));
-	//model = float4x4::FromTRS(float3(2.0f, 0.0f, 0.0f), float4x4::RotateZ(pi / 4.0f), float3(2.0f, 1.0f, 0.0f)).Transposed();
+	view = float4x4::LookAt(float3(2.0f, 4.0f, 6.0f), float3(0.0f, 0.0f, 0.0f), -float3::unitZ, float3::unitY, float3::unitY);
+	view.InverseOrthonormal();
 	model = float4x4::identity;
 
 	glUseProgram(program);
-	/*
-	glUniformMatrix4fv(glGetUniformLocation(program, "model"), 1, GL_FALSE, &model[0][0]);
-	glUniformMatrix4fv(glGetUniformLocation(program, "view"), 1, GL_FALSE, &App->editor->cam->GetViewMatrix()[0][0]);
-	glUniformMatrix4fv(glGetUniformLocation(program, "proj"), 1, GL_FALSE, &App->editor->cam->GetProjMatrix()[0][0]);
-	*/
 
 	glUniformMatrix4fv(glGetUniformLocation(program, "model"), 1, GL_TRUE, &model[0][0]);
 	glUniformMatrix4fv(glGetUniformLocation(program, "view"), 1, GL_TRUE, &view[0][0]);
@@ -124,6 +112,7 @@ void ModuleRenderExercise::RenderTriangle() {
 	glDrawArrays(GL_TRIANGLES, 0, 3);
 
 	glUseProgram(0);
+
 	App->debugDraw->Draw(view, projection, SCREEN_WIDTH, SCREEN_HEIGHT);
 
 }

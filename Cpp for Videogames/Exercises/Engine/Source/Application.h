@@ -24,6 +24,7 @@ public:
 	bool Init();
 	update_status Update();
 	bool CleanUp();
+	float GetDeltaTime();
 
 public:
 	ModuleRender* renderer = nullptr;
@@ -38,6 +39,8 @@ public:
 private:
 
 	std::list<Module*> modules;
+	UINT32 total_ticks = 0, current_tick = 0;
+	float delta_time = 0.0f;
 
 };
 

@@ -55,7 +55,7 @@ bool ModuleRenderExercise::Init() {
 update_status ModuleRenderExercise::Update() {
 
 	dd::axisTriad(float4x4::identity, 0.1f, 1.0f);
-	dd::xzSquareGrid(-100, 100, 0.0f, 1.0f, dd::colors::White);
+	dd::xzSquareGrid(-100, 100, 0.0f, 1.0f, dd::colors::Gray);
 
 	//RenderVBO(vbo, program);
 	RenderTriangle();
@@ -87,9 +87,8 @@ void ModuleRenderExercise::RenderVBO(unsigned vbo, unsigned program) {
 void ModuleRenderExercise::RenderTriangle() {
 
 	// Get matrices
-	projection = frustum.ComputeProjectionMatrix();
-	view = float4x4::LookAt(float3(2.0f, 4.0f, 6.0f), float3(0.0f, 0.0f, 0.0f), -float3::unitZ, float3::unitY, float3::unitY);
-	view.InverseOrthonormal();
+	projection = App->editor->cam->GetProjMatrix();
+	view = App->editor->cam->GetViewMatrix();
 	model = float4x4::identity;
 
 	glUseProgram(program);

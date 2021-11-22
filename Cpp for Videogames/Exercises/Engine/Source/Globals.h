@@ -13,6 +13,12 @@ enum update_status
 	UPDATE_ERROR
 };
 
+enum class CAM_AXIS {
+	X,
+	Y,
+	Z
+};
+
 // Configuration -----------
 #define SCREEN_WIDTH 640
 #define SCREEN_HEIGHT 480

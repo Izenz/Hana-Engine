@@ -46,6 +46,10 @@ bool Application::Init()
 update_status Application::Update()
 {
 	update_status ret = UPDATE_CONTINUE;
+	total_ticks = current_tick;
+	current_tick = SDL_GetPerformanceCounter();
+
+	delta_time = (float)((current_tick - total_ticks) * 1000 / (float)SDL_GetPerformanceFrequency());
 
 	for(list<Module*>::iterator it = modules.begin(); it != modules.end() && ret == UPDATE_CONTINUE; ++it)
 		ret = (*it)->PreUpdate();
@@ -68,3 +72,9 @@ bool Application::CleanUp()
 
 	return ret;
 }
+
+float Application::GetDeltaTime() {
+	return delta_time;
+}
+
+

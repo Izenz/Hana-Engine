@@ -50,30 +50,35 @@ update_status ModuleInput::Update()
 			break;
 		case SDL_KEYDOWN:
 			if (keyboard_state_array[SDL_SCANCODE_W]) {
-				App->editor->cam->MoveForward();
+				App->editor->cam->MoveForward(keyboard_state_array[SDL_SCANCODE_LSHIFT]);
 			}
 			if (keyboard_state_array[SDL_SCANCODE_S]) {
-				App->editor->cam->MoveBackwards();
+				App->editor->cam->MoveBackwards(keyboard_state_array[SDL_SCANCODE_LSHIFT]);
 			}
 			if (keyboard_state_array[SDL_SCANCODE_D]) {
-				App->editor->cam->MoveRight();
+				App->editor->cam->MoveRight(keyboard_state_array[SDL_SCANCODE_LSHIFT]);
 			}
 			if (keyboard_state_array[SDL_SCANCODE_A]) {
-				App->editor->cam->MoveLeft();
+				App->editor->cam->MoveLeft(keyboard_state_array[SDL_SCANCODE_LSHIFT]);
+			}
+			if (keyboard_state_array[SDL_SCANCODE_Q]) {
+				App->editor->cam->MoveUp(keyboard_state_array[SDL_SCANCODE_LSHIFT]);
+			}
+			if (keyboard_state_array[SDL_SCANCODE_E]) {
+				App->editor->cam->MoveDown(keyboard_state_array[SDL_SCANCODE_LSHIFT]);
 			}
 			if (keyboard_state_array[SDL_SCANCODE_RIGHT]) {
-				App->editor->cam->RotateCamera(CAM_AXIS::Y, App->editor->cam->GetRotationSpeed() * App->GetDeltaTime());
+				App->editor->cam->RotateCamera(CAM_AXIS::Y, keyboard_state_array[SDL_SCANCODE_LSHIFT]);
 			}
 			if (keyboard_state_array[SDL_SCANCODE_LEFT]) {
-				App->editor->cam->RotateCamera(CAM_AXIS::Y, -App->editor->cam->GetRotationSpeed() * App->GetDeltaTime());
+				App->editor->cam->RotateCamera(CAM_AXIS::Y_NEGATIVE, keyboard_state_array[SDL_SCANCODE_LSHIFT]);
 			}
 			if (keyboard_state_array[SDL_SCANCODE_UP]) {
-
+				App->editor->cam->RotateCamera(CAM_AXIS::X, keyboard_state_array[SDL_SCANCODE_LSHIFT]);
 			}
 			if (keyboard_state_array[SDL_SCANCODE_DOWN]) {
-
+				App->editor->cam->RotateCamera(CAM_AXIS::X_NEGATIVE, keyboard_state_array[SDL_SCANCODE_LSHIFT]);
 			}
-
 			break;
 		case SDL_MOUSEBUTTONDOWN:
 			HandleMouseButtonClick(sdlEvent.button);

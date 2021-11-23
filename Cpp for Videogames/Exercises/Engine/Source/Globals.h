@@ -16,7 +16,10 @@ enum update_status
 enum class CAM_AXIS {
 	X,
 	Y,
-	Z
+	Z,
+	X_NEGATIVE,
+	Y_NEGATIVE,
+	Z_NEGATIVE
 };
 
 // Configuration -----------

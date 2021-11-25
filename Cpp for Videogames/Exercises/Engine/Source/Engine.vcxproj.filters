@@ -160,6 +160,8 @@
     </ClCompile>
     <ClCompile Include="ModuleDebugDraw.cpp" />
     <ClCompile Include="ModuleTexture.cpp" />
+    <ClCompile Include="Model.cpp" />
+    <ClCompile Include="Mesh.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
@@ -429,6 +431,8 @@
     <ClInclude Include="debugdraw.h" />
     <ClInclude Include="ModuleDebugDraw.h" />
     <ClInclude Include="ModuleTexture.h" />
+    <ClInclude Include="Model.h" />
+    <ClInclude Include="Mesh.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="ImGui">

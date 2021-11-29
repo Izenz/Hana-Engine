@@ -1,6 +1,7 @@
 #include "Model.h"
 #include "Globals.h"
 #include "Application.h"
+#include "ModuleTexture.h"
 
 Model::Model()
 {
@@ -46,9 +47,14 @@ bool Model::LoadMaterial(const aiScene* scene) {
 
 	for (unsigned i = 0; i < scene->mNumTextures; ++i) {
 		if (scene->mMaterials[i]->GetTexture(aiTextureType_DIFFUSE, 0, &path) == AI_SUCCESS) {
-			textures.push_back(App->textures->Load(path.data));
+//			textures.push_back(App->textures->Load(path.data));
+		}
+		else {
+			return false;
 		}
 	}
+	
+	return true;
 }
 
 void Model::SetPath(const char* file_path) {

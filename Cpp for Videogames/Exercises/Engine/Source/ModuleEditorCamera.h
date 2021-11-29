@@ -24,30 +24,31 @@ public:
 	void MoveDown(bool shiftPressed);
 
 	void RotateCamera(CAM_AXIS, bool shiftPressed);
+	void CameraLookAt(float3& newTargetPos);
 
 	// Setters
-
-	void SetRotationLock(bool leftMouseButtonPressed);
-
-	// Getters
-
-	float GetRotationSpeed() { return rotationSpeed; }
 
 	void SetFOV();
 	void SetAspectRatio();
 	void SetPlaneDistances();
 	void SetPosition(float3 newPos);
 	void SetOrientation();
-	void LookAt(float3 newTargetPos);
+	void SetRotationLock(bool leftMouseButtonPressed);
+
+	// Getters
+
+	float GetRotationSpeed() { return rotationSpeed; }
+
+	
+	
 	
 private:
 	Frustum frustum;
-	float3 frustumPos =  float3(0.0f, 10.0f, 5.0f);
-	float movSpeed = 2.0f, rotationSpeed = 0.5f;
+	float movSpeed = 0.5f, rotationSpeed = 0.05f;
 	float rotationAngleX = 0.0f, rotationAngleY = 0.0f, rotationAngleZ = 0.0f;
 	int mouseX = 0, mouseY = 0;
-	bool RotationLock = false;				//	true when LMB is clicked to rotate the camera in the editor.
+	//bool RotationLock = false;				//	true when LMB is clicked to rotate the camera in the editor.
 
-	
+	void InitFrustum();
 };
 

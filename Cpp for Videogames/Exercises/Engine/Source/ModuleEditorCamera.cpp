@@ -12,16 +12,7 @@
 
 bool ModuleEditorCamera::Init() {
 
-	frustum.SetKind(FrustumSpaceGL, FrustumRightHanded);
-	frustum.SetViewPlaneDistances(0.1f, 100.0f);
-	frustum.SetHorizontalFovAndAspectRatio(DEGTORAD * 90.0f, float(SCREEN_WIDTH) / float(SCREEN_HEIGHT));
-
-	float3 pos(0.0f, 2.0f, 3.0f);
-	float3 targetDir = (float3::zero - pos).Normalized();
-
-	frustum.SetPos(pos);
-	frustum.SetFront(targetDir);
-	frustum.SetUp(float3::unitY);
+	InitFrustum();
 
 	return true;
 }
@@ -33,7 +24,6 @@ update_status ModuleEditorCamera::PreUpdate() {
 
 update_status ModuleEditorCamera::Update() {
 
-	frustum.SetPos(frustumPos);
 	//if (RotationLock)	RotateCamera();
 
 	return UPDATE_CONTINUE;
@@ -43,11 +33,24 @@ update_status ModuleEditorCamera::PostUpdate() {
 	return UPDATE_CONTINUE;
 }
 
+void ModuleEditorCamera::InitFrustum() {
+	frustum.SetKind(FrustumSpaceGL, FrustumRightHanded);
+	frustum.SetViewPlaneDistances(0.1f, 100.0f);
+	frustum.SetHorizontalFovAndAspectRatio(DEGTORAD * 90.0f, float(SCREEN_WIDTH) / float(SCREEN_HEIGHT));
+
+	float3 InitPos(0.0f, 2.0f, 3.0f);
+	float3 targetDir = (float3::zero - InitPos).Normalized();
+
+	frustum.SetPos(InitPos);
+	frustum.SetFront(targetDir);
+	frustum.SetUp(float3::unitY);
+}
+
 void ModuleEditorCamera::RotateCamera(CAM_AXIS axis, bool shiftPressed) {
 	vec oldFront, oldUp;
 	float3x3 rotDeltaMatrix;
 	float step = rotationSpeed * App->GetDeltaTime();
-	step *= shiftPressed ? 2.0f : 1.0f;
+	if (shiftPressed)	step *= 2.0f;
 
 	switch (axis) {
 	case CAM_AXIS::X:
@@ -84,34 +87,54 @@ float4x4 ModuleEditorCamera::GetViewMatrix() {
 }
 
 void ModuleEditorCamera::MoveForward(bool shiftPressed) {
-	frustumPos += frustum.Front().Mul(movSpeed * App->GetDeltaTime());
+	float step = movSpeed * App->GetDeltaTime();
+	if (shiftPressed)	step *= 2.0f;
+
+	frustum.SetPos(frustum.Pos() + frustum.Front().Mul(step));
 }
 
 void ModuleEditorCamera::MoveRight(bool shiftPressed) {
 	float step = movSpeed * App->GetDeltaTime();
-	step *= shiftPressed ? 2.0f : 1.0f;
+	if (shiftPressed)	step *= 2.0f;
 
-	frustumPos += frustum.WorldRight().Mul(step);
+	frustum.SetPos(frustum.Pos() + frustum.WorldRight().Mul(step));
 }
 
 void ModuleEditorCamera::MoveLeft(bool shiftPressed) {
-	//frustumPos -= float3(1.0f * movSpeed * App->GetDeltaTime(), 0.0f, 0.0f);
-	frustumPos -= frustum.WorldRight().Mul(movSpeed * App->GetDeltaTime());
+	float step = movSpeed * App->GetDeltaTime();
+	if (shiftPressed)	step *= 2.0f;
+
+	frustum.SetPos(frustum.Pos() - frustum.WorldRight().Mul(step));
 }
 
 void ModuleEditorCamera::MoveBackwards(bool shiftPressed) {
-	//frustumPos += float3(0.0f, 0.0f, 1.0f * movSpeed * App->GetDeltaTime());
-	frustumPos -= frustum.Front().Mul(movSpeed * App->GetDeltaTime());
+	float step = movSpeed * App->GetDeltaTime();
+	if (shiftPressed)	step *= 2.0f;
+
+	frustum.SetPos(frustum.Pos() - frustum.Front().Mul(step));
 }
 
 void ModuleEditorCamera::MoveUp(bool shiftPressed) {
-	frustumPos += float3(0.0f, movSpeed * App->GetDeltaTime(), 0.0f);
+	float step = movSpeed * App->GetDeltaTime();
+	if (shiftPressed)	step *= 2.0f;
+
+	frustum.SetPos(frustum.Pos() + float3(0.0f, step, 0.0f));
 }
 
 void ModuleEditorCamera::MoveDown(bool shiftPressed) {
-	frustumPos -= float3(0.0f, movSpeed * App->GetDeltaTime(), 0.0f);
+	float step = movSpeed * App->GetDeltaTime();
+	if (shiftPressed)	step *= 2.0f;
+
+	frustum.SetPos(frustum.Pos() - float3(0.0f, step, 0.0f));
 }
 
 void ModuleEditorCamera::SetRotationLock(bool leftMouseButtonPressed) {
-	RotationLock = leftMouseButtonPressed;
+	//RotationLock = leftMouseButtonPressed;
+}
+
+void ModuleEditorCamera::CameraLookAt(float3& newTargetPos) {
+	float3 frustumPos = frustum.Pos();
+	float3 targetDir = (newTargetPos - frustumPos).Normalized();
+
+	frustum.SetFront(targetDir);
 }

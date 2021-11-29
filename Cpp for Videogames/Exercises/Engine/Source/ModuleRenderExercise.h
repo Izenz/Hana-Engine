@@ -5,6 +5,9 @@
 #include "SDL.h"
 #include "GL/glew.h"
 #include "Geometry\Frustum.h"
+#include "Mesh.h"
+#include "Model.h"
+#include "ModuleTexture.h"
 
 class ModuleRenderExercise : public Module
 {
@@ -18,6 +21,7 @@ public:
 private:
 	void RenderVBO(unsigned vbo, unsigned program);
 	void RenderTriangle();
+	void LoadBakerHouse();
 	
 private:
 	GLuint vbo;

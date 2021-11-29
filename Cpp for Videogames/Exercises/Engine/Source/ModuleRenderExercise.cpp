@@ -58,7 +58,8 @@ update_status ModuleRenderExercise::Update() {
 	dd::xzSquareGrid(-100, 100, 0.0f, 1.0f, dd::colors::Gray);
 
 	//RenderVBO(vbo, program);
-	RenderTriangle();
+	//RenderTriangle();
+	LoadBakerHouse();
 
 	return UPDATE_CONTINUE;
 }
@@ -114,6 +115,23 @@ void ModuleRenderExercise::RenderTriangle() {
 
 	App->debugDraw->Draw(view, projection, SCREEN_WIDTH, SCREEN_HEIGHT);
 
+}
+
+void ModuleRenderExercise::LoadBakerHouse() {
+	Model bakerHouseScene;
+	Mesh bakerHouseMesh;
+	std::vector<unsigned> model_textures;
+	unsigned i = 0;
+
+	bakerHouseScene.Load("Models/Baker_house.fbx");
+	
+	while(bakerHouseScene.meshes[i] != NULL){
+		bakerHouseMesh.LoadVBO(bakerHouseScene.meshes[i]);
+		bakerHouseMesh.LoadEBO(bakerHouseScene.meshes[i]);
+		bakerHouseMesh.CreateVAO();
+	}
+
+	bakerHouseMesh.Draw(bakerHouseScene.textures);
 }
 
 update_status ModuleRenderExercise::PostUpdate() {

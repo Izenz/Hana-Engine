@@ -2,6 +2,14 @@
 #include "Globals.h"
 #include "Application.h"
 
+Mesh::Mesh()
+{
+}
+
+Mesh::~Mesh()
+{
+}
+
 void Mesh::LoadVBO(const aiMesh* mesh) {
 	glGenBuffers(1, &vbo);
 	glBindBuffer(GL_ARRAY_BUFFER, vbo);
@@ -33,6 +41,50 @@ void Mesh::LoadEBO(const aiMesh* mesh) {
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, index_size, nullptr, GL_STATIC_DRAW);
 	unsigned* indices = (unsigned*)(glMapBuffer(GL_ELEMENT_ARRAY_BUFFER, GL_MAP_WRITE_BIT));
 
-	// for...
+	for (unsigned i = 0; i < mesh->mNumFaces; ++i) {
+		assert(mesh->mFaces[i].mNumIndices == 3);
 
+		*(indices++) = mesh->mFaces[i].mIndices[0];
+		*(indices++) = mesh->mFaces[i].mIndices[1];
+		*(indices++) = mesh->mFaces[i].mIndices[2];
+	}
+
+	glUnmapBuffer(GL_ELEMENT_ARRAY_BUFFER);
+	num_indices = mesh->mNumFaces * 3;
+
+}
+
+void Mesh::CreateVAO() {
+	glGenVertexArrays(1, &vao);
+
+	glBindVertexArray(vao);
+	glBindBuffer(GL_ARRAY_BUFFER, vao);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
+
+	glEnableVertexAttribArray(0);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, (void*)0);
+
+	glEnableVertexAttribArray(1);
+	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 0, (void*)(sizeof(float)*3*num_vertices));
+}
+
+void Mesh::Draw(const std::vector<unsigned>& model_textures) {
+	// TODO: Get render program out of exercise and into render module
+	unsigned program = App->exercise->program;
+	// TODO: Get camera out of editor.
+	const float4x4& view =	App->editor->cam->GetViewMatrix();
+	const float4x4& proj =	App->editor->cam->GetProjMatrix();
+	float4x4 model =		float4x4::identity;
+	
+	glUseProgram(program);
+	glUniformMatrix4fv(glGetUniformLocation(program, "model"), 1, GL_TRUE, (const float*) &model);
+	glUniformMatrix4fv(glGetUniformLocation(program, "view"), 1, GL_TRUE, (const float*)&view);
+	glUniformMatrix4fv(glGetUniformLocation(program, "model"), 1, GL_TRUE, (const float*)&proj);
+
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D, model_textures[0]);
+	glUniform1i(glGetUniformLocation(program, "diffuse"), 0);
+
+	glBindVertexArray(vao);
+	glDrawElements(GL_TRIANGLES, num_indices, GL_UNSIGNED_INT, nullptr);
 }

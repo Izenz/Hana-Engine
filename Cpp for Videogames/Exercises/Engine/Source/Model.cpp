@@ -25,14 +25,6 @@ bool Model::Load(const char* file_name) {
 	}
 }
 
-/*void Model::LoadTexture(const aiScene* scene) {
-	
-	textures.reserve(scene->mNumTextures);
-
-	for (unsigned i = 0; i < scene->mNumTextures; ++i) {
-		textures.push_back(scene->mTextures[i]);
-	}
-}*/
 
 void Model::LoadMesh(const aiScene* scene) {
 	meshes.reserve(scene->mNumMeshes);
@@ -47,7 +39,7 @@ bool Model::LoadMaterial(const aiScene* scene) {
 
 	for (unsigned i = 0; i < scene->mNumTextures; ++i) {
 		if (scene->mMaterials[i]->GetTexture(aiTextureType_DIFFUSE, 0, &path) == AI_SUCCESS) {
-//			textures.push_back(App->textures->Load(path.data));
+			textures.push_back(App->textures->LoadTexture(path.data));
 		}
 		else {
 			return false;

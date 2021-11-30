@@ -120,18 +120,19 @@ void ModuleRenderExercise::RenderTriangle() {
 void ModuleRenderExercise::LoadBakerHouse() {
 	Model bakerHouseScene;
 	Mesh bakerHouseMesh;
-	std::vector<unsigned> model_textures;
-	unsigned i = 0;
 
-	bakerHouseScene.Load("Models/Baker_house.fbx");
-	
-	while(bakerHouseScene.meshes[i] != NULL){
-		bakerHouseMesh.LoadVBO(bakerHouseScene.meshes[i]);
-		bakerHouseMesh.LoadEBO(bakerHouseScene.meshes[i]);
+	bakerHouseScene.Load("Models/BakerHouse.fbx");
+
+	for (unsigned i = 0; i < bakerHouseScene.meshes.size(); ++i) {
+		bakerHouseMesh.LoadVBO(bakerHouseScene.meshes[0]);
+		bakerHouseMesh.LoadEBO(bakerHouseScene.meshes[0]);
 		bakerHouseMesh.CreateVAO();
 	}
 
 	bakerHouseMesh.Draw(bakerHouseScene.textures);
+	glUseProgram(0);
+
+	App->debugDraw->Draw(view, projection, SCREEN_WIDTH, SCREEN_HEIGHT);
 }
 
 update_status ModuleRenderExercise::PostUpdate() {

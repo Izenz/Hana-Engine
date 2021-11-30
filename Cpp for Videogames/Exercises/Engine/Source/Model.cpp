@@ -21,6 +21,7 @@ bool Model::Load(const char* file_name) {
 	}
 	else {
 		LOG("Error Loading %s: %s", file_name, aiGetErrorString());
+		LOG(aiGetErrorString());
 		return false;
 	}
 }

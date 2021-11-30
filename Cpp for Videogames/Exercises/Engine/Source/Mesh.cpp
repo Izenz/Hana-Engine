@@ -14,8 +14,8 @@ void Mesh::LoadVBO(const aiMesh* mesh) {
 	glGenBuffers(1, &vbo);
 	glBindBuffer(GL_ARRAY_BUFFER, vbo);
 
-	unsigned vertex_size = (sizeof(float)*3 + sizeof(float) * 2); // For each vertex 3 pos coordinates + 2 texture coordinates (?)
-	unsigned buffer_size = vertex_size*mesh->mNumVertices;
+	unsigned vertex_size = (sizeof(float) * 3 + sizeof(float) * 2); // For each vertex 3 pos coordinates + 2 texture coordinates (?)
+	unsigned buffer_size = vertex_size * mesh->mNumVertices;
 	glBufferData(GL_ARRAY_BUFFER, buffer_size, nullptr, GL_STATIC_DRAW);
 
 	unsigned position_size = sizeof(float) * 3 * mesh->mNumVertices;
@@ -26,7 +26,7 @@ void Mesh::LoadVBO(const aiMesh* mesh) {
 	float2* uvs = (float2*)(glMapBufferRange(GL_ARRAY_BUFFER, uv_offset, uv_size, GL_MAP_WRITE_BIT));
 
 	for (unsigned i = 0; i < mesh->mNumVertices; ++i) {
-		uvs[i] = float2(mesh->mTextureCoords[0][i].x, mesh->mTextureCoords[i][0].y);
+		uvs[i] = float2(mesh->mTextureCoords[0][i].x, mesh->mTextureCoords[0][i].y);
 	}
 
 	glUnmapBuffer(GL_ARRAY_BUFFER);
@@ -37,9 +37,9 @@ void Mesh::LoadEBO(const aiMesh* mesh) {
 	glGenBuffers(1, &ebo);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
 
-	unsigned index_size = sizeof(unsigned) * mesh->mNumFaces*3;
+	unsigned index_size = sizeof(unsigned) * mesh->mNumFaces * 3;
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, index_size, nullptr, GL_STATIC_DRAW);
-	unsigned* indices = (unsigned*)(glMapBuffer(GL_ELEMENT_ARRAY_BUFFER, GL_MAP_WRITE_BIT));
+	unsigned* indices = (unsigned*)(glMapBufferRange(GL_ELEMENT_ARRAY_BUFFER, 0, index_size, GL_MAP_WRITE_BIT));
 
 	for (unsigned i = 0; i < mesh->mNumFaces; ++i) {
 		assert(mesh->mFaces[i].mNumIndices == 3);
@@ -58,28 +58,35 @@ void Mesh::CreateVAO() {
 	glGenVertexArrays(1, &vao);
 
 	glBindVertexArray(vao);
-	glBindBuffer(GL_ARRAY_BUFFER, vao);
+	glBindBuffer(GL_ARRAY_BUFFER, vbo);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
 
 	glEnableVertexAttribArray(0);
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, (void*)0);
 
 	glEnableVertexAttribArray(1);
-	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 0, (void*)(sizeof(float)*3*num_vertices));
+	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 0, (void*)(sizeof(float) * 3 * num_vertices));
 }
 
 void Mesh::Draw(const std::vector<unsigned>& model_textures) {
 	// TODO: Get render program out of exercise and into render module
 	unsigned program = App->exercise->program;
 	// TODO: Get camera out of editor.
-	const float4x4& view =	App->editor->cam->GetViewMatrix();
-	const float4x4& proj =	App->editor->cam->GetProjMatrix();
-	float4x4 model =		float4x4::identity;
-	
+	float4x4 view = App->editor->cam->GetViewMatrix();
+	float4x4 proj = App->editor->cam->GetProjMatrix();
+	float4x4 model = float4x4::identity;
+
 	glUseProgram(program);
-	glUniformMatrix4fv(glGetUniformLocation(program, "model"), 1, GL_TRUE, (const float*) &model);
+	/*
+	glUniformMatrix4fv(glGetUniformLocation(program, "model"), 1, GL_TRUE, (const float*)&model);
 	glUniformMatrix4fv(glGetUniformLocation(program, "view"), 1, GL_TRUE, (const float*)&view);
 	glUniformMatrix4fv(glGetUniformLocation(program, "model"), 1, GL_TRUE, (const float*)&proj);
+	*/
+	
+	glUniformMatrix4fv(glGetUniformLocation(program, "model"), 1, GL_TRUE, &model[0][0]);
+	glUniformMatrix4fv(glGetUniformLocation(program, "view"), 1, GL_TRUE, &view[0][0]);
+	glUniformMatrix4fv(glGetUniformLocation(program, "proj"), 1, GL_TRUE, &proj[0][0]);
+	
 
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, model_textures[0]);

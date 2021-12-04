@@ -33,6 +33,13 @@ bool ModuleInput::Init()
 	return ret;
 }
 
+update_status ModuleInput::PreUpdate() {
+mouse_pos_dif = float2::zero;
+	mouse_wheel_dif = float2::zero;
+
+	return UPDATE_CONTINUE;
+}
+
 // Called every draw update
 update_status ModuleInput::Update()
 {
@@ -89,6 +96,23 @@ update_status ModuleInput::Update()
 			break;
 		case SDL_MOUSEBUTTONUP:
 			HandleMouseButtonRelease(sdlEvent.button);
+			break;
+		case SDL_MOUSEMOTION:
+			mouse_pos_dif.x = sdlEvent.motion.xrel;
+			mouse_pos_dif.y = sdlEvent.motion.yrel;
+			break;
+		case SDL_MOUSEWHEEL:
+			//mouse_pos_dif.x = sdlEvent.motion.xrel;
+			//mouse_pos_dif.y = sdlEvent.motion.yrel;
+			if (sdlEvent.wheel.y > 0) {
+				// scroll up
+				App->editor->cam->MoveForward(keyboard_state_array[SDL_SCANCODE_LSHIFT]);
+			}
+			else if (sdlEvent.wheel.y < 0) {
+				// scroll down
+				App->editor->cam->MoveBackwards(keyboard_state_array[SDL_SCANCODE_LSHIFT]);
+			}
+			break;
 		}
 	}
 

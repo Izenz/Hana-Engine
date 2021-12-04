@@ -54,11 +54,9 @@ void ModuleEditorCamera::RotateCamera(CAM_AXIS axis, bool shiftPressed) {
 
 	switch (axis) {
 	case CAM_AXIS::X:
-		//rotDeltaMatrix = float3x3::RotateAxisAngle(float3::unitX, step);
 		rotDeltaMatrix = float3x3::RotateAxisAngle(frustum.WorldRight(), step);
 		break;
 	case CAM_AXIS::X_NEGATIVE:
-		//rotDeltaMatrix = float3x3::RotateAxisAngle(float3::unitX, -step);
 		rotDeltaMatrix = float3x3::RotateAxisAngle(frustum.WorldRight(), -step);
 		break;
 	case CAM_AXIS::Y:

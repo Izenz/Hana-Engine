@@ -5,7 +5,6 @@
 #include "SDL.h"
 #include "GL/glew.h"
 #include "Geometry\Frustum.h"
-#include "Mesh.h"
 #include "Model.h"
 #include "ModuleTexture.h"
 

@@ -19,16 +19,17 @@ public:
 	Mesh();
 	~Mesh();
 
+	bool Load(aiMesh* mesh);
 	void LoadVBO(const aiMesh* mesh);
 	void LoadEBO(const aiMesh* mesh);
 	void CreateVAO();
-	void Draw(const std::vector<unsigned>& model_textures);
+	void Draw(const std::vector<Texture>& model_textures);
 
 private:
 	unsigned vbo = 0, ebo = 0, vao = 0;
-
 	unsigned num_indices = 0;
 	unsigned num_vertices = 0;
 
+	bool isLoaded = false;
 };
 

@@ -10,6 +10,15 @@ Mesh::~Mesh()
 {
 }
 
+bool Mesh::Load(aiMesh* mesh) {
+	LoadVBO(mesh);
+	LoadEBO(mesh);
+	CreateVAO();
+
+	isLoaded = true;
+	return true;
+}
+
 void Mesh::LoadVBO(const aiMesh* mesh) {
 	glGenBuffers(1, &vbo);
 	glBindBuffer(GL_ARRAY_BUFFER, vbo);
@@ -68,15 +77,17 @@ void Mesh::CreateVAO() {
 	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 0, (void*)(sizeof(float) * 3 * num_vertices));
 }
 
-void Mesh::Draw(const std::vector<unsigned>& model_textures) {
+void Mesh::Draw(const std::vector<Texture>& model_textures) {
 	// TODO: Get render program out of exercise and into render module
 	unsigned program = App->exercise->program;
+
 	// TODO: Get camera out of editor.
 	float4x4 view = App->editor->cam->GetViewMatrix();
 	float4x4 proj = App->editor->cam->GetProjMatrix();
 	float4x4 model = float4x4::identity;
 
 	glUseProgram(program);
+
 	/*
 	glUniformMatrix4fv(glGetUniformLocation(program, "model"), 1, GL_TRUE, (const float*)&model);
 	glUniformMatrix4fv(glGetUniformLocation(program, "view"), 1, GL_TRUE, (const float*)&view);
@@ -89,7 +100,7 @@ void Mesh::Draw(const std::vector<unsigned>& model_textures) {
 	
 
 	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, model_textures[0]);
+	glBindTexture(GL_TEXTURE_2D, model_textures[0].id);	// FORNOW 0 is hardcoded since we only support one texture per model.
 	glUniform1i(glGetUniformLocation(program, "diffuse"), 0);
 
 	glBindVertexArray(vao);

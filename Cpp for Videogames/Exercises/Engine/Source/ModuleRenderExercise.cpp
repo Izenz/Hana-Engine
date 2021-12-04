@@ -118,19 +118,12 @@ void ModuleRenderExercise::RenderTriangle() {
 }
 
 void ModuleRenderExercise::LoadBakerHouse() {
-	Model bakerHouseScene;
-	Mesh bakerHouseMesh;
+	Model* houseModel = new Model();
+	projection = App->editor->cam->GetProjMatrix();
+	view = App->editor->cam->GetViewMatrix();
 
-	bakerHouseScene.Load("Models/BakerHouse.fbx");
-
-	for (unsigned i = 0; i < bakerHouseScene.meshes.size(); ++i) {
-		bakerHouseMesh.LoadVBO(bakerHouseScene.meshes[0]);
-		bakerHouseMesh.LoadEBO(bakerHouseScene.meshes[0]);
-		bakerHouseMesh.CreateVAO();
-	}
-
-	bakerHouseMesh.Draw(bakerHouseScene.textures);
-	glUseProgram(0);
+	houseModel->Load("Models/BakerHouse.fbx", "Models/Baker_house.png");
+	houseModel->Draw();
 
 	App->debugDraw->Draw(view, projection, SCREEN_WIDTH, SCREEN_HEIGHT);
 }

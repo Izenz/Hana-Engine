@@ -6,25 +6,28 @@
 #include <assimp/mesh.h>
 #include <assimp/cimport.h>
 #include <vector>
+#include <string>
+#include "ModuleTexture.h"
 
-
+class Mesh;
 
 class Model	{
 public:
 	Model();
 	~Model();
 
-	bool Load(const char* file_name);
+	bool Load(const char* file_name, const char* texture_path);
+	void Draw();
+	void CleanUp();
 
-	void SetPath(const char* file_path);
+private:
+	bool LoadMesh(const aiScene* scene);
+	bool LoadTexture(const aiScene* scene);
 
-
-public:
-	void LoadMesh(const aiScene* scene);
-	bool LoadMaterial(const aiScene* scene);
-
+	bool model_loaded = false, tex_loaded = false;
 	aiString path;
-	std::vector<aiMesh*> meshes;
-	std::vector<unsigned> textures;
+	const char* tex_path;
+	std::vector<Mesh> meshes;
+	std::vector<Texture> textures;
 };
 

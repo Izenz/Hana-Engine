@@ -24,7 +24,7 @@ public:
 	void MoveDown(bool shiftPressed);
 
 	void RotateCamera(CAM_AXIS, bool shiftPressed);
-	void CameraLookAt(float3& newTargetPos);
+	void CameraLookAt(const float3& newTargetPos);
 
 	// Setters
 
@@ -44,7 +44,7 @@ public:
 	
 private:
 	Frustum frustum;
-	float movSpeed = 0.5f, rotationSpeed = 0.05f;
+	float movSpeed = 0.05f, rotationSpeed = 0.005f;
 	float rotationAngleX = 0.0f, rotationAngleY = 0.0f, rotationAngleZ = 0.0f;
 	int mouseX = 0, mouseY = 0;
 	//bool RotationLock = false;				//	true when LMB is clicked to rotate the camera in the editor.

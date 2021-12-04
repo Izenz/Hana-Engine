@@ -38,7 +38,7 @@ void ModuleEditorCamera::InitFrustum() {
 	frustum.SetViewPlaneDistances(0.1f, 100.0f);
 	frustum.SetHorizontalFovAndAspectRatio(DEGTORAD * 90.0f, float(SCREEN_WIDTH) / float(SCREEN_HEIGHT));
 
-	float3 InitPos(0.0f, 2.0f, 3.0f);
+	float3 InitPos(0.0f, 0.0f, 3.0f);
 	float3 targetDir = (float3::zero - InitPos).Normalized();
 
 	frustum.SetPos(InitPos);
@@ -54,10 +54,12 @@ void ModuleEditorCamera::RotateCamera(CAM_AXIS axis, bool shiftPressed) {
 
 	switch (axis) {
 	case CAM_AXIS::X:
-		rotDeltaMatrix = float3x3::RotateAxisAngle(float3::unitX, step);
+		//rotDeltaMatrix = float3x3::RotateAxisAngle(float3::unitX, step);
+		rotDeltaMatrix = float3x3::RotateAxisAngle(frustum.WorldRight(), step);
 		break;
 	case CAM_AXIS::X_NEGATIVE:
-		rotDeltaMatrix = float3x3::RotateAxisAngle(float3::unitX, -step);
+		//rotDeltaMatrix = float3x3::RotateAxisAngle(float3::unitX, -step);
+		rotDeltaMatrix = float3x3::RotateAxisAngle(frustum.WorldRight(), -step);
 		break;
 	case CAM_AXIS::Y:
 		rotDeltaMatrix = float3x3::RotateAxisAngle(float3::unitY, step);
@@ -132,9 +134,10 @@ void ModuleEditorCamera::SetRotationLock(bool leftMouseButtonPressed) {
 	//RotationLock = leftMouseButtonPressed;
 }
 
-void ModuleEditorCamera::CameraLookAt(float3& newTargetPos) {
+void ModuleEditorCamera::CameraLookAt(const float3& newTargetPos) {
 	float3 frustumPos = frustum.Pos();
 	float3 targetDir = (newTargetPos - frustumPos).Normalized();
 
 	frustum.SetFront(targetDir);
+	frustum.SetUp(float3::unitY);
 }

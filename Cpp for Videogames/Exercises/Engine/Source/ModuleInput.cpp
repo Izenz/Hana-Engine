@@ -8,6 +8,7 @@
 #include "imgui_impl_opengl3.h"
 #include "ModuleEditorCamera.h"
 #include "ModuleEditor.h"
+#include "MathGeoLib.h"
 
 ModuleInput::ModuleInput()
 {}
@@ -67,11 +68,14 @@ update_status ModuleInput::Update()
 			if (keyboard_state_array[SDL_SCANCODE_E]) {
 				App->editor->cam->MoveDown(keyboard_state_array[SDL_SCANCODE_LSHIFT]);
 			}
+			if (keyboard_state_array[SDL_SCANCODE_F]) {
+				App->editor->cam->CameraLookAt(float3::zero);
+			}
 			if (keyboard_state_array[SDL_SCANCODE_RIGHT]) {
-				App->editor->cam->RotateCamera(CAM_AXIS::Y, keyboard_state_array[SDL_SCANCODE_LSHIFT]);
+				App->editor->cam->RotateCamera(CAM_AXIS::Y_NEGATIVE, keyboard_state_array[SDL_SCANCODE_LSHIFT]);
 			}
 			if (keyboard_state_array[SDL_SCANCODE_LEFT]) {
-				App->editor->cam->RotateCamera(CAM_AXIS::Y_NEGATIVE, keyboard_state_array[SDL_SCANCODE_LSHIFT]);
+				App->editor->cam->RotateCamera(CAM_AXIS::Y, keyboard_state_array[SDL_SCANCODE_LSHIFT]);
 			}
 			if (keyboard_state_array[SDL_SCANCODE_UP]) {
 				App->editor->cam->RotateCamera(CAM_AXIS::X, keyboard_state_array[SDL_SCANCODE_LSHIFT]);

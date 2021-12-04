@@ -1,12 +1,10 @@
 #version 330
 out vec4 color;
 
-//in vec3 Color;
 in vec2 uv0;
 
-uniform sampler2D lenaTexture;
+uniform sampler2D diffuse;
 
 void main(){
-	//color = vec4(Color, 1.0f);
-	color = texture2D(lenaTexture, uv0);
+	color = texture2D(diffuse, uv0);
 }

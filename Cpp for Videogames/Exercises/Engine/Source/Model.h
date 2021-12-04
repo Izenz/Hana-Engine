@@ -19,6 +19,7 @@ public:
 	bool Load(const char* file_name, const char* texture_path);
 	void Draw();
 	void CleanUp();
+	bool IsLoaded();
 
 private:
 	bool LoadMesh(const aiScene* scene);

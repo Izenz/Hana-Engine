@@ -12,7 +12,8 @@ Model::~Model()
 }
 
 bool Model::Load(const char* file_name, const char* texture_path) {
-	const aiScene* scene = aiImportFile(file_name, aiProcessPreset_TargetRealtime_MaxQuality);
+	const aiScene* scene = aiImportFile(file_name, aiProcess_Triangulate);
+	LOG("Loading meshes... : %s", aiGetErrorString());
 	tex_path = texture_path;
 
 	if (scene) {
@@ -73,6 +74,10 @@ void Model::Draw() {
 	for (Mesh m : meshes) {
 		m.Draw(textures);
 	}
+}
+
+bool Model::IsLoaded() {
+	return model_loaded;
 }
 
 void Model::CleanUp() {

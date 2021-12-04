@@ -118,12 +118,13 @@ void ModuleRenderExercise::RenderTriangle() {
 }
 
 void ModuleRenderExercise::LoadBakerHouse() {
-	Model* houseModel = new Model();
+	Model houseModel;
 	projection = App->editor->cam->GetProjMatrix();
 	view = App->editor->cam->GetViewMatrix();
 
-	houseModel->Load("Models/BakerHouse.fbx", "Models/Baker_house.png");
-	houseModel->Draw();
+	if(!houseModel.IsLoaded())
+		houseModel.Load("Models/BakerHouse.fbx", "Models/Baker_house.png");
+	houseModel.Draw();
 
 	App->debugDraw->Draw(view, projection, SCREEN_WIDTH, SCREEN_HEIGHT);
 }

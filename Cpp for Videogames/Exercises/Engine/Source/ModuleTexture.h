@@ -2,6 +2,7 @@
 #include "Module.h"
 #include "GL/glew.h"
 #include "il.h"
+#include "ilu.h"
 #include "SDL.h"
 #include <assert.h>
 #include <stdio.h>

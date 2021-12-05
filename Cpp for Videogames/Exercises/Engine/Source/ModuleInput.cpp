@@ -102,14 +102,12 @@ update_status ModuleInput::Update()
 			mouse_pos_dif.y = sdlEvent.motion.yrel;
 			break;
 		case SDL_MOUSEWHEEL:
-			//mouse_pos_dif.x = sdlEvent.motion.xrel;
-			//mouse_pos_dif.y = sdlEvent.motion.yrel;
 			if (sdlEvent.wheel.y > 0) {
-				// scroll up
+				// Scroll up
 				App->editor->cam->MoveForward(keyboard_state_array[SDL_SCANCODE_LSHIFT]);
 			}
 			else if (sdlEvent.wheel.y < 0) {
-				// scroll down
+				// Scroll down
 				App->editor->cam->MoveBackwards(keyboard_state_array[SDL_SCANCODE_LSHIFT]);
 			}
 			break;

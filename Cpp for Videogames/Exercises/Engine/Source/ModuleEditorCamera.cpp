@@ -139,3 +139,11 @@ void ModuleEditorCamera::CameraLookAt(const float3& newTargetPos) {
 	frustum.SetFront(targetDir);
 	frustum.SetUp(float3::unitY);
 }
+
+void ModuleEditorCamera::SetAspectRatio(unsigned width, unsigned height) {
+	frustum.SetHorizontalFovAndAspectRatio(DEGTORAD * 90.0f, float(width) / float(height));
+}
+
+void ModuleEditorCamera::SetPosition(const float3& newPos) {
+	frustum.SetPos(newPos);
+}

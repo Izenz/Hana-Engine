@@ -29,9 +29,9 @@ public:
 	// Setters
 
 	void SetFOV();
-	void SetAspectRatio();
+	void SetAspectRatio(unsigned width, unsigned height);
 	void SetPlaneDistances();
-	void SetPosition(float3 newPos);
+	void SetPosition(const float3& newPos);
 	void SetOrientation();
 	void SetRotationLock(bool leftMouseButtonPressed);
 

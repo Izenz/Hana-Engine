@@ -107,5 +107,7 @@ bool ModuleRender::CleanUp()
 
 void ModuleRender::WindowResized(unsigned width, unsigned height)
 {
+	LOG("Window resized, re-calculating aspect ratio.");
+	App->editor->cam->SetAspectRatio(width, height);
 }
 

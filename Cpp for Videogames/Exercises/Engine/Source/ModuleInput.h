@@ -20,6 +20,7 @@ public:
 
 	void HandleMouseButtonClick(SDL_MouseButtonEvent& mouseEvent);
 	void HandleMouseButtonRelease(SDL_MouseButtonEvent& mouseEvent);
+	void GetMouseMotion(int& x, int& y);
 
 private:
 	const Uint8 *keyboard = NULL;

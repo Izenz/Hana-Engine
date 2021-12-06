@@ -34,7 +34,7 @@ bool ModuleInput::Init()
 }
 
 update_status ModuleInput::PreUpdate() {
-mouse_pos_dif = float2::zero;
+	mouse_pos_dif = float2::zero;
 	mouse_wheel_dif = float2::zero;
 
 	return UPDATE_CONTINUE;
@@ -92,6 +92,7 @@ update_status ModuleInput::Update()
 			}
 			break;
 		case SDL_MOUSEBUTTONDOWN:
+			LOG("MOUSE BUTTON DOWN");
 			HandleMouseButtonClick(sdlEvent.button);
 			break;
 		case SDL_MOUSEBUTTONUP:
@@ -133,7 +134,7 @@ bool ModuleInput::CleanUp()
 void ModuleInput::HandleMouseButtonClick(SDL_MouseButtonEvent& mouseEvent) {
 	if (mouseEvent.button == SDL_BUTTON_LEFT) {
 		// Handle left click
-		App->editor->cam->SetRotationLock(true);
+		App->editor->cam->ToggleOrbit();
 	}
 	if (mouseEvent.button == SDL_BUTTON_RIGHT) {
 		// Handle right click
@@ -142,10 +143,15 @@ void ModuleInput::HandleMouseButtonClick(SDL_MouseButtonEvent& mouseEvent) {
 
 void ModuleInput::HandleMouseButtonRelease(SDL_MouseButtonEvent& mouseEvent) {
 	if (mouseEvent.button == SDL_BUTTON_LEFT) {
-		// Handle left click
-		App->editor->cam->SetRotationLock(false);
+		// Handle left release
+		App->editor->cam->ToggleOrbit();
 	}
 	if (mouseEvent.button == SDL_BUTTON_RIGHT) {
 		// Handle right click
 	}
+}
+
+void ModuleInput::GetMouseMotion(int& x, int& y) {
+	x = mouse_pos_dif.x;
+	y = mouse_pos_dif.y;
 }

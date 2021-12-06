@@ -118,7 +118,7 @@ void ModuleRenderExercise::RenderTriangle() {
 }
 
 void ModuleRenderExercise::LoadBakerHouse() {
-	Model houseModel;
+	
 	projection = App->editor->cam->GetProjMatrix();
 	view = App->editor->cam->GetViewMatrix();
 

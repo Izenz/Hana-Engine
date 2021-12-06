@@ -24,7 +24,7 @@ private:
 	
 private:
 	GLuint vbo;
-	
+	Model houseModel;
 
 	float4x4 model, view, projection;
 	Frustum frustum;

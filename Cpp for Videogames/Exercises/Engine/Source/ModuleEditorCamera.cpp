@@ -10,6 +10,7 @@
 #include "ModuleDebugDraw.h"
 
 
+
 bool ModuleEditorCamera::Init() {
 
 	InitFrustum();
@@ -23,8 +24,9 @@ update_status ModuleEditorCamera::PreUpdate() {
 }
 
 update_status ModuleEditorCamera::Update() {
-
-	//if (RotationLock)	RotateCamera();
+	if (isOrbitEnabled) {
+		Orbit();
+	}
 
 	return UPDATE_CONTINUE;
 }
@@ -74,8 +76,34 @@ void ModuleEditorCamera::RotateCamera(CAM_AXIS axis, bool shiftPressed) {
 
 	oldUp = frustum.Up().Normalized();
 	frustum.SetUp(rotDeltaMatrix.MulDir(oldUp));
+}
 
+void ModuleEditorCamera::RotateCameraMouse(CAM_AXIS axis, float step) {
+	vec oldFront, oldUp;
+	float3x3 rotDeltaMatrix;
 
+	switch (axis) {
+	case CAM_AXIS::X:
+		rotDeltaMatrix = float3x3::RotateAxisAngle(frustum.WorldRight(), step * rotationSpeed * App->GetDeltaTime());
+		break;
+	case CAM_AXIS::X_NEGATIVE:
+		rotDeltaMatrix = float3x3::RotateAxisAngle(frustum.WorldRight(), -step * rotationSpeed * App->GetDeltaTime());
+		break;
+	case CAM_AXIS::Y:
+		rotDeltaMatrix = float3x3::RotateAxisAngle(float3::unitY, step * rotationSpeed * App->GetDeltaTime());
+		break;
+	case CAM_AXIS::Y_NEGATIVE:
+		rotDeltaMatrix = float3x3::RotateAxisAngle(float3::unitY, -step * rotationSpeed * App->GetDeltaTime());
+		break;
+	default:
+		break;
+	}
+
+	oldFront = frustum.Front().Normalized();
+	frustum.SetFront(rotDeltaMatrix.MulDir(oldFront));
+
+	oldUp = frustum.Up().Normalized();
+	frustum.SetUp(rotDeltaMatrix.MulDir(oldUp));
 }
 
 float4x4 ModuleEditorCamera::GetProjMatrix() {
@@ -128,10 +156,6 @@ void ModuleEditorCamera::MoveDown(bool shiftPressed) {
 	frustum.SetPos(frustum.Pos() - float3(0.0f, step, 0.0f));
 }
 
-void ModuleEditorCamera::SetRotationLock(bool leftMouseButtonPressed) {
-	//RotationLock = leftMouseButtonPressed;
-}
-
 void ModuleEditorCamera::CameraLookAt(const float3& newTargetPos) {
 	float3 frustumPos = frustum.Pos();
 	float3 targetDir = (newTargetPos - frustumPos).Normalized();
@@ -146,4 +170,16 @@ void ModuleEditorCamera::SetAspectRatio(unsigned width, unsigned height) {
 
 void ModuleEditorCamera::SetPosition(const float3& newPos) {
 	frustum.SetPos(newPos);
+}
+
+void ModuleEditorCamera::ToggleOrbit() {
+	isOrbitEnabled = !isOrbitEnabled;
+}
+
+void ModuleEditorCamera::Orbit() {
+	int motion_x, motion_y;
+	App->input->GetMouseMotion(motion_x, motion_y);
+
+	RotateCameraMouse(CAM_AXIS::Y, motion_x * orbitSpeed * App->GetDeltaTime());
+	RotateCameraMouse(CAM_AXIS::X, motion_y * orbitSpeed * App->GetDeltaTime());
 }

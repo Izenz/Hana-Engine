@@ -2,6 +2,7 @@
 #include "Module.h"
 #include "Geometry\Frustum.h"
 #include "MathGeoLib.h"
+#include "ModuleInput.h"
 
 class ModuleEditorCamera : public Module {
 
@@ -24,30 +25,26 @@ public:
 	void MoveDown(bool shiftPressed);
 
 	void RotateCamera(CAM_AXIS, bool shiftPressed);
+	void RotateCameraMouse(CAM_AXIS, float step);
 	void CameraLookAt(const float3& newTargetPos);
+	void Orbit();
 
 	// Setters
-
-	void SetFOV();
+	
+	void ToggleOrbit();
 	void SetAspectRatio(unsigned width, unsigned height);
-	void SetPlaneDistances();
 	void SetPosition(const float3& newPos);
-	void SetOrientation();
-	void SetRotationLock(bool leftMouseButtonPressed);
 
 	// Getters
 
 	float GetRotationSpeed() { return rotationSpeed; }
 
-	
-	
-	
 private:
 	Frustum frustum;
-	float movSpeed = 0.05f, rotationSpeed = 0.005f;
+	float movSpeed = 0.05f, rotationSpeed = 0.005f, orbitSpeed = 0.02;
 	float rotationAngleX = 0.0f, rotationAngleY = 0.0f, rotationAngleZ = 0.0f;
 	int mouseX = 0, mouseY = 0;
-	//bool RotationLock = false;				//	true when LMB is clicked to rotate the camera in the editor.
+	bool isOrbitEnabled = false;				//	true when LMB is clicked to rotate the camera in the editor.
 
 	void InitFrustum();
 };

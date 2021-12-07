@@ -76,7 +76,9 @@ update_status ModuleInput::Update()
 				App->editor->cam->MoveDown(keyboard_state_array[SDL_SCANCODE_LSHIFT]);
 			}
 			if (keyboard_state_array[SDL_SCANCODE_F]) {
+				// Focus camera around geometry
 				App->editor->cam->CameraLookAt(float3::zero);
+				App->editor->cam->FocusModel();
 			}
 			if (keyboard_state_array[SDL_SCANCODE_RIGHT]) {
 				App->editor->cam->RotateCamera(CAM_AXIS::Y_NEGATIVE, keyboard_state_array[SDL_SCANCODE_LSHIFT]);
@@ -90,7 +92,14 @@ update_status ModuleInput::Update()
 			if (keyboard_state_array[SDL_SCANCODE_DOWN]) {
 				App->editor->cam->RotateCamera(CAM_AXIS::X_NEGATIVE, keyboard_state_array[SDL_SCANCODE_LSHIFT]);
 			}
+			if (keyboard_state_array[SDL_SCANCODE_LALT]) {
+				App->editor->cam->ToggleOrbit();
+			}
 			break;
+		case SDL_KEYUP:
+			if (keyboard_state_array[SDL_SCANCODE_LALT]) {
+				App->editor->cam->ToggleOrbit();
+			}
 		case SDL_MOUSEBUTTONDOWN:
 			LOG("MOUSE BUTTON DOWN");
 			HandleMouseButtonClick(sdlEvent.button);
@@ -134,7 +143,8 @@ bool ModuleInput::CleanUp()
 void ModuleInput::HandleMouseButtonClick(SDL_MouseButtonEvent& mouseEvent) {
 	if (mouseEvent.button == SDL_BUTTON_LEFT) {
 		// Handle left click
-		App->editor->cam->ToggleOrbit();
+		//App->editor->cam->ToggleOrbit();
+		App->editor->cam->ToggleMouseControl();
 	}
 	if (mouseEvent.button == SDL_BUTTON_RIGHT) {
 		// Handle right click
@@ -144,7 +154,7 @@ void ModuleInput::HandleMouseButtonClick(SDL_MouseButtonEvent& mouseEvent) {
 void ModuleInput::HandleMouseButtonRelease(SDL_MouseButtonEvent& mouseEvent) {
 	if (mouseEvent.button == SDL_BUTTON_LEFT) {
 		// Handle left release
-		App->editor->cam->ToggleOrbit();
+		App->editor->cam->ToggleMouseControl();
 	}
 	if (mouseEvent.button == SDL_BUTTON_RIGHT) {
 		// Handle right click

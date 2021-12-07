@@ -28,10 +28,13 @@ public:
 	void RotateCameraMouse(CAM_AXIS, float step);
 	void CameraLookAt(const float3& newTargetPos);
 	void Orbit();
+	void Roam();
+	void FocusModel();
 
 	// Setters
 	
 	void ToggleOrbit();
+	void ToggleMouseControl();
 	void SetAspectRatio(unsigned width, unsigned height);
 	void SetPosition(const float3& newPos);
 
@@ -44,7 +47,7 @@ private:
 	float movSpeed = 0.05f, rotationSpeed = 0.005f, orbitSpeed = 0.02;
 	float rotationAngleX = 0.0f, rotationAngleY = 0.0f, rotationAngleZ = 0.0f;
 	int mouseX = 0, mouseY = 0;
-	bool isOrbitEnabled = false;				//	true when LMB is clicked to rotate the camera in the editor.
+	bool isOrbitEnabled = false, isMouseControlEnabled = false;				//	true when LALT + LMB or LMB is clicked to rotate the camera in the editor.
 
 	void InitFrustum();
 };

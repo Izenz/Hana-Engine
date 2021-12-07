@@ -24,8 +24,11 @@ update_status ModuleEditorCamera::PreUpdate() {
 }
 
 update_status ModuleEditorCamera::Update() {
-	if (isOrbitEnabled) {
+	if (isOrbitEnabled && isMouseControlEnabled) {
 		Orbit();
+	}
+	else if (isMouseControlEnabled) {
+		Roam();
 	}
 
 	return UPDATE_CONTINUE;
@@ -147,6 +150,7 @@ void ModuleEditorCamera::MoveUp(bool shiftPressed) {
 	if (shiftPressed)	step *= 2.0f;
 
 	frustum.SetPos(frustum.Pos() + float3(0.0f, step, 0.0f));
+	//frustum.SetPos(frustum.Pos() + frustum.Up().Mul(step));
 }
 
 void ModuleEditorCamera::MoveDown(bool shiftPressed) {
@@ -176,10 +180,27 @@ void ModuleEditorCamera::ToggleOrbit() {
 	isOrbitEnabled = !isOrbitEnabled;
 }
 
-void ModuleEditorCamera::Orbit() {
+void ModuleEditorCamera::ToggleMouseControl() {
+	isMouseControlEnabled = !isMouseControlEnabled;
+}
+
+void ModuleEditorCamera::Roam() {
 	int motion_x, motion_y;
 	App->input->GetMouseMotion(motion_x, motion_y);
 
 	RotateCameraMouse(CAM_AXIS::Y, motion_x * orbitSpeed * App->GetDeltaTime());
 	RotateCameraMouse(CAM_AXIS::X, motion_y * orbitSpeed * App->GetDeltaTime());
+}
+
+void ModuleEditorCamera::Orbit() {
+	float3 focus;
+	int motion_x, motion_y;
+	App->input->GetMouseMotion(motion_x, motion_y);
+
+	//App->exercise->GetCurrentModelPos(focus);
+	CameraLookAt(focus);
+}
+
+void ModuleEditorCamera::FocusModel() {
+	
 }

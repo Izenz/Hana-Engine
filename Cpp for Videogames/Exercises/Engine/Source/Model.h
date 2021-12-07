@@ -8,6 +8,7 @@
 #include <vector>
 #include <string>
 #include "ModuleTexture.h"
+#include "Geometry/OBB.h"
 
 class Mesh;
 
@@ -20,6 +21,7 @@ public:
 	void Draw();
 	void CleanUp();
 	bool IsLoaded();
+	void LoadBoundingBox(const aiScene* scene);
 
 private:
 	bool LoadMesh(const aiScene* scene);
@@ -30,5 +32,6 @@ private:
 	const char* tex_path;
 	std::vector<Mesh> meshes;
 	std::vector<Texture> textures;
+	OBB boundingBox;
 };
 

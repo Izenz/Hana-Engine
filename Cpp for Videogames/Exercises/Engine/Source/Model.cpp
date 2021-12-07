@@ -41,7 +41,7 @@ bool Model::LoadMesh(const aiScene* scene) {
 			return false;
 		}
 	}
-
+	LoadBoundingBox(scene);
 	return true;
 }
 
@@ -69,6 +69,20 @@ bool Model::LoadTexture(const aiScene* scene) {
 	return true;
 }
 
+void Model::LoadBoundingBox(const aiScene* scene) {
+	std::vector<vec> vertices;
+
+	unsigned numOfVertices = 0;
+	if (scene->mNumMeshes > 0) {
+		for (unsigned m = 0; m < scene->mNumMeshes; ++m) {
+			for (unsigned v = 0; v < scene->mMeshes[m]->mNumVertices; ++v) {
+				vertices.push_back(vec(scene->mMeshes[m]->mVertices[v].x, scene->mMeshes[m]->mVertices[v].y, scene->mMeshes[m]->mVertices[v].z));
+			}
+			numOfVertices += scene->mMeshes[m]->mNumVertices;
+		}
+	}
+	boundingBox = OBB::OptimalEnclosingOBB(&vertices[0], numOfVertices);
+}
 
 void Model::Draw() {
 	for (Mesh m : meshes) {

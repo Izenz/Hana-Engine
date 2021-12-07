@@ -77,8 +77,8 @@ update_status ModuleInput::Update()
 			}
 			if (keyboard_state_array[SDL_SCANCODE_F]) {
 				// Focus camera around geometry
-				App->editor->cam->CameraLookAt(float3::zero);
-				App->editor->cam->FocusModel();
+				//App->editor->cam->CameraLookAt(float3::zero);
+				//App->editor->cam->FocusModel();
 			}
 			if (keyboard_state_array[SDL_SCANCODE_RIGHT]) {
 				App->editor->cam->RotateCamera(CAM_AXIS::Y_NEGATIVE, keyboard_state_array[SDL_SCANCODE_LSHIFT]);
@@ -96,10 +96,6 @@ update_status ModuleInput::Update()
 				App->editor->cam->ToggleOrbit();
 			}
 			break;
-		case SDL_KEYUP:
-			if (keyboard_state_array[SDL_SCANCODE_LALT]) {
-				App->editor->cam->ToggleOrbit();
-			}
 		case SDL_MOUSEBUTTONDOWN:
 			LOG("MOUSE BUTTON DOWN");
 			HandleMouseButtonClick(sdlEvent.button);

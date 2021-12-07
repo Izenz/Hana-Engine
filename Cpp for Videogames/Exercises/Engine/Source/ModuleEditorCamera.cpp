@@ -25,9 +25,11 @@ update_status ModuleEditorCamera::PreUpdate() {
 
 update_status ModuleEditorCamera::Update() {
 	if (isOrbitEnabled && isMouseControlEnabled) {
+		LOG("Orbiting");
 		Orbit();
 	}
-	else if (isMouseControlEnabled) {
+	else if (isMouseControlEnabled && !isOrbitEnabled) {
+		LOG("Roaming");
 		Roam();
 	}
 
@@ -149,23 +151,25 @@ void ModuleEditorCamera::MoveUp(bool shiftPressed) {
 	float step = movSpeed * App->GetDeltaTime();
 	if (shiftPressed)	step *= 2.0f;
 
-	frustum.SetPos(frustum.Pos() + float3(0.0f, step, 0.0f));
-	//frustum.SetPos(frustum.Pos() + frustum.Up().Mul(step));
+	//frustum.SetPos(frustum.Pos() + float3(0.0f, step, 0.0f));
+	frustum.SetPos(frustum.Pos() + frustum.Up().Mul(step));
 }
 
 void ModuleEditorCamera::MoveDown(bool shiftPressed) {
 	float step = movSpeed * App->GetDeltaTime();
 	if (shiftPressed)	step *= 2.0f;
 
-	frustum.SetPos(frustum.Pos() - float3(0.0f, step, 0.0f));
+	//frustum.SetPos(frustum.Pos() - float3(0.0f, step, 0.0f));
+	frustum.SetPos(frustum.Pos() - frustum.Up().Mul(step));
 }
 
 void ModuleEditorCamera::CameraLookAt(const float3& newTargetPos) {
 	float3 frustumPos = frustum.Pos();
 	float3 targetDir = (newTargetPos - frustumPos).Normalized();
+	float3 newUp = frustum.WorldRight().Cross(targetDir);
 
 	frustum.SetFront(targetDir);
-	frustum.SetUp(float3::unitY);
+	frustum.SetUp(newUp);
 }
 
 void ModuleEditorCamera::SetAspectRatio(unsigned width, unsigned height) {
@@ -193,9 +197,27 @@ void ModuleEditorCamera::Roam() {
 }
 
 void ModuleEditorCamera::Orbit() {
-	float3 focus;
+	float3 focus = float3::zero;
 	int motion_x, motion_y;
 	App->input->GetMouseMotion(motion_x, motion_y);
+	CAM_AXIS vertical_dir, horiz_dir;
+	if (motion_x > 0)
+	{
+		MoveRight(false);
+	}
+	else if (motion_x < 0)
+	{
+		MoveLeft(false);
+	}
+
+	if (motion_y > 0)
+	{
+		MoveDown(false);
+	}
+	else if (motion_y < 0)
+	{
+		MoveUp(false);
+	}
 
 	//App->exercise->GetCurrentModelPos(focus);
 	CameraLookAt(focus);

@@ -21,12 +21,16 @@ public:
 	// Called before quitting
 	bool CleanUp();
 
+	void GetWindowSize(unsigned& w, unsigned& h) const;
+
 public:
 	//The window we'll be rendering to
 	SDL_Window* window = NULL;
 
 	//The surface contained by the window
 	SDL_Surface* screen_surface = NULL;
+private:
+	unsigned w_width, w_height;
 };
 
 #endif // __ModuleWindow_H__

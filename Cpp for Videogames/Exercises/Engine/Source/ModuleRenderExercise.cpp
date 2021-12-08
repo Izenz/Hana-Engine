@@ -61,6 +61,7 @@ update_status ModuleRenderExercise::Update() {
 	//RenderTriangle();
 	LoadBakerHouse();
 
+	console.DrawConsole(&showConsole);
 	return UPDATE_CONTINUE;
 }
 

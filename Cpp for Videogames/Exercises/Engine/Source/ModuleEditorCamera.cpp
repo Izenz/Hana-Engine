@@ -8,6 +8,7 @@
 #include "ModuleRenderExercise.h"
 #include "ModuleEditor.h"
 #include "ModuleDebugDraw.h"
+#include "ModuleWindow.h"
 
 
 
@@ -41,9 +42,12 @@ update_status ModuleEditorCamera::PostUpdate() {
 }
 
 void ModuleEditorCamera::InitFrustum() {
+	unsigned width, height;
+	App->window->GetWindowSize(width, height);
+
 	frustum.SetKind(FrustumSpaceGL, FrustumRightHanded);
 	frustum.SetViewPlaneDistances(0.1f, 100.0f);
-	frustum.SetHorizontalFovAndAspectRatio(DEGTORAD * 90.0f, float(SCREEN_WIDTH) / float(SCREEN_HEIGHT));
+	frustum.SetHorizontalFovAndAspectRatio(DEGTORAD * 90.0f, float(width) / float(height));
 
 	float3 InitPos(0.0f, 0.0f, 3.0f);
 	float3 targetDir = (float3::zero - InitPos).Normalized();

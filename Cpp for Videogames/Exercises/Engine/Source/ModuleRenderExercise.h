@@ -7,6 +7,7 @@
 #include "Geometry\Frustum.h"
 #include "Model.h"
 #include "ModuleTexture.h"
+#include "Console.h"
 
 class ModuleRenderExercise : public Module
 {
@@ -28,4 +29,7 @@ private:
 
 	float4x4 model, view, projection;
 	Frustum frustum;
+
+	bool showConsole = true;
+	Console console;
 };

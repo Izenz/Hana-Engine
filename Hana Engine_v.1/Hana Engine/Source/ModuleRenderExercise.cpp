@@ -37,7 +37,6 @@ update_status ModuleRenderExercise::Update() {
 
 	LoadModel();
 	
-	if(showConsole) Output->DrawConsole(&showConsole);
 	return UPDATE_CONTINUE;
 }
 
@@ -49,6 +48,7 @@ void ModuleRenderExercise::LoadModel() {
 	if(!currentModel.IsLoaded())
 		currentModel.Load(currentModelPath);
 	currentModel.Draw();
+	//ChangeModel("Models/.fbx");
 
 	App->debugDraw->Draw(view, projection, window_width, window_height);
 }

@@ -9,6 +9,7 @@
 #include "imgui.h"
 #include "imgui_impl_sdl.h"
 #include "imgui_impl_opengl3.h"
+#include <shellapi.h>
 
 ModuleEditor::ModuleEditor()
 {
@@ -23,21 +24,6 @@ ModuleEditor::~ModuleEditor()
 // Called before render is available
 bool ModuleEditor::Init()
 {
-	/* --------------------------------------> Already done in ModelRender.cpp
-	LOG("Creating Renderer context");
-
-	// Init SDL
-	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 4);
-	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 6);
-	SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_COMPATIBILITY);
-
-	SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1); // we want a double buffer
-	SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24); // we want to have a depth buffer with 24 bits
-	SDL_GL_SetAttribute(SDL_GL_STENCIL_SIZE, 8); // we want to have a stencil buffer with 8 bits
-
-	context = SDL_GL_CreateContext(App->window->window);
-	*/
-
 	// Init Dear ImGui Context
 	IMGUI_CHECKVERSION();
 	ImGui::CreateContext();
@@ -66,32 +52,15 @@ update_status ModuleEditor::PreUpdate()
 // Called every draw update
 update_status ModuleEditor::Update()
 {
+	DrawWindowMainMenu();
 
-	ImGui::Begin("Hana Engine: Editor", 0, ImGuiWindowFlags_MenuBar);
-
-	if (ImGui::BeginMenuBar()) {
-		if (ImGui::BeginMenu("Files")) {
-			//IMGUI_DEMO_MARKER("Menu/Files");
-			ImGui::MenuItem("Save", NULL, true);
-			ImGui::MenuItem("Load", NULL, true);
-
-			ImGui::EndMenu();
-		}
-		ImGui::EndMenuBar();
-	}
-
-	
-	ImGui::Text("Engine: TriAngle Engine.");
-	ImGui::Text("Author: Joel Herraiz Marti.");
-	ImGui::Text("Engine used for Game Development during UPC's AAA Videogame Development Master.");
-	ImGui::Text("Built using SDL 2.0 and OpenGL 2.1, Assimp, MathGeoLib, ImGui & DevIL.");
-	ImGui::End();
+	if (showConsole) Output->DrawConsole(&showConsole);
+	if (showEngineInfo)	DrawEngineInfoWindow(&showEngineInfo);
 
 	ImGui::Render();
 	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
-	
-	cam->Update();
 
+	cam->Update();
 	return update_status::UPDATE_CONTINUE;
 }
 
@@ -103,6 +72,44 @@ update_status ModuleEditor::PostUpdate()
 	return update_status::UPDATE_CONTINUE;
 }
 
+void ModuleEditor::DrawWindowMainMenu() {
+	if (ImGui::BeginMainMenuBar()) {
+		if (ImGui::BeginMenu("File")) {
+			// TODO: Add option to select files so the user can add search and select textures/models.
+			ImGui::EndMenu();
+		}
+		if (ImGui::BeginMenu("Window")) {
+			if (ImGui::MenuItem("Console", NULL, false, &showConsole))
+				showConsole = !showConsole;
+			ImGui::EndMenu();
+		}
+		if (ImGui::BeginMenu("Help")) {
+			if (ImGui::MenuItem("About us"))
+				ShellExecute(0, 0, "https://github.com/Izenz/Hana-Engine", 0, 0, SW_SHOW);
+			if (ImGui::MenuItem("Engine Info", NULL, false, &showEngineInfo))
+				showEngineInfo = !showEngineInfo;
+			ImGui::EndMenu();
+		}
+		ImGui::EndMainMenuBar();
+	}
+}
+
+void ModuleEditor::DrawEngineInfoWindow(bool* p_open) const {
+	
+	if (!ImGui::Begin("Hana Engine: Info", p_open)) {
+		ImGui::End();
+		return;
+	}
+
+	ImGui::Text("Engine: Hana Engine.");
+	ImGui::Text("Author: Joel Herraiz Marti.");
+	ImGui::Text("Engine used for Game Development during UPC's AAA Videogame Development Master.");
+	ImGui::Text("Built using SDL 2.0 and OpenGL 2.1, Assimp, MathGeoLib, ImGui & DevIL.");
+
+	ImGui::End();
+	
+}
+
 // Called before quitting
 bool ModuleEditor::CleanUp()
 {
@@ -112,7 +119,7 @@ bool ModuleEditor::CleanUp()
 	ImGui_ImplSDL2_Shutdown();
 	ImGui::DestroyContext();
 	
-	
 	return true;
 }
+
 

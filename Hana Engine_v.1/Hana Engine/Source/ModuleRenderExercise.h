@@ -30,5 +30,4 @@ private:
 	Frustum frustum;
 
 	unsigned window_width, window_height;
-	bool showConsole = true;
 };

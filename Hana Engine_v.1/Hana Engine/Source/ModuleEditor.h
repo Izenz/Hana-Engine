@@ -20,10 +20,14 @@ public:
 	update_status PostUpdate();
 	bool CleanUp();
 
+	void DrawWindowMainMenu();
+	void DrawEngineInfoWindow(bool* p_open) const;
+
 	ModuleEditorCamera* cam;
 private:
-	
 	void* context;
 	bool b = false;
 	bool p_open = true;
+
+	bool showEngineInfo = false, showConsole = true;
 };

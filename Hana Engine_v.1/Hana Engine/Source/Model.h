@@ -17,19 +17,20 @@ public:
 	Model();
 	~Model();
 
-	bool Load(const char* file_name, const char* texture_path);
-	void Draw();
+	bool Load(const char* file_name);
+	void Draw() const;
 	void CleanUp();
-	bool IsLoaded();
+	bool IsLoaded() const;
 	void LoadBoundingBox(const aiScene* scene);
 
 private:
 	bool LoadMesh(const aiScene* scene);
 	bool LoadTexture(const aiScene* scene);
+	bool FindAndLoadTexture(const aiMaterial* mat);
 
 	bool model_loaded = false, tex_loaded = false;
-	aiString path;
-	const char* tex_path;
+	std::string model_file_path, model_directory_path;
+
 	std::vector<Mesh> meshes;
 	std::vector<Texture> textures;
 	OBB boundingBox;

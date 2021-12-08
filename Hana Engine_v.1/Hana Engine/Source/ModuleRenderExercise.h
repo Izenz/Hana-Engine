@@ -16,20 +16,19 @@ public:
 	bool CleanUp();
 	update_status Update();
 	update_status PostUpdate();
-	GLuint program;
+	void ChangeModel(const char* file_path);
+	void UpdateWindowSize();
 	
 private:
-	void RenderVBO(unsigned vbo, unsigned program);
-	void RenderTriangle();
-	void LoadBakerHouse();
+	void LoadModel();
 	
 private:
-	GLuint vbo;
-	Model houseModel;
+	Model currentModel;
+	const char* currentModelPath;
 
 	float4x4 model, view, projection;
 	Frustum frustum;
 
+	unsigned window_width, window_height;
 	bool showConsole = true;
-	Console console;
 };

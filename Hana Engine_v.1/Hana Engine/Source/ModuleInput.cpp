@@ -97,7 +97,6 @@ update_status ModuleInput::Update()
 			}
 			break;
 		case SDL_MOUSEBUTTONDOWN:
-			LOG("MOUSE BUTTON DOWN");
 			HandleMouseButtonClick(sdlEvent.button);
 			break;
 		case SDL_MOUSEBUTTONUP:

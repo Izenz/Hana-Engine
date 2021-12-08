@@ -33,6 +33,7 @@ unsigned ModuleTexture::LoadTexture(const char* texturePath) {
 Texture ModuleTexture::Load(const char* texturePath) {
 	unsigned texId = LoadTexture(texturePath);
 	Texture texture(texId, texturePath);
+	texture.path = texturePath;
 
 	if (texId != 0) {
 		glGenTextures(1, &texture.id);
@@ -48,7 +49,8 @@ Texture ModuleTexture::Load(const char* texturePath) {
 		ilDeleteImages(1, &texId);
 	}
 	else {
-		LOG("Error loading texture image from %s: %s", texturePath, ilGetError());
+		//LOG("Error loading texture image from %s: %s", texturePath, ilGetError());
+		//Output->Print("Error loading texture from %s", texturePath);
 	}
 	
 	return texture;

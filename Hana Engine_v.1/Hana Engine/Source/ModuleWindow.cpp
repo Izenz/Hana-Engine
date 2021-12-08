@@ -75,3 +75,8 @@ void ModuleWindow::GetWindowSize(unsigned& w, unsigned& h) const {
 	h = w_height;
 }
 
+void ModuleWindow::SetWindowSize(unsigned w, unsigned h) {
+	w_width = w;
+	w_height = h;
+}
+

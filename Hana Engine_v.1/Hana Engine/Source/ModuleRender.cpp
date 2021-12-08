@@ -5,6 +5,7 @@
 #include "ModuleEditorCamera.h"
 #include "ModuleDebugDraw.h"
 #include "ModuleWindow.h"
+#include "ModuleRenderExercise.h"
 #include "SDL.h"
 #include "GL/glew.h"
 
@@ -74,7 +75,6 @@ update_status ModuleRender::Update()
 
 update_status ModuleRender::PostUpdate()
 {
-	//App->debugDraw->Draw(App->editor->cam->GetProjMatrix(), App->editor->cam->GetViewMatrix(), SCREEN_WIDTH, SCREEN_HEIGHT);
 	SDL_GL_SwapWindow(App->window->window);
 	return UPDATE_CONTINUE;
 }
@@ -92,7 +92,11 @@ bool ModuleRender::CleanUp()
 
 void ModuleRender::WindowResized(unsigned width, unsigned height)
 {
+
 	LOG("Window resized, re-calculating aspect ratio.");
 	App->editor->cam->SetAspectRatio(width, height);
+	App->window->SetWindowSize(width, height);
+	//TODO: Remove line below once exercise is no longer needed.
+	App->exercise->UpdateWindowSize();
 }
 

@@ -22,6 +22,7 @@ public:
 	bool CleanUp();
 
 	void GetWindowSize(unsigned& w, unsigned& h) const;
+	void SetWindowSize(unsigned w, unsigned h);
 
 public:
 	//The window we'll be rendering to

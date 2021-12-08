@@ -17,9 +17,12 @@ enum main_states
 };
 
 Application* App = NULL;
+Console* Output = NULL;
 
 int main(int argc, char ** argv)
 {
+	Output = new Console();
+
 	int main_return = EXIT_FAILURE;
 	main_states state = MAIN_CREATION;
 
@@ -83,7 +86,9 @@ int main(int argc, char ** argv)
 
 	}
 
-	delete App;
 	LOG("Bye :)\n");
+	delete App;
+	delete Output;
+	
 	return main_return;
 }

@@ -11,10 +11,14 @@ Model::~Model()
 {
 }
 
-bool Model::Load(const char* file_name, const char* texture_path) {
+bool Model::Load(const char* file_name) {
 	const aiScene* scene = aiImportFile(file_name, aiProcess_Triangulate);
-	LOG("Loading meshes... : %s", aiGetErrorString());
-	tex_path = texture_path;
+	LOG("Loading model... : %s", file_name);
+	//Output->Print("Loading model... : %s \n", file_name);
+
+	//tex_path = texture_path;
+	model_file_path = file_name;
+	model_directory_path = model_file_path.substr(0, model_file_path.find_last_of("/\\") + 1);
 
 	if (scene) {
 		model_loaded = LoadMesh(scene);
@@ -37,36 +41,55 @@ bool Model::LoadMesh(const aiScene* scene) {
 			meshes.push_back(mesh);
 		}
 		else {
-			LOG("Error returning mesh n: %d from %s: %s", i, path, aiGetErrorString());
+			LOG("Error returning mesh n: %d from %s: %s", i, model_file_path, aiGetErrorString());
 			return false;
 		}
 	}
-	LoadBoundingBox(scene);
+	//LoadBoundingBox(scene);
 	return true;
 }
 
 bool Model::LoadTexture(const aiScene* scene) {
 	textures.reserve(scene->mNumMaterials);
 
-	if (scene->mNumTextures > 0) {
-		for (unsigned i = 0; i < scene->mNumTextures; ++i) {
-			if (scene->mMaterials[i]->GetTexture(aiTextureType_DIFFUSE, 0, &path) == AI_SUCCESS) {
-				Texture texture = App->textures->Load(path.data);
-				if (texture.isLoaded)	textures.push_back(texture);
+	if (scene->mNumMaterials > 0) {
+		for (unsigned i = 0; i < scene->mNumMaterials; ++i) {
+			if(FindAndLoadTexture(scene->mMaterials[0])){
+				return true;
 			}
 			else {
-				LOG("Error loading texture from %s: %s", path, aiGetErrorString());
+				LOG("\nError loading texture for %s: %s", model_file_path, aiGetErrorString());
 				return false;
 			}
 		}
 	}
-	else {
-		Texture texture = App->textures->Load(tex_path);
-		textures.push_back(texture);
-	}
-	
-
 	return true;
+}
+
+bool Model::FindAndLoadTexture(const aiMaterial* mat) {
+	aiString path;
+	if (mat->GetTexture(aiTextureType_DIFFUSE, 0, &path) == AI_SUCCESS) {
+		std::string model_texture_data(path.data);
+		std::string texture_file_name = model_texture_data.substr(model_texture_data.find_last_of("/\\") + 1);
+		std::string default_textures_folder("Textures/");
+
+		Texture texture = App->textures->Load(path.data);
+		if (!texture.isLoaded) {
+			LOG("Failed loading texture specified by model data: %s", texture.path);
+			texture = App->textures->Load((model_directory_path + texture_file_name).c_str());
+		}
+		if (!texture.isLoaded) {
+			LOG("Failed loading texture from model file directory: %s", texture.path);
+			texture = App->textures->Load((default_textures_folder + texture_file_name).c_str());
+		}
+		if (!texture.isLoaded) {
+			LOG("Failed to load texture from default Texture folder: %s", texture.path);
+			return false;
+		}
+		textures.push_back(texture);
+		LOG("Texture loaded from: %s", texture.path);
+		return true;
+	}
 }
 
 void Model::LoadBoundingBox(const aiScene* scene) {
@@ -84,17 +107,25 @@ void Model::LoadBoundingBox(const aiScene* scene) {
 	boundingBox = OBB::OptimalEnclosingOBB(&vertices[0], numOfVertices);
 }
 
-void Model::Draw() {
+void Model::Draw() const {
 	for (Mesh m : meshes) {
 		m.Draw(textures);
 	}
 }
 
-bool Model::IsLoaded() {
+bool Model::IsLoaded() const {
 	return model_loaded;
 }
 
 void Model::CleanUp() {
+	for (Mesh m : meshes)
+		m.~Mesh();
 	meshes.clear();
+	model_loaded = false;
+
+	for (Texture t : textures)
+		t.~Texture();
 	textures.clear();
+	tex_loaded = false;
+	
 }

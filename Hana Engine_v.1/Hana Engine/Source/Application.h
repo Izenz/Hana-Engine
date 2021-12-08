@@ -3,6 +3,7 @@
 #include<list>
 #include "Globals.h"
 #include "Module.h"
+#include "Console.h"
 
 class ModuleRender;
 class ModuleWindow;
@@ -14,6 +15,7 @@ class ModuleEditor;
 class ModuleRenderExercise;
 class ModuleDebugDraw;
 class ModuleTexture;
+
 
 class Application
 {

@@ -26,11 +26,9 @@ update_status ModuleEditorCamera::PreUpdate() {
 
 update_status ModuleEditorCamera::Update() {
 	if (isOrbitEnabled && isMouseControlEnabled) {
-		LOG("Orbiting");
 		Orbit();
 	}
 	else if (isMouseControlEnabled && !isOrbitEnabled) {
-		LOG("Roaming");
 		Roam();
 	}
 
@@ -155,7 +153,6 @@ void ModuleEditorCamera::MoveUp(bool shiftPressed) {
 	float step = movSpeed * App->GetDeltaTime();
 	if (shiftPressed)	step *= 2.0f;
 
-	//frustum.SetPos(frustum.Pos() + float3(0.0f, step, 0.0f));
 	frustum.SetPos(frustum.Pos() + frustum.Up().Mul(step));
 }
 
@@ -163,7 +160,6 @@ void ModuleEditorCamera::MoveDown(bool shiftPressed) {
 	float step = movSpeed * App->GetDeltaTime();
 	if (shiftPressed)	step *= 2.0f;
 
-	//frustum.SetPos(frustum.Pos() - float3(0.0f, step, 0.0f));
 	frustum.SetPos(frustum.Pos() - frustum.Up().Mul(step));
 }
 
@@ -204,7 +200,7 @@ void ModuleEditorCamera::Orbit() {
 	float3 focus = float3::zero;
 	int motion_x, motion_y;
 	App->input->GetMouseMotion(motion_x, motion_y);
-	CAM_AXIS vertical_dir, horiz_dir;
+
 	if (motion_x > 0)
 	{
 		MoveRight(false);

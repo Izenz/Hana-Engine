@@ -66,10 +66,8 @@ update_status ModuleEditor::PreUpdate()
 // Called every draw update
 update_status ModuleEditor::Update()
 {
-	
-	ImGui::ShowDemoWindow();
 
-	ImGui::Begin("TriAngle Editor", 0, ImGuiWindowFlags_MenuBar);
+	ImGui::Begin("Hana Engine: Editor", 0, ImGuiWindowFlags_MenuBar);
 
 	if (ImGui::BeginMenuBar()) {
 		if (ImGui::BeginMenu("Files")) {
@@ -86,8 +84,7 @@ update_status ModuleEditor::Update()
 	ImGui::Text("Engine: TriAngle Engine.");
 	ImGui::Text("Author: Joel Herraiz Marti.");
 	ImGui::Text("Engine used for Game Development during UPC's AAA Videogame Development Master.");
-	ImGui::Text("Built using SDL 2.0 and OpenGL 2.1");
-	ImGui::Checkbox("Read?", &b);
+	ImGui::Text("Built using SDL 2.0 and OpenGL 2.1, Assimp, MathGeoLib, ImGui & DevIL.");
 	ImGui::End();
 
 	ImGui::Render();
@@ -117,9 +114,5 @@ bool ModuleEditor::CleanUp()
 	
 	
 	return true;
-}
-
-void ModuleEditor::WindowResized(unsigned width, unsigned height)
-{
 }
 

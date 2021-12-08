@@ -78,8 +78,7 @@ void Mesh::CreateVAO() {
 }
 
 void Mesh::Draw(const std::vector<Texture>& model_textures) {
-	// TODO: Get render program out of exercise and into render module
-	unsigned program = App->exercise->program;
+	unsigned program = App->program->GetCurrentProgram();
 
 	// TODO: Get camera out of editor.
 	float4x4 view = App->editor->cam->GetViewMatrix();
@@ -87,12 +86,6 @@ void Mesh::Draw(const std::vector<Texture>& model_textures) {
 	float4x4 model = float4x4::identity;
 
 	glUseProgram(program);
-
-	/*
-	glUniformMatrix4fv(glGetUniformLocation(program, "model"), 1, GL_TRUE, (const float*)&model);
-	glUniformMatrix4fv(glGetUniformLocation(program, "view"), 1, GL_TRUE, (const float*)&view);
-	glUniformMatrix4fv(glGetUniformLocation(program, "model"), 1, GL_TRUE, (const float*)&proj);
-	*/
 	
 	glUniformMatrix4fv(glGetUniformLocation(program, "model"), 1, GL_TRUE, &model[0][0]);
 	glUniformMatrix4fv(glGetUniformLocation(program, "view"), 1, GL_TRUE, &view[0][0]);
@@ -105,4 +98,6 @@ void Mesh::Draw(const std::vector<Texture>& model_textures) {
 
 	glBindVertexArray(vao);
 	glDrawElements(GL_TRIANGLES, num_indices, GL_UNSIGNED_INT, nullptr);
+
+	glUseProgram(0);
 }

@@ -2,9 +2,9 @@
 #include <windows.h>
 #include <stdio.h>
 
-#define LOG(format, ...) log(__FILE__, __LINE__, format, __VA_ARGS__);
+#define LOG(format, ...) Output->Print(__FILE__, __LINE__, format, __VA_ARGS__);
 
-void log(const char file[], int line, const char* format, ...);
+//void log(const char file[], int line, const char* format, ...);
 
 enum update_status
 {
@@ -23,8 +23,8 @@ enum class CAM_AXIS {
 };
 
 // Configuration -----------
-#define SCREEN_WIDTH 640
-#define SCREEN_HEIGHT 480
+//#define SCREEN_WIDTH 640
+//#define SCREEN_HEIGHT 480
 #define FULLSCREEN false
 #define VSYNC true
 #define TITLE "Super Awesome Engine"

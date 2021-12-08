@@ -7,6 +7,7 @@
 #include <assert.h>
 #include <stdio.h>
 #include <iostream>
+#include "Console.h"
 
 struct Texture {
 	bool isLoaded = false;

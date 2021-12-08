@@ -1,35 +1,33 @@
 #include "Console.h"
-#include <stdio.h>
-#include <Windows.h>
+
 
 Console::Console() 
 {
+	ClearLog();
 }
 
 Console::~Console()
 {
+	ClearLog();
 }
 
-void Console::Print(const char file[], int line, const char* format, ...) IM_FMTARGS(2){
+void Console::Print(const char file[], int line, const char* format, ...) IM_FMTARGS(2) {
 	const static int max_log_size = 4096;
-
-	static char tmp_string[max_log_size];
+	static char tmp_string[max_log_size], tmp_string2[max_log_size];
 	tmp_string[0] = '\n';
-	static char tmp_string2[max_log_size];
-
 	int old_size = buffer.size();
+	static va_list  ap;
 
-	va_list args;
-	va_start(args, format);
-	vsprintf_s(&tmp_string[1], max_log_size - 1, format, args);
-	va_end(args);
+	// Construct the string from variable arguments
+	va_start(ap, format);
+	vsprintf_s(&tmp_string[1], max_log_size - 1, format, ap);
+	va_end(ap);
 
 	buffer.append(tmp_string);
 	for (int new_size = buffer.size(); old_size < new_size; old_size++)
 		if (buffer[old_size] == '\n')
-			line_offset.push_back(old_size + 1);
+			lineOffsets.push_back(old_size + 1);
 
-	// Visual Studio prints log source
 	sprintf_s(tmp_string2, 4096, "\n%s(%d) : %s", file, line, &tmp_string[1]);
 	OutputDebugString(tmp_string2);
 }
@@ -68,22 +66,22 @@ void Console::DrawConsole(bool* p_open) {
 	const char* buffer_end = buffer.end();
 
 	if (filter.IsActive()) {
-		for (int line_no = 0; line_no < line_offset.Size; line_no++){
-			const char* line_start = buffer_start + line_offset[line_no];
-			const char* line_end = (line_no + 1 < line_offset.Size) ? (buffer_start + line_offset[line_no + 1] - 1) : buffer_end;
+		for (int line_no = 0; line_no < lineOffsets.Size; line_no++){
+			const char* line_start = buffer_start + lineOffsets[line_no];
+			const char* line_end = (line_no + 1 < lineOffsets.Size) ? (buffer_start + lineOffsets[line_no + 1] - 1) : buffer_end;
 			if (filter.PassFilter(line_start, line_end))
 				ImGui::TextUnformatted(line_start, line_end);
 		}
 	}
 	else {
 		ImGuiListClipper clipper;
-		clipper.Begin(line_offset.Size);
+		clipper.Begin(lineOffsets.Size);
 		while (clipper.Step())
 		{
 			for (int line_no = clipper.DisplayStart; line_no < clipper.DisplayEnd; line_no++)
 			{
-				const char* line_start = buffer_start + line_offset[line_no];
-				const char* line_end = (line_no + 1 < line_offset.Size) ? (buffer_start + line_offset[line_no + 1] - 1) : buffer_end;
+				const char* line_start = buffer_start + lineOffsets[line_no];
+				const char* line_end = (line_no + 1 < lineOffsets.Size) ? (buffer_start + lineOffsets[line_no + 1] - 1) : buffer_end;
 				ImGui::TextUnformatted(line_start, line_end);
 			}
 		}
@@ -98,5 +96,8 @@ void Console::DrawConsole(bool* p_open) {
 }
 
 void Console::ClearLog() {
-
+	buffer.clear();
+	filter.Clear();
+	lineOffsets.clear();
+	lineOffsets.push_back(0);
 }

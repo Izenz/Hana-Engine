@@ -2,6 +2,7 @@
 #include "ModuleProgram.h"
 #include "SDL.h"
 #include "GL/glew.h"
+#include "Console.h"
 
 ModuleProgram::ModuleProgram() {
 
@@ -13,16 +14,29 @@ ModuleProgram::~ModuleProgram() {
 
 bool ModuleProgram::Init()
 {
+	// At Init method creates a program with Hello World vertex and fragment shaders
+	char* vsData = LoadShaderSource("Shaders/vertex_shader.glsl");
+	unsigned vert_shader = CompileShader(GL_VERTEX_SHADER, vsData);
+
+	char* fsData = LoadShaderSource("Shaders/fragm_shader.glsl");
+	unsigned fragm_shader = CompileShader(GL_FRAGMENT_SHADER, fsData);
+
+	program = glCreateProgram();
+
+	glAttachShader(program, vert_shader);
+	glAttachShader(program, fragm_shader);
+	glLinkProgram(program);
+
 	return true;
 }
 
 bool ModuleProgram::CleanUp()
 {
-	LOG("Dummy CleanUp!");
+	//LOG("Dummy CleanUp!");
 	return true;
 }
 
-char* ModuleProgram::LoadShaderSource(const char* shader_file_name) {
+char* ModuleProgram::LoadShaderSource(const char* shader_file_name) const {
 	char* data = nullptr;
 	FILE* file = nullptr;
 	fopen_s(&file, shader_file_name, "rb");

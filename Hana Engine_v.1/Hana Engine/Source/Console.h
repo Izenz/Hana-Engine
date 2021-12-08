@@ -1,5 +1,7 @@
 #pragma once
 #include "imgui.h"
+#include <stdio.h>
+#include <Windows.h>
 
 class Console {
 
@@ -14,7 +16,7 @@ private:
 	bool autoscroll = true;
 	ImGuiTextBuffer buffer;
 	ImGuiTextFilter filter;
-	ImVector<int> line_offset;
+	ImVector<int> lineOffsets;
 };
 
-extern Console* Logger;
+extern Console* Output;

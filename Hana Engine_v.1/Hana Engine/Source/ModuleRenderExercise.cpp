@@ -16,7 +16,7 @@ bool ModuleRenderExercise::Init() {
 	UpdateWindowSize();
 	// Frustum setup
 	frustum.SetKind(FrustumSpaceGL, FrustumRightHanded);
-	frustum.SetViewPlaneDistances(0.1f, 100.0f);
+	frustum.SetViewPlaneDistances(0.1f, 1000.0f);
 	frustum.SetHorizontalFovAndAspectRatio(DEGTORAD * 90.0f, float(window_width) / float(window_height));
 
 	float3 pos(2.0f, 4.0f, 6.0f);
@@ -27,6 +27,8 @@ bool ModuleRenderExercise::Init() {
 	frustum.SetUp(float3::unitY);
 
 	currentModelPath = "Models/BakerHouse.fbx";
+	//currentModelPath = "Models/BED.fbx";
+	//currentModelPath = "Models/earth.fbx";
 	return true;
 }
 
@@ -48,7 +50,6 @@ void ModuleRenderExercise::LoadModel() {
 	if(!currentModel.IsLoaded())
 		currentModel.Load(currentModelPath);
 	currentModel.Draw();
-	//ChangeModel("Models/.fbx");
 
 	App->debugDraw->Draw(view, projection, window_width, window_height);
 }

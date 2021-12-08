@@ -27,5 +27,5 @@ enum class CAM_AXIS {
 //#define SCREEN_HEIGHT 480
 #define FULLSCREEN false
 #define VSYNC true
-#define TITLE "Super Awesome Engine"
+#define TITLE "Hana Engine"
 #define DEGTORAD 0.0174533

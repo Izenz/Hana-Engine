@@ -25,10 +25,10 @@ bool ModuleRenderExercise::Init() {
 	glBufferData(GL_ARRAY_BUFFER, sizeof(wColors), wColors, GL_STATIC_DRAW);
 
 	// At Init method creates a program with Hello World vertex and fragment shaders
-	char* vsData = App->program->LoadShaderSource("vertex_shader.glsl");
+	char* vsData = App->program->LoadShaderSource("Shaders/vertex_shader.glsl");
 	unsigned vert_shader = App->program->CompileShader(GL_VERTEX_SHADER, vsData);
 
-	char* fsData = App->program->LoadShaderSource("fragm_shader.glsl");
+	char* fsData = App->program->LoadShaderSource("Shaders/fragm_shader.glsl");
 	unsigned fragm_shader = App->program->CompileShader(GL_FRAGMENT_SHADER, fsData);
 
 	program = glCreateProgram();

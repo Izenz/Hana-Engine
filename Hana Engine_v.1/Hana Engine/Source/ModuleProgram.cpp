@@ -13,13 +13,6 @@ ModuleProgram::~ModuleProgram() {
 
 bool ModuleProgram::Init()
 {
-	/*
-	char* vert_shader = LoadShaderSource("shaderfilename");
-	CompileShader(GL_VERTEX_SHADER, vert_shader);
-
-	char* frag_shader = LoadShaderSource("shaderfilename");
-	CompileShader(GL_FRAGMENT_SHADER, frag_shader);
-	*/
 	return true;
 }
 

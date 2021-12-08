@@ -484,10 +484,10 @@
     <None Include="MathGeoLib_Source\Geometry\TriangleMesh_IntersectRay_SSE.inl">
       <Filter>MathGeoLib\Geometry</Filter>
     </None>
-    <None Include="..\Game\fragm_shader.glsl">
+    <None Include="..\Game\Shaders\fragm_shader.glsl">
       <Filter>Shaders</Filter>
     </None>
-    <None Include="..\Game\vertex_shader.glsl">
+    <None Include="..\Game\Shaders\vertex_shader.glsl">
       <Filter>Shaders</Filter>
     </None>
   </ItemGroup>

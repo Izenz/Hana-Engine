@@ -4,6 +4,7 @@
 #include "Globals.h"
 #include "Module.h"
 #include "Console.h"
+#include "TimeManager.h"
 
 class ModuleRender;
 class ModuleWindow;
@@ -39,13 +40,12 @@ public:
 	ModuleRenderExercise* exercise = nullptr;
 	ModuleEditor* editor = nullptr;
 	ModuleDebugDraw* debugDraw = nullptr;
+
+	TimeManager timeManager;
 	
 private:
 
 	std::list<Module*> modules;
-	UINT32 total_ticks = 0, current_tick = 0;
-	float delta_time = 0.0f;
-
 };
 
 extern Application* App;

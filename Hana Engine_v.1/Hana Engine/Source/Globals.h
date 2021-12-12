@@ -1,4 +1,5 @@
 #pragma once
+#define NOMINMAX
 #include <windows.h>
 #include <stdio.h>
 
@@ -10,7 +11,7 @@ enum update_status
 {
 	UPDATE_CONTINUE = 1,
 	UPDATE_STOP,
-	UPDATE_ERROR
+	UPDATE_ERROR,
 };
 
 enum class CAM_AXIS {

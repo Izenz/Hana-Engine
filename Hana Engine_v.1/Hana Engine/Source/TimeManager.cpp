@@ -24,14 +24,34 @@ void TimeManager::Update() {
 	++frame_count;
 }
 
-void TimeManager::StartTimer() {
-	// Save time on start_time;
+void TimeManager::CapFps(unsigned fpsLimit) const {
+	// Limit fps to 'fpsLimit':
+	// Calculate how many ms we have to draw each frame
+	// If we have extra time, wait.
 }
 
-float TimeManager::EndTimer() {
-	// Return current time - start_time
+// Real-Time Clock
+
+void TimeManager::StartRealClock() {
+	rt_clock.Start();
+}
+
+float TimeManager::ReadRealClock() const {
+	return rt_clock.Read() * MSTOSEC;
+}
+
+void TimeManager::UpdateRealTimeClock() {
+	rt_clock.Tick(REAL_TIME_SCALE);
+
+	real_time_since_startup = rt_clock.GetTimeSinceStart();
+	real_delta_time = rt_clock.GetDeltaTime();
+}
+
+float TimeManager::GetRealDeltaTime() const {
 	return real_delta_time;
 }
+
+// Game Clock
 
 void TimeManager::UpdateGameClock() {
 	game_clock.Tick(time_scale);
@@ -39,13 +59,26 @@ void TimeManager::UpdateGameClock() {
 	time = game_clock.GetDeltaTime();
 }
 
-void TimeManager::UpdateRealTimeClock() {
-	rt_clock.Tick();
-
-	real_time_since_startup = rt_clock.GetTimeSinceStart();
-	real_delta_time = rt_clock.GetDeltaTime();
+float TimeManager::GetRealTimeSinceStart() const {
+	return real_time_since_startup;
 }
 
 void TimeManager::SetGameTimeScale(float new_ts) {
 	time_scale = new_ts;
+}
+
+void TimeManager::StartGameClock() {
+	game_clock.Start();
+}
+
+float TimeManager::ReadGameClock() const {
+	return game_clock.Read() * MSTOSEC;
+}
+
+void TimeManager::StopGameClock() {
+	game_clock.Stop();
+}
+
+float TimeManager::GetGameDeltaTime() const{
+	return game_clock.GetDeltaTime();
 }

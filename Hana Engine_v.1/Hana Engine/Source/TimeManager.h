@@ -2,6 +2,8 @@
 #include "Globals.h";
 #include "SDL.h"
 
+#define REAL_TIME_SCALE 1.0f
+
 /* Simple Timer struct to handle measurements in (ms) */
 struct Timer {
 private:
@@ -25,17 +27,17 @@ public:
 			total_ticks = current_tick;
 		}
 	}
-	float GetDeltaTime() {
+	float GetDeltaTime() const {
 		return isPaused ? 0.0f : dt;
 	}
 
 	void Start() {
 		isPaused = false;
-		start_time = current_tick;
+		start_time = SDL_GetTicks();
 	}
 
-	float Read() {
-		return current_tick - start_time;
+	float Read() const {
+		return SDL_GetTicks() - start_time;
 	}
 
 	void Stop() {
@@ -44,7 +46,7 @@ public:
 		total_ticks = current_tick;
 	};
 
-	float GetTimeSinceStart() {
+	float GetTimeSinceStart() const {
 		return current_tick;
 	}
 };
@@ -106,12 +108,22 @@ public:
 	bool Init();
 	void Update();
 
-	void StartTimer();
-	float EndTimer();
+	void CapFps(unsigned fpsLimit) const;
+
+	// Real-time clock
+	void StartRealClock();
+	float ReadRealClock() const;
+
+	float GetRealDeltaTime() const;
+	float GetRealTimeSinceStart() const;
+
+	// Game clock
+	void StartGameClock();
+	float ReadGameClock() const;
+	void StopGameClock();
 
 	void SetGameTimeScale(float new_ts);
-
-	float GetRealDeltaTime();
+	float GetGameDeltaTime() const;
 
 private:
 
@@ -119,14 +131,14 @@ private:
 
 	void UpdateRealTimeClock();
 	void UpdateGameClock();
-	
+
 	/********** Attributes **********/
 
 	UINT32 total_ticks, current_tick;
 	unsigned frame_count;			// app graphics frames since game start
 
 	// Real-time clock: Unstoppable clock that keeps the ms from application start
-	PerformanceTimer rt_clock;
+	Timer rt_clock;
 
 	float real_time_since_startup;	// seconds since game start (Real Time Clock)
 	float real_delta_time;			// last frame time expressed in seconds(Real Time Clock)
@@ -137,3 +149,5 @@ private:
 	float time;						// second since game start (Game Clock)
 	float time_scale = 1.0f;		// scale at which time is passing (Game Clock)
 };
+
+extern TimeManager* Time;

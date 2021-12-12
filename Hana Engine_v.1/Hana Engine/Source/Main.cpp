@@ -2,6 +2,7 @@
 #include "Application.h"
 #include "ModuleRender.h"
 #include "Globals.h"
+#include "TimeManager.h"
 
 #include "SDL/include/SDL.h"
 #pragma comment( lib, "SDL/lib/x64/SDL2.lib" )
@@ -18,10 +19,12 @@ enum main_states
 
 Application* App = NULL;
 Console* Output = NULL;
+TimeManager* Time = NULL;
 
 int main(int argc, char ** argv)
 {
 	Output = new Console();
+	Time = new TimeManager();
 
 	int main_return = EXIT_FAILURE;
 	main_states state = MAIN_CREATION;
@@ -31,6 +34,8 @@ int main(int argc, char ** argv)
 		switch (state)
 		{
 		case MAIN_CREATION:
+
+			Time->StartRealClock();
 
 			LOG("Application Creation --------------");
 			App = new Application();
@@ -50,6 +55,8 @@ int main(int argc, char ** argv)
 				state = MAIN_UPDATE;
 				LOG("Application Update --------------");
 			}
+
+			LOG("Took %f seconds to start Engine", Time->ReadRealClock());
 
 			break;
 
@@ -89,6 +96,7 @@ int main(int argc, char ** argv)
 	LOG("Bye :)\n");
 	delete App;
 	delete Output;
+	delete Time;
 	
 	return main_return;
 }

@@ -46,9 +46,9 @@ bool Application::Init()
 update_status Application::Update()
 {
 	update_status ret = UPDATE_CONTINUE;
-
+	
 	// Clocks UPDATE
-	timeManager->Update();
+	Time->Update();
 
 	for(list<Module*>::iterator it = modules.begin(); it != modules.end() && ret == UPDATE_CONTINUE; ++it)
 		ret = (*it)->PreUpdate();
@@ -70,10 +70,6 @@ bool Application::CleanUp()
 		ret = (*it)->CleanUp();
 
 	return ret;
-}
-
-float Application::GetDeltaTime() {
-	return timeManager.GetRealDeltaTime();
 }
 
 

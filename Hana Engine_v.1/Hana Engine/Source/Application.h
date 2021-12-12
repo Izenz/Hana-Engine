@@ -28,7 +28,6 @@ public:
 	bool Init();
 	update_status Update();
 	bool CleanUp();
-	float GetDeltaTime();
 
 public:
 	ModuleRender* renderer = nullptr;
@@ -40,8 +39,6 @@ public:
 	ModuleRenderExercise* exercise = nullptr;
 	ModuleEditor* editor = nullptr;
 	ModuleDebugDraw* debugDraw = nullptr;
-
-	TimeManager timeManager;
 	
 private:
 

@@ -30,3 +30,4 @@ enum class CAM_AXIS {
 #define VSYNC true
 #define TITLE "Hana Engine"
 #define DEGTORAD 0.0174533
+#define MSTOSEC 0.001

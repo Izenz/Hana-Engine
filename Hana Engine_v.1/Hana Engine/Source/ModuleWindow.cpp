@@ -4,6 +4,8 @@
 
 ModuleWindow::ModuleWindow()
 {
+	w_width = INIT_SCREEN_WIDTH;
+	w_height = INIT_SCREEN_HEIGHT;
 }
 
 // Destructor

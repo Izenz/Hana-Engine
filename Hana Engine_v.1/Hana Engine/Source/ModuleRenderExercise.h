@@ -24,10 +24,10 @@ private:
 	
 private:
 	Model currentModel;
-	const char* currentModelPath;
+	const char* currentModelPath = "";
 
 	float4x4 model, view, projection;
 	Frustum frustum;
 
-	unsigned window_width, window_height;
+	unsigned window_width = 0, window_height = 0;
 };

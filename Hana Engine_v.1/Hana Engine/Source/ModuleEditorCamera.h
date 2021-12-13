@@ -44,7 +44,7 @@ public:
 
 private:
 	Frustum frustum;
-	float movSpeed = 0.05f, rotationSpeed = 0.005f, orbitSpeed = 0.02;
+	float movSpeed = 0.05f, rotationSpeed = 0.005f, orbitSpeed = 0.02f;
 	float rotationAngleX = 0.0f, rotationAngleY = 0.0f, rotationAngleZ = 0.0f;
 	int mouseX = 0, mouseY = 0;
 	bool isOrbitEnabled = false, isMouseControlEnabled = false;				//	true when LALT + LMB or LMB is clicked to rotate the camera in the editor.

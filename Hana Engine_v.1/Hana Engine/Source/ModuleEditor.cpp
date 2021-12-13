@@ -19,6 +19,7 @@ ModuleEditor::ModuleEditor()
 // Destructor
 ModuleEditor::~ModuleEditor()
 {
+	delete cam;
 }
 
 // Called before render is available

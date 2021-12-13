@@ -54,7 +54,7 @@ float TimeManager::ReadRealClock() {
 void TimeManager::UpdateRealTimeClock() {
 	rt_clock.Tick(REAL_TIME_SCALE);
 
-	real_time_since_startup = float(rt_clock.GetTimeSinceStart()) * MSTOSEC;
+	real_time_since_startup = float(rt_clock.GetTimeSinceStart()) * float(MSTOSEC);
 	real_delta_time = rt_clock.GetDeltaTime();
 }
 

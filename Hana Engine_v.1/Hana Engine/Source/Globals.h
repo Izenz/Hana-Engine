@@ -30,3 +30,5 @@ enum class CAM_AXIS {
 #define TITLE "Hana Engine"
 #define DEGTORAD 0.0174533
 #define MSTOSEC 0.001
+#define INIT_SCREEN_WIDTH 800
+#define INIT_SCREEN_HEIGHT 600

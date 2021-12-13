@@ -12,11 +12,14 @@
 
 ModuleRender::ModuleRender()
 {
+	context = nullptr;
+	default_program = 0;
 }
 
 // Destructor
 ModuleRender::~ModuleRender()
 {
+	delete context;
 }
 
 // Called before render is available

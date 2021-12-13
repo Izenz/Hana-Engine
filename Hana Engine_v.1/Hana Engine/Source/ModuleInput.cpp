@@ -103,8 +103,8 @@ update_status ModuleInput::Update()
 			HandleMouseButtonRelease(sdlEvent.button);
 			break;
 		case SDL_MOUSEMOTION:
-			mouse_pos_dif.x = sdlEvent.motion.xrel;
-			mouse_pos_dif.y = sdlEvent.motion.yrel;
+			mouse_pos_dif.x = float(sdlEvent.motion.xrel);
+			mouse_pos_dif.y = float(sdlEvent.motion.yrel);
 			break;
 		case SDL_MOUSEWHEEL:
 			if (sdlEvent.wheel.y > 0) {
@@ -157,6 +157,6 @@ void ModuleInput::HandleMouseButtonRelease(SDL_MouseButtonEvent& mouseEvent) {
 }
 
 void ModuleInput::GetMouseMotion(int& x, int& y) {
-	x = mouse_pos_dif.x;
-	y = mouse_pos_dif.y;
+	x = int(mouse_pos_dif.x);
+	y = int(mouse_pos_dif.y);
 }

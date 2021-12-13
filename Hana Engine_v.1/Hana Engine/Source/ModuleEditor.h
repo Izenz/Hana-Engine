@@ -25,7 +25,6 @@ public:
 
 	ModuleEditorCamera* cam;
 private:
-	void* context;
 	bool b = false;
 	bool p_open = true;
 

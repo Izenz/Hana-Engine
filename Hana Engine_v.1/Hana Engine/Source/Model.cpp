@@ -90,6 +90,8 @@ bool Model::FindAndLoadTexture(const aiMaterial* mat) {
 		LOG("Texture loaded from: %s", texture.path);
 		return true;
 	}
+	LOG("Error. Path to texture not found.");
+	return false;
 }
 
 void Model::LoadBoundingBox(const aiScene* scene) {

@@ -24,10 +24,21 @@ void TimeManager::Update() {
 	++frame_count;
 }
 
-void TimeManager::CapFps(unsigned fpsLimit) const {
+void TimeManager::CapFps(unsigned fpsLimit) {
 	// Limit fps to 'fpsLimit':
+
 	// Calculate how many ms we have to draw each frame
+	float msForEachFrame = 1000 / fpsLimit;
+	float waitingTime = std::max(0.0f, (msForEachFrame - real_delta_time));
+
 	// If we have extra time, wait.
+	std::cout << "We waited for " << std::max(0.0f, (msForEachFrame - real_delta_time));
+	rt_clock.Start();
+
+	SDL_Delay(waitingTime);
+	rt_clock.AddWaitingTime(waitingTime);
+
+	std::cout << " and got back in " << rt_clock.Read() << std::endl;
 }
 
 // Real-Time Clock
@@ -36,8 +47,8 @@ void TimeManager::StartRealClock() {
 	rt_clock.Start();
 }
 
-float TimeManager::ReadRealClock() const {
-	return rt_clock.Read() * MSTOSEC;
+float TimeManager::ReadRealClock() {
+	return rt_clock.Read() * float(MSTOSEC);
 }
 
 void TimeManager::UpdateRealTimeClock() {
@@ -71,8 +82,8 @@ void TimeManager::StartGameClock() {
 	game_clock.Start();
 }
 
-float TimeManager::ReadGameClock() const {
-	return game_clock.Read() * MSTOSEC;
+float TimeManager::ReadGameClock() {
+	return game_clock.Read() * float(MSTOSEC);
 }
 
 void TimeManager::StopGameClock() {

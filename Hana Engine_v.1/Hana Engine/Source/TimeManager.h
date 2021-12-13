@@ -1,6 +1,9 @@
 #pragma once
-#include "Globals.h";
+#include "Globals.h"
 #include "SDL.h"
+#include <algorithm>
+#include <iostream>
+#include <stdio.h>
 
 #define REAL_TIME_SCALE 1.0f
 
@@ -22,8 +25,8 @@ public:
 	}
 	void Tick(float time_scale) {
 		if (!isPaused) {
-			current_tick = SDL_GetTicks() * time_scale;
-			dt = current_tick - total_ticks;
+			current_tick = SDL_GetTicks();
+			dt = float(current_tick - total_ticks) * time_scale;
 			total_ticks = current_tick;
 		}
 	}
@@ -36,8 +39,9 @@ public:
 		start_time = SDL_GetTicks();
 	}
 
-	float Read() const {
-		return SDL_GetTicks() - start_time;
+	UINT32 Read() {
+		current_tick = isPaused ? current_tick : SDL_GetTicks();
+		return current_tick - start_time;
 	}
 
 	void Stop() {
@@ -46,15 +50,19 @@ public:
 		total_ticks = current_tick;
 	};
 
-	float GetTimeSinceStart() const {
+	UINT32 GetTimeSinceStart() const {
 		return current_tick;
+	}
+
+	void AddWaitingTime(float waitingTime) {
+		total_ticks += UINT32(waitingTime);
 	}
 };
 
 /* Same as Timer but using more precise methods to get time in (µs) */
 struct PerformanceTimer {
 private:
-	UINT32 total_ticks, current_tick, start_time;
+	UINT64 total_ticks, current_tick, start_time;
 	float dt;
 	bool isPaused;
 public:
@@ -84,7 +92,7 @@ public:
 		start_time = current_tick;
 	}
 
-	float Read() {
+	UINT64 Read() {
 		return current_tick - start_time;
 	}
 
@@ -94,7 +102,7 @@ public:
 		total_ticks = current_tick;
 	}
 
-	float GetTimeSinceStart() {
+	UINT64 GetTimeSinceStart() {
 		return current_tick;
 	}
 };
@@ -108,18 +116,18 @@ public:
 	bool Init();
 	void Update();
 
-	void CapFps(unsigned fpsLimit) const;
+	void CapFps(unsigned fpsLimit);
 
 	// Real-time clock
 	void StartRealClock();
-	float ReadRealClock() const;
+	float ReadRealClock();
 
 	float GetRealDeltaTime() const;
 	float GetRealTimeSinceStart() const;
 
 	// Game clock
 	void StartGameClock();
-	float ReadGameClock() const;
+	float ReadGameClock();
 	void StopGameClock();
 
 	void SetGameTimeScale(float new_ts);

@@ -4,6 +4,7 @@
 #include <algorithm>
 #include <iostream>
 #include <stdio.h>
+#include "imgui.h"
 
 #define REAL_TIME_SCALE 1.0f
 
@@ -117,7 +118,7 @@ public:
 	void Update();
 
 	void CapFps(unsigned fpsLimit);
-
+	void DrawTimeWindow(bool* p_bool);
 	// Real-time clock
 	void StartRealClock();
 	float ReadRealClock();

@@ -3,6 +3,8 @@
 #include "Geometry\Frustum.h"
 #include "MathGeoLib.h"
 #include "ModuleInput.h"
+#include "Application.h"
+#include "ModuleRenderExercise.h"
 
 class ModuleEditorCamera : public Module {
 

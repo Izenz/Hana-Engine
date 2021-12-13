@@ -224,5 +224,15 @@ void ModuleEditorCamera::Orbit() {
 }
 
 void ModuleEditorCamera::FocusModel() {
-	
+	// TODO: Complete this function
+	// Get point to look at (model's OBB center point)
+	//Model current_model = App->exercise->GetCurrentModel();
+	//vec modelCenterPos = current_model.GetFocusTarget();
+
+	// Get Camera to look towards model center
+
+	// Move Camera to fit OBB inside frustum
+
+
+
 }

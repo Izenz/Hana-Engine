@@ -43,6 +43,10 @@ update_status ModuleEditor::PreUpdate()
 	
 	ImGui_ImplOpenGL3_NewFrame();
 	ImGui_ImplSDL2_NewFrame();
+
+	ImGuiIO& io = ImGui::GetIO();
+	io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
+
 	ImGui::NewFrame();
 	
 	cam->PreUpdate();
@@ -55,8 +59,9 @@ update_status ModuleEditor::Update()
 {
 	DrawWindowMainMenu();
 
-	if (showConsole) Output->DrawConsole(&showConsole);
-	if (showEngineInfo)	DrawEngineInfoWindow(&showEngineInfo);
+	if (showConsole)		Output->DrawConsole(&showConsole);
+	if (showEngineInfo)		DrawEngineInfoWindow(&showEngineInfo);
+	if (showTimeWindow)		Time->DrawTimeWindow(&showTimeWindow);
 
 	ImGui::Render();
 	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
@@ -74,6 +79,7 @@ update_status ModuleEditor::PostUpdate()
 }
 
 void ModuleEditor::DrawWindowMainMenu() {
+
 	if (ImGui::BeginMainMenuBar()) {
 		if (ImGui::BeginMenu("File")) {
 			// TODO: Add option to select files so the user can add search and select textures/models.

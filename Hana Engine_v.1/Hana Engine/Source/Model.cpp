@@ -109,6 +109,10 @@ void Model::LoadBoundingBox(const aiScene* scene) {
 	boundingBox = OBB::OptimalEnclosingOBB(&vertices[0], numOfVertices);
 }
 
+const vec& Model::GetFocusTarget() const {
+	return boundingBox.CenterPoint();
+}
+
 void Model::Draw() const {
 	for (Mesh m : meshes) {
 		m.Draw(textures);
@@ -129,5 +133,4 @@ void Model::CleanUp() {
 		t.~Texture();
 	textures.clear();
 	tex_loaded = false;
-	
 }

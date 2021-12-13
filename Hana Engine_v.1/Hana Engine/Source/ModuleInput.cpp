@@ -57,7 +57,7 @@ update_status ModuleInput::Update()
 				App->renderer->WindowResized(sdlEvent.window.data1, sdlEvent.window.data2);
 			break;
 		case SDL_KEYDOWN:
-			if (keyboard_state_array[SDL_SCANCODE_W]) {
+			if (keyboard_state_array[SDL_SCANCODE_W] && ImGui::IsWindowFocused(ImGuiFocusedFlags_RootWindow)) {
 				App->editor->cam->MoveForward(keyboard_state_array[SDL_SCANCODE_LSHIFT]);
 			}
 			if (keyboard_state_array[SDL_SCANCODE_S]) {
@@ -77,8 +77,7 @@ update_status ModuleInput::Update()
 			}
 			if (keyboard_state_array[SDL_SCANCODE_F]) {
 				// Focus camera around geometry
-				//App->editor->cam->CameraLookAt(float3::zero);
-				//App->editor->cam->FocusModel();
+				App->editor->cam->FocusModel();
 			}
 			if (keyboard_state_array[SDL_SCANCODE_RIGHT]) {
 				App->editor->cam->RotateCamera(CAM_AXIS::Y_NEGATIVE, keyboard_state_array[SDL_SCANCODE_LSHIFT]);

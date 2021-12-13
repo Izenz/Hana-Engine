@@ -22,6 +22,7 @@ public:
 	void CleanUp();
 	bool IsLoaded() const;
 	void LoadBoundingBox(const aiScene* scene);
+	const vec& GetFocusTarget() const;
 
 private:
 	bool LoadMesh(const aiScene* scene);

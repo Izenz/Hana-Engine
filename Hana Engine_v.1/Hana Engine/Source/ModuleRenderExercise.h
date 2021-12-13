@@ -18,6 +18,7 @@ public:
 	update_status PostUpdate();
 	void ChangeModel(const char* file_path);
 	void UpdateWindowSize();
+	const Model& GetCurrentModel() const;
 	
 private:
 	void LoadModel();

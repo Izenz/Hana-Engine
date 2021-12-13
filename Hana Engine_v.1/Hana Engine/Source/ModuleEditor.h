@@ -1,6 +1,8 @@
 #pragma once
 #include "Module.h"
 #include "Globals.h"
+#include "TimeManager.h"
+#include "Application.h"
 
 class ModuleEditorCamera;
 
@@ -28,5 +30,5 @@ private:
 	bool b = false;
 	bool p_open = true;
 
-	bool showEngineInfo = false, showConsole = true;
+	bool showEngineInfo = false, showConsole = true, showTimeWindow = true;
 };

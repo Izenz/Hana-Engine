@@ -73,3 +73,7 @@ void ModuleRenderExercise::ChangeModel(const char* file_path) {
 void ModuleRenderExercise::UpdateWindowSize() {
 	App->window->GetWindowSize(window_width, window_height);
 }
+
+const Model& ModuleRenderExercise::GetCurrentModel() const {
+	return currentModel;
+}

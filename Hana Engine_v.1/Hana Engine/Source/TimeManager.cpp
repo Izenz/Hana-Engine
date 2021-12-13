@@ -41,6 +41,20 @@ void TimeManager::CapFps(unsigned fpsLimit) {
 	std::cout << " and got back in " << rt_clock.Read() << std::endl;
 }
 
+void TimeManager::DrawTimeWindow(bool* p_open) {
+	// https://www.youtube.com/watch?v=lZuje-3iyVE
+	// Scene Window: https://gamedev.stackexchange.com/questions/140693/how-can-i-render-an-opengl-scene-into-an-imgui-window
+	ImGuiID dockspace_id = ImGui::GetID("MyDockSpace");
+	static ImGuiDockNodeFlags dockspace_flags = ImGuiDockNodeFlags_None;
+	ImGuiWindowFlags window_flags = 0;
+
+	ImGui::SetNextWindowSize(ImVec2(ImGui::GetMainViewport()->Size.x * 0.4, ImGui::GetMainViewport()->Size.x * 0.2), ImGuiCond_FirstUseEver);
+	ImGui::Begin("DockSpace Demo", p_open, window_flags);
+	//ImGui::DockSpace(dockspace_id, ImVec2(0.0f, 0.0f), dockspace_flags);
+	ImGui::End();
+	
+}
+
 // Real-Time Clock
 
 void TimeManager::StartRealClock() {

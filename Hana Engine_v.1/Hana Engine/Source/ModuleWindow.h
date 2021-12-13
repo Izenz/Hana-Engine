@@ -31,7 +31,7 @@ public:
 	//The surface contained by the window
 	SDL_Surface* screen_surface = NULL;
 private:
-	unsigned w_width, w_height;
+	unsigned w_width = 0, w_height = 0;
 };
 
 #endif // __ModuleWindow_H__

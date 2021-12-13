@@ -21,7 +21,7 @@ bool ModuleEditorCamera::Init() {
 
 update_status ModuleEditorCamera::PreUpdate() {
 
-	return UPDATE_CONTINUE;
+	return update_status::UPDATE_CONTINUE;
 }
 
 update_status ModuleEditorCamera::Update() {
@@ -32,11 +32,11 @@ update_status ModuleEditorCamera::Update() {
 		Roam();
 	}
 
-	return UPDATE_CONTINUE;
+	return update_status::UPDATE_CONTINUE;
 }
 
 update_status ModuleEditorCamera::PostUpdate() {
-	return UPDATE_CONTINUE;
+	return update_status::UPDATE_CONTINUE;
 }
 
 void ModuleEditorCamera::InitFrustum() {

@@ -17,7 +17,7 @@ bool ModuleRenderExercise::Init() {
 	// Frustum setup
 	frustum.SetKind(FrustumSpaceGL, FrustumRightHanded);
 	frustum.SetViewPlaneDistances(0.1f, 1000.0f);
-	frustum.SetHorizontalFovAndAspectRatio(DEGTORAD * 90.0f, float(window_width) / float(window_height));
+	frustum.SetHorizontalFovAndAspectRatio(float(DEGTORAD)* 90.0f, float(window_width) / float(window_height));
 
 	float3 pos(2.0f, 4.0f, 6.0f);
 	float3 targetDir = (float3::zero - pos).Normalized();
@@ -39,7 +39,7 @@ update_status ModuleRenderExercise::Update() {
 
 	LoadModel();
 	
-	return UPDATE_CONTINUE;
+	return update_status::UPDATE_CONTINUE;
 }
 
 void ModuleRenderExercise::LoadModel() {
@@ -56,7 +56,7 @@ void ModuleRenderExercise::LoadModel() {
 
 update_status ModuleRenderExercise::PostUpdate() {
 
-	return UPDATE_CONTINUE;
+	return update_status::UPDATE_CONTINUE;
 }
 
 bool ModuleRenderExercise::CleanUp() {

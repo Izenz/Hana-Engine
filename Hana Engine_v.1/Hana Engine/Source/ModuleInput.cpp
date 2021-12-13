@@ -37,7 +37,7 @@ update_status ModuleInput::PreUpdate() {
 	mouse_pos_dif = float2::zero;
 	mouse_wheel_dif = float2::zero;
 
-	return UPDATE_CONTINUE;
+	return update_status::UPDATE_CONTINUE;
 }
 
 // Called every draw update
@@ -51,7 +51,7 @@ update_status ModuleInput::Update()
 		switch (sdlEvent.type)
 		{
 		case SDL_QUIT:
-			return UPDATE_STOP;
+			return update_status::UPDATE_STOP;
 		case SDL_WINDOWEVENT:
 			if (sdlEvent.window.event == SDL_WINDOWEVENT_RESIZED || sdlEvent.window.event == SDL_WINDOWEVENT_SIZE_CHANGED)
 				App->renderer->WindowResized(sdlEvent.window.data1, sdlEvent.window.data2);
@@ -123,7 +123,7 @@ update_status ModuleInput::Update()
 
 	//ImGui_ImplSDL2_ProcessEvent(&sdlEvent);
 
-	return UPDATE_CONTINUE;
+	return update_status::UPDATE_CONTINUE;
 }
 
 

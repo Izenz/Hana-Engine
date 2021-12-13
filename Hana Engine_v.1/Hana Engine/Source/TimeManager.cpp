@@ -28,14 +28,14 @@ void TimeManager::CapFps(unsigned fpsLimit) {
 	// Limit fps to 'fpsLimit':
 
 	// Calculate how many ms we have to draw each frame
-	float msForEachFrame = 1000 / fpsLimit;
+	float msForEachFrame = 1000.0f / float(fpsLimit);
 	float waitingTime = std::max(0.0f, (msForEachFrame - real_delta_time));
 
 	// If we have extra time, wait.
 	std::cout << "We waited for " << std::max(0.0f, (msForEachFrame - real_delta_time));
 	rt_clock.Start();
 
-	SDL_Delay(waitingTime);
+	SDL_Delay(UINT32(waitingTime));
 	rt_clock.AddWaitingTime(waitingTime);
 
 	std::cout << " and got back in " << rt_clock.Read() << std::endl;
@@ -54,7 +54,7 @@ float TimeManager::ReadRealClock() {
 void TimeManager::UpdateRealTimeClock() {
 	rt_clock.Tick(REAL_TIME_SCALE);
 
-	real_time_since_startup = rt_clock.GetTimeSinceStart();
+	real_time_since_startup = float(rt_clock.GetTimeSinceStart()) * MSTOSEC;
 	real_delta_time = rt_clock.GetDeltaTime();
 }
 

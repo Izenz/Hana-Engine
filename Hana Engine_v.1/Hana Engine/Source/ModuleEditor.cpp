@@ -34,7 +34,7 @@ bool ModuleEditor::Init()
 	
 	cam->Init();
 
-	return update_status::UPDATE_CONTINUE;
+	return true;
 }
 
 update_status ModuleEditor::PreUpdate()

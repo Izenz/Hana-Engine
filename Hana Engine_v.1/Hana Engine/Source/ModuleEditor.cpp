@@ -44,6 +44,7 @@ update_status ModuleEditor::PreUpdate()
 	ImGui_ImplOpenGL3_NewFrame();
 	ImGui_ImplSDL2_NewFrame();
 
+	// Enable docking system
 	ImGuiIO& io = ImGui::GetIO();
 	io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
 
@@ -58,11 +59,8 @@ update_status ModuleEditor::PreUpdate()
 update_status ModuleEditor::Update()
 {
 	DrawWindowMainMenu();
-
-	if (showConsole)		Output->DrawConsole(&showConsole);
-	if (showEngineInfo)		DrawEngineInfoWindow(&showEngineInfo);
-	if (showTimeWindow)		Time->DrawTimeWindow(&showTimeWindow);
-
+	DrawEditorEnvironment();
+	
 	ImGui::Render();
 	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
@@ -76,6 +74,15 @@ update_status ModuleEditor::PostUpdate()
 	cam->PostUpdate();
 	
 	return update_status::UPDATE_CONTINUE;
+}
+
+void ModuleEditor::DrawEditorEnvironment() {
+	if (showConsole)			Output->DrawConsole(&showConsole);
+	if (showEngineInfo)			DrawEngineInfoWindow(&showEngineInfo);
+	if (showTimeWindow)			Time->DrawTimeWindow(&showTimeWindow);
+	if (showModulesInfoWindow)	//ShowModulesInfoWindow(&showModulesInfoWindow);
+	if (showResourceManager)	//App->ShowResourceManagerWindow(&showResourceManager);
+	if (showConsumptionWindow)	//App->ShowConsumptionWindow(&showConsumptionWindow);
 }
 
 void ModuleEditor::DrawWindowMainMenu() {

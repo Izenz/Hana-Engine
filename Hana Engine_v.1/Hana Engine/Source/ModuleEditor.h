@@ -22,6 +22,8 @@ public:
 	update_status PostUpdate();
 	bool CleanUp();
 
+	void DrawEditorEnvironment();
+
 	void DrawWindowMainMenu();
 	void DrawEngineInfoWindow(bool* p_open) const;
 
@@ -31,4 +33,5 @@ private:
 	bool p_open = true;
 
 	bool showEngineInfo = false, showConsole = true, showTimeWindow = true;
+	bool showModulesInfoWindow = false, showResourceManager = false, showConsumptionWindow = false;
 };

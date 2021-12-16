@@ -3,6 +3,7 @@
 #include "Globals.h"
 #include "TimeManager.h"
 #include "Application.h"
+#include "ModuleRenderExercise.h"
 
 class ModuleEditorCamera;
 
@@ -26,6 +27,7 @@ public:
 
 	void DrawWindowMainMenu();
 	void DrawEngineInfoWindow(bool* p_open) const;
+	void DrawGameScene(bool* p_open) const;
 
 	ModuleEditorCamera* cam;
 private:
@@ -34,4 +36,5 @@ private:
 
 	bool showEngineInfo = false, showConsole = true, showTimeWindow = true;
 	bool showModulesInfoWindow = false, showResourceManager = false, showConsumptionWindow = false;
+	bool showGameScene = true;
 };

@@ -21,5 +21,4 @@ public:
 
 private:
 	void* context;
-	unsigned default_program;
 };

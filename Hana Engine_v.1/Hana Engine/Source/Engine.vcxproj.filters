@@ -492,5 +492,11 @@
     <None Include="..\Game\Shaders\vertex_shader.glsl">
       <Filter>Shaders</Filter>
     </None>
+    <None Include="..\Game\Shaders\vert_renderToTexture.glsl">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="..\Game\Shaders\frag_renderToTexture.glsl">
+      <Filter>Shaders</Filter>
+    </None>
   </ItemGroup>
 </Project>

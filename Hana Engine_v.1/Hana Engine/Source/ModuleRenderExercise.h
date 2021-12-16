@@ -19,10 +19,11 @@ public:
 	void ChangeModel(const char* file_path);
 	void UpdateWindowSize();
 	const Model& GetCurrentModel() const;
-	
+	unsigned GetSceneTexture() const;
 private:
-	void LoadModel();
-	
+	void DrawScene();
+	void InitFrustum();
+	void RenderSceneToTexture();
 private:
 	Model currentModel;
 	const char* currentModelPath = "";
@@ -30,5 +31,5 @@ private:
 	float4x4 model, view, projection;
 	Frustum frustum;
 
-	unsigned window_width = 0, window_height = 0;
+	unsigned window_width = 0, window_height = 0, framebuffer = 0, textureColorbuffer = 0;
 };

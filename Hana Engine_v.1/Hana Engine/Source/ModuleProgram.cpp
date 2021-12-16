@@ -5,7 +5,7 @@
 #include "Console.h"
 
 ModuleProgram::ModuleProgram() {
-
+	default_program = 0;
 }
 
 ModuleProgram::~ModuleProgram() {
@@ -14,25 +14,21 @@ ModuleProgram::~ModuleProgram() {
 
 bool ModuleProgram::Init()
 {
-	// At Init method creates a program with Hello World vertex and fragment shaders
-	char* vsData = LoadShaderSource("Shaders/vertex_shader.glsl");
-	unsigned vert_shader = CompileShader(GL_VERTEX_SHADER, vsData);
-
-	char* fsData = LoadShaderSource("Shaders/fragm_shader.glsl");
-	unsigned fragm_shader = CompileShader(GL_FRAGMENT_SHADER, fsData);
-
-	program = glCreateProgram();
-
-	glAttachShader(program, vert_shader);
-	glAttachShader(program, fragm_shader);
-	glLinkProgram(program);
-
+	default_program = CreateShadersProgram("Shaders/vertex_shader.glsl", "Shaders/fragm_shader.glsl");
 	return true;
 }
 
 bool ModuleProgram::CleanUp()
 {
-	//LOG("Dummy CleanUp!");
+	// Delete programs
+	for (unsigned program : programs) {
+		glDeleteProgram(program);
+	}
+	// Delete shaders
+	for (unsigned shader : shaders) {
+		glDeleteShader(shader);
+	}
+
 	return true;
 }
 
@@ -75,4 +71,28 @@ unsigned ModuleProgram::CompileShader(unsigned type, const char* shader_data) {
 	}
 
 	return shader_id;
+}
+
+/*
+	This function recieves two paths: one for vertex shader and one for fragment shader and returns the id of the program it
+	creates with them.
+*/
+unsigned ModuleProgram::CreateShadersProgram(const char* path_to_vert, const char* path_to_fragm) {
+	
+	char* vsData = LoadShaderSource(path_to_vert);
+	unsigned vert_shader = CompileShader(GL_VERTEX_SHADER, vsData);
+	shaders.push_back(vert_shader);
+
+	char* fsData = LoadShaderSource(path_to_fragm);
+	unsigned fragm_shader = CompileShader(GL_FRAGMENT_SHADER, fsData);
+	shaders.push_back(fragm_shader);
+
+	unsigned int program = glCreateProgram();
+	programs.push_back(program);
+
+	glAttachShader(program, vert_shader);
+	glAttachShader(program, fragm_shader);
+	glLinkProgram(program);
+
+	return program;
 }

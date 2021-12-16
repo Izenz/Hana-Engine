@@ -317,7 +317,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Game\Shaders\fragm_shader.glsl" />
+    <None Include="..\Game\Shaders\frag_renderToTexture.glsl" />
     <None Include="..\Game\Shaders\vertex_shader.glsl" />
+    <None Include="..\Game\Shaders\vert_renderToTexture.glsl" />
     <None Include="MathGeoLib_Source\Geometry\KDTree.inl" />
     <None Include="MathGeoLib_Source\Geometry\QuadTree.inl" />
     <None Include="MathGeoLib_Source\Geometry\TriangleMesh_IntersectRay_AVX.inl" />

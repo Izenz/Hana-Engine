@@ -13,7 +13,6 @@
 ModuleRender::ModuleRender()
 {
 	context = nullptr;
-	default_program = 0;
 }
 
 // Destructor
@@ -36,7 +35,6 @@ bool ModuleRender::Init()
 	SDL_GL_SetAttribute(SDL_GL_STENCIL_SIZE, 8); // we want to have a stencil buffer with 8 bits
 	
 	context = SDL_GL_CreateContext(App->window->window);
-	//glewInit();
 	
 	GLenum err = glewInit();
 	LOG("Using Glew %s", glewGetString(GLEW_VERSION));

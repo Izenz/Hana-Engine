@@ -78,7 +78,7 @@ void Mesh::CreateVAO() {
 }
 
 void Mesh::Draw(const std::vector<Texture>& model_textures) {
-	unsigned program = App->program->GetCurrentProgram();
+	unsigned program = App->program->GetDefaultProgram();
 
 	// TODO: Get camera out of editor.
 	float4x4 view = App->editor->cam->GetViewMatrix();
@@ -91,7 +91,6 @@ void Mesh::Draw(const std::vector<Texture>& model_textures) {
 	glUniformMatrix4fv(glGetUniformLocation(program, "view"), 1, GL_TRUE, &view[0][0]);
 	glUniformMatrix4fv(glGetUniformLocation(program, "proj"), 1, GL_TRUE, &proj[0][0]);
 	
-
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, model_textures[0].id);	// FORNOW 0 is hardcoded since we only support one texture per model.
 	glUniform1i(glGetUniformLocation(program, "diffuse"), 0);

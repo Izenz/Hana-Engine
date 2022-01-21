@@ -22,6 +22,19 @@ enum class CAM_AXIS {
 	Z_NEGATIVE
 };
 
+enum class WINDOW_TYPES {
+	GAME_VIEW = 0,
+	HIERARCHY,
+	INSPECTOR,
+	RESOURCES,
+	EXPLORER,
+	CONSOLE,
+	ENGINE_INFO,
+	TIME_CONTROL,
+	IMGUI_DEMO,
+	MAX,
+};
+
 // Configuration -----------
 //#define SCREEN_WIDTH 640
 //#define SCREEN_HEIGHT 480

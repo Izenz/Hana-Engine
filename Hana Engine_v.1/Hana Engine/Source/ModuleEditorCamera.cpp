@@ -25,10 +25,10 @@ update_status ModuleEditorCamera::PreUpdate() {
 }
 
 update_status ModuleEditorCamera::Update() {
-	if (isOrbitEnabled && isMouseControlEnabled) {
+	if (isOrbitEnabled && isMouseControlEnabled && !ImGui::IsWindowFocused(ImGuiFocusedFlags_AnyWindow)) {
 		Orbit();
 	}
-	else if (isMouseControlEnabled && !isOrbitEnabled) {
+	else if (isMouseControlEnabled && !isOrbitEnabled && !ImGui::IsWindowFocused(ImGuiFocusedFlags_AnyWindow)) {
 		Roam();
 	}
 

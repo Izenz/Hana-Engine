@@ -65,7 +65,7 @@ update_status Application::Update()
 	for(list<Module*>::iterator it = modules.begin(); it != modules.end() && ret == update_status::UPDATE_CONTINUE; ++it)
 		ret = (*it)->PostUpdate();
 
-	Time->CapFps(60);
+	//Time->CapFps(60);
 	
 	return ret;
 }

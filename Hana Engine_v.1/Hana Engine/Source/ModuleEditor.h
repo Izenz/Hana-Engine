@@ -4,6 +4,8 @@
 #include "TimeManager.h"
 #include "Application.h"
 #include "ModuleRenderExercise.h"
+#include "TimeManager.h"
+#include <vector>
 
 class ModuleEditorCamera;
 
@@ -17,24 +19,31 @@ public:
 	ModuleEditor();
 	~ModuleEditor();
 
-	bool Init();
-	update_status PreUpdate();
-	update_status Update();
-	update_status PostUpdate();
-	bool CleanUp();
+	bool Init() override;
+	update_status PreUpdate() override;
+	update_status Update() override;
+	update_status PostUpdate() override;
+	bool CleanUp() override;
 
 	void DrawEditorEnvironment();
+	void DrawEditorMainMenu();
+	void LoadSceneInEditor();
 
-	void DrawWindowMainMenu();
+	// Draw methods for different windows
+	void CreateDockingSpace();
+	void DrawGameSceneWindow(bool* p_open) const;
+	void DrawHierarchyWindow(bool* p_open) const;
+	void DrawInspectorWindow(bool* p_open) const;
+	void DrawResourcesWindow(bool* p_open) const;
+	void DrawExplorerWindow(bool* p_open) const;
+	void DrawTimeControlWindow(bool* p_open) const;
+
 	void DrawEngineInfoWindow(bool* p_open) const;
-	void DrawGameScene(bool* p_open) const;
+	
 
 	ModuleEditorCamera* cam;
 private:
-	bool b = false;
-	bool p_open = true;
-
-	bool showEngineInfo = false, showConsole = true, showTimeWindow = true;
-	bool showModulesInfoWindow = false, showResourceManager = false, showConsumptionWindow = false;
-	bool showGameScene = true;
+	const char* default_scene_name = "untitled_scene";
+	bool scene_open = true;
+	bool window_active[(int) WINDOW_TYPES::MAX + 1];
 };

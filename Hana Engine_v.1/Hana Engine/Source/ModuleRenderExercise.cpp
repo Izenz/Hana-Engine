@@ -25,7 +25,7 @@ bool ModuleRenderExercise::Init() {
 
 update_status ModuleRenderExercise::Update() {
 	// Draw scene into texture
-	glBindFramebuffer(GL_FRAMEBUFFER, framebuffer);
+	//glBindFramebuffer(GL_FRAMEBUFFER, framebuffer);
 
 	// Clear previous frame
 	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
@@ -36,7 +36,7 @@ update_status ModuleRenderExercise::Update() {
 	DrawScene();
 	
 	// Unbind texture framebuffer to not mess with other stuff
-	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+	//glBindFramebuffer(GL_FRAMEBUFFER, 0);
 	return update_status::UPDATE_CONTINUE;
 }
 

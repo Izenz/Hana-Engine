@@ -47,7 +47,7 @@ void Console::DrawConsole(bool* p_open) {
 	if (ImGui::Button("Options")) {
 		ImGui::OpenPopup("Options");
 	}
-
+	
 	ImGui::SameLine();
 	if (ImGui::Button("Clear"))
 		ClearLog();

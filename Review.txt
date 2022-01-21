@@ -6,7 +6,7 @@ Being verbose is fine as long as you are clear about what functions or variables
 Make an array of bools and an enumeration of different type of windows you are going to have. Add Max at the end and initialize the vector at the MAX value.
 Init ints as 0, you could init pointers as 0 too.
 Try to avoid auto if we can. Its used to reduce verbosity or when we dont know the type we are recieving but its not common.
-If you are doing a division by something (variable) you should check that variable is not 0. Example on fpsCap calculation.
+
 Try to initialize everything better in the header rather than the constructor. If you have several constructors its easy to miss some values. You can overwrite some values in the constructor.
 Instead of including the entire assimp/scene.h you can forward declare as struct aiScene since you are only using a pointer from that struct from the assimp library so it doesnt compile everything. Does not change the behavior of the program but saves compilation time.
 Make variables that are not going to change const so that other programmers understand your intention.
@@ -16,3 +16,8 @@ Double check naming conventions, are you recieving a path? an object? etc.
 No game logic on input, just recieve inputs and manage calls to respective functions so it is abstract enough.
 Initialize pointers in the header to nullptr;
 Add comment to LoadShaderSource to say that the function reserves memory but does not free it. You should warn people using that function that they have to release memory.
+
+
+
+//////////// DONE
+If you are doing a division by something (variable) you should check that variable is not 0. Example on fpsCap calculation.

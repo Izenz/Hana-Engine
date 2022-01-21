@@ -26,19 +26,20 @@ void TimeManager::Update() {
 
 void TimeManager::CapFps(unsigned fpsLimit) {
 	// Limit fps to 'fpsLimit':
+	if (fpsLimit != 0) {
+		// Calculate how many ms we have to draw each frame
+		float msForEachFrame = 1000.0f / float(fpsLimit);
+		float waitingTime = std::max(0.0f, (msForEachFrame - real_delta_time));
 
-	// Calculate how many ms we have to draw each frame
-	float msForEachFrame = 1000.0f / float(fpsLimit);
-	float waitingTime = std::max(0.0f, (msForEachFrame - real_delta_time));
+		// If we have extra time, wait.
+		//std::cout << "We waited for " << std::max(0.0f, (msForEachFrame - real_delta_time));
+		rt_clock.Start();
 
-	// If we have extra time, wait.
-	std::cout << "We waited for " << std::max(0.0f, (msForEachFrame - real_delta_time));
-	rt_clock.Start();
+		SDL_Delay(UINT32(waitingTime));
+		rt_clock.AddWaitingTime(waitingTime);
 
-	SDL_Delay(UINT32(waitingTime));
-	rt_clock.AddWaitingTime(waitingTime);
-
-	std::cout << " and got back in " << rt_clock.Read() << std::endl;
+		//std::cout << " and got back in " << rt_clock.Read() << std::endl;
+	}
 }
 
 void TimeManager::DrawTimeWindow(bool* p_open) {
@@ -49,8 +50,7 @@ void TimeManager::DrawTimeWindow(bool* p_open) {
 	ImGuiWindowFlags window_flags = 0;
 
 	ImGui::SetNextWindowSize(ImVec2(ImGui::GetMainViewport()->Size.x * 0.4, ImGui::GetMainViewport()->Size.x * 0.2), ImGuiCond_FirstUseEver);
-	ImGui::Begin("DockSpace Demo", p_open, window_flags);
-	//ImGui::DockSpace(dockspace_id, ImVec2(0.0f, 0.0f), dockspace_flags);
+	ImGui::Begin("Time Management", p_open, window_flags);
 	ImGui::End();
 	
 }

@@ -30,14 +30,14 @@ public:
 	void LoadSceneInEditor();
 
 	// Draw methods for different windows
-	void CreateDockingSpace();
-	void DrawGameSceneWindow(bool* p_open) const;
-	void DrawHierarchyWindow(bool* p_open) const;
-	void DrawInspectorWindow(bool* p_open) const;
-	void DrawResourcesWindow(bool* p_open) const;
-	void DrawExplorerWindow(bool* p_open) const;
-	void DrawTimeControlWindow(bool* p_open) const;
-
+	void CreateDockingSpace() const;
+	void DrawGameSceneWindow(bool* is_open) const;
+	void DrawHierarchyWindow(bool* is_open) const;
+	void DrawInspectorWindow(bool* is_open) const;
+	void DrawResourcesWindow(bool* is_open) const;
+	void DrawExplorerWindow(bool* is_open) const;
+	void DrawTimeControlWindow(bool* is_open) const;
+	void DrawEngineConfigWindow(bool* is_open) const;
 	void DrawEngineInfoWindow(bool* p_open) const;
 	
 

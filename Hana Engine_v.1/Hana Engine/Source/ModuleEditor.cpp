@@ -60,6 +60,7 @@ update_status ModuleEditor::PreUpdate()
 	// Enable docking system
 	ImGuiIO& io = ImGui::GetIO();
 	io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
+	// Custom ImGui Style
 	ImGuiStyle* style = &ImGui::GetStyle();
 	style->WindowMenuButtonPosition = ImGuiDir_None;
 
@@ -86,7 +87,6 @@ update_status ModuleEditor::Update()
 
 update_status ModuleEditor::PostUpdate()
 {
-
 	cam->PostUpdate();
 	
 	return update_status::UPDATE_CONTINUE;
@@ -103,9 +103,10 @@ void ModuleEditor::DrawEditorEnvironment() {
 	if (window_active[(int)WINDOW_TYPES::RESOURCES])			DrawResourcesWindow(&window_active[(int)WINDOW_TYPES::RESOURCES]);
 	if (window_active[(int)WINDOW_TYPES::EXPLORER])				DrawExplorerWindow(&window_active[(int)WINDOW_TYPES::EXPLORER]);
 	if (window_active[(int)WINDOW_TYPES::ENGINE_INFO])			DrawEngineInfoWindow(&window_active[(int)WINDOW_TYPES::ENGINE_INFO]);
+	if (window_active[(int)WINDOW_TYPES::ENGINE_CONFIG])		DrawEngineConfigWindow(&window_active[(int)WINDOW_TYPES::ENGINE_CONFIG]);
 	if (window_active[(int)WINDOW_TYPES::IMGUI_DEMO])			ImGui::ShowDemoWindow();
 	if (window_active[(int)WINDOW_TYPES::CONSOLE])				Output->DrawConsole(&window_active[(int)WINDOW_TYPES::CONSOLE]);
-	if (window_active[(int)WINDOW_TYPES::TIME_CONTROL])				DrawTimeControlWindow(&window_active[(int)WINDOW_TYPES::TIME_CONTROL]);
+	if (window_active[(int)WINDOW_TYPES::TIME_CONTROL])			DrawTimeControlWindow(&window_active[(int)WINDOW_TYPES::TIME_CONTROL]);
 }
 
 void ModuleEditor::LoadSceneInEditor() {
@@ -125,40 +126,57 @@ void ModuleEditor::DrawEditorMainMenu() {
 
 	if (ImGui::BeginMainMenuBar()) {
 		if (ImGui::BeginMenu("File")) {
-			// TODO: Add option to select files so the user can add search and select textures/models.
+			if (ImGui::MenuItem("Open")) {}
+			if (ImGui::MenuItem("Save")) {}
+			if (ImGui::MenuItem("Load")) {}
 			ImGui::EndMenu();
 		}
 		if (ImGui::BeginMenu("Edit")) {
-			// TODO: Add option to select files so the user can add search and select textures/models.
+			if (ImGui::MenuItem("Undo")) {}
+			if (ImGui::MenuItem("Redo")) {}
 			ImGui::EndMenu();
 		}
 		if (ImGui::BeginMenu("Create")) {
-			// TODO: Add option to select files so the user can add search and select textures/models.
+			if (ImGui::MenuItem("Empty GameObject")) {}
+			if (ImGui::BeginMenu("Primitives")) {
+				if (ImGui::MenuItem("Plane")) {}
+				if (ImGui::MenuItem("Sphere")) {}
+				if (ImGui::MenuItem("Cube")) {}
+				ImGui::EndMenu();
+			}
 			ImGui::EndMenu();
 		}
 		if (ImGui::BeginMenu("Window")) {
-			if (ImGui::MenuItem("Console", NULL, false, &window_active[(int)WINDOW_TYPES::CONSOLE]))
-				window_active[(int)WINDOW_TYPES::CONSOLE] = !window_active[(int)WINDOW_TYPES::CONSOLE];
-			if (ImGui::MenuItem("ImGUI Demo", NULL, false, &window_active[(int)WINDOW_TYPES::IMGUI_DEMO]))
-				window_active[(int)WINDOW_TYPES::IMGUI_DEMO] = !window_active[(int)WINDOW_TYPES::IMGUI_DEMO];
+			if (ImGui::BeginMenu("Core Editor")) {
+				if (ImGui::MenuItem("Console", NULL, &window_active[(int)WINDOW_TYPES::CONSOLE])) {}
+				if (ImGui::MenuItem("Game View", NULL, &window_active[(int)WINDOW_TYPES::GAME_VIEW])) {}
+				if (ImGui::MenuItem("Hierarchy", NULL, &window_active[(int)WINDOW_TYPES::HIERARCHY])) {}
+				if (ImGui::MenuItem("Inspector", NULL, &window_active[(int)WINDOW_TYPES::INSPECTOR])) {}
+				if (ImGui::MenuItem("Engine Config", NULL, &window_active[(int)WINDOW_TYPES::ENGINE_CONFIG])) {}
+				if (ImGui::MenuItem("Explorer", NULL, &window_active[(int)WINDOW_TYPES::EXPLORER])) {}
+				if (ImGui::MenuItem("Resources", NULL, &window_active[(int)WINDOW_TYPES::RESOURCES])) {}
+				if (ImGui::MenuItem("Time Control", NULL, &window_active[(int)WINDOW_TYPES::TIME_CONTROL])) {}
+				ImGui::EndMenu();
+			}
+			if (ImGui::MenuItem("ImGUI Demo", NULL, &window_active[(int)WINDOW_TYPES::IMGUI_DEMO])) {}
 			ImGui::EndMenu();
 		}
-		if (ImGui::BeginMenu("Help")) {
-			if (ImGui::MenuItem("About us"))
-				ShellExecute(0, 0, "https://github.com/Izenz/Hana-Engine", 0, 0, SW_SHOW);
-			if (ImGui::MenuItem("Engine Info", NULL, false, &window_active[(int)WINDOW_TYPES::ENGINE_INFO]))
-				window_active[(int)WINDOW_TYPES::ENGINE_INFO] = !window_active[(int)WINDOW_TYPES::ENGINE_INFO];
+		if (ImGui::BeginMenu("Help")){
+			// TODO: Add documentation windows when we can.
+			if (ImGui::MenuItem("Documentation")) {}
 			ImGui::EndMenu();
 		}
 		if (ImGui::BeginMenu("Development")) {
-			// TODO: Add option to select files so the user can add search and select textures/models.
+			if (ImGui::MenuItem("About us"))
+				ShellExecute(0, 0, "https://github.com/Izenz/Hana-Engine", 0, 0, SW_SHOW);
+			if (ImGui::MenuItem("Engine Info", NULL, &window_active[(int)WINDOW_TYPES::ENGINE_INFO])) {}
 			ImGui::EndMenu();
 		}
 		ImGui::EndMainMenuBar();
 	}
 }
 
-void ModuleEditor::CreateDockingSpace() {
+void ModuleEditor::CreateDockingSpace() const {
 	// Create the docking environment
 	ImGuiWindowFlags windowFlags = ImGuiWindowFlags_NoDocking |
 		ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove |
@@ -182,25 +200,25 @@ void ModuleEditor::CreateDockingSpace() {
 	ImGui::End();
 }
 
-void ModuleEditor::DrawEngineInfoWindow(bool* p_open) const {
+void ModuleEditor::DrawEngineInfoWindow(bool* is_open) const {
 	
-	if (!ImGui::Begin("Hana Engine: Info", p_open)) {
+	if (!ImGui::Begin("Hana Engine: Info", is_open)) {
 		ImGui::End();
 		return;
 	}
 
 	ImGui::Text("Engine: Hana Engine.");
-	ImGui::Text("Author: Joel Herraiz Marti.");
+	ImGui::Text("Author: Marius Dambean & Joel Herraiz.");
 	ImGui::Text("Engine used for Game Development during UPC's AAA Video game Development Master.");
 	ImGui::Text("Built using SDL 2.0 and OpenGL 2.1, Assimp, MathGeoLib, ImGui & DevIL.");
 
 	ImGui::End();
 }
 
-void ModuleEditor::DrawGameSceneWindow(bool* p_open) const {
+void ModuleEditor::DrawGameSceneWindow(bool* is_open) const {
 	unsigned tex = App->exercise->GetSceneTexture();
 
-	ImGui::Begin("GameWindow");
+	ImGui::Begin("GameWindow", is_open);
 	{
 		// Using a Child allow to fill all the space of the window.
 		ImGui::BeginChild("GameRender");
@@ -228,29 +246,36 @@ bool ModuleEditor::CleanUp()
 	return true;
 }
 
-void ModuleEditor::DrawHierarchyWindow(bool* p_open) const {
-	ImGui::Begin("Hierarchy");
+void ModuleEditor::DrawHierarchyWindow(bool* is_open) const {
+	ImGui::Begin("Hierarchy", is_open);
 	{
 	}
 	ImGui::End();
 }
 
-void ModuleEditor::DrawInspectorWindow(bool* p_open) const {
-	ImGui::Begin("Inspector");
+void ModuleEditor::DrawInspectorWindow(bool* is_open) const {
+	ImGui::Begin("Inspector", is_open);
 	{
 	}
 	ImGui::End();
 }
 
-void ModuleEditor::DrawResourcesWindow(bool* p_open) const {
-	ImGui::Begin("Resources");
+void ModuleEditor::DrawResourcesWindow(bool* is_open) const {
+	ImGui::Begin("Resources", is_open);
 	{
 	}
 	ImGui::End();
 }
 
-void ModuleEditor::DrawExplorerWindow(bool* p_open) const {
-	ImGui::Begin("Engine Config");
+void ModuleEditor::DrawExplorerWindow(bool* is_open) const {
+	ImGui::Begin("Explorer", is_open);
+	{
+	}
+	ImGui::End();
+}
+
+void ModuleEditor::DrawEngineConfigWindow(bool* is_open) const {
+	ImGui::Begin("Engine Config", is_open);
 	{
 	}
 	ImGui::End();

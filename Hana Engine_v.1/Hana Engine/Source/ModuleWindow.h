@@ -23,15 +23,20 @@ public:
 
 	void GetWindowSize(unsigned& w, unsigned& h) const;
 	void SetWindowSize(unsigned w, unsigned h);
-
-public:
+	void SetVsync(bool vsync);
+	void WindowMenu();
 	//The window we'll be rendering to
 	SDL_Window* window = NULL;
 
 	//The surface contained by the window
 	SDL_Surface* screen_surface = NULL;
 private:
-	unsigned w_width, w_height;
+	int w_width, w_height;
+	int max_width, max_height;
+	bool fullscreen;
+	bool resizable = true;
+	int refresh_rate;
+	bool vsync = true;
 };
 
 #endif // __ModuleWindow_H__

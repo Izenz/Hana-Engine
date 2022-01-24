@@ -40,6 +40,7 @@ bool Application::Init()
 	bool ret = true;
 
 	Time->StartRealClock();
+	Time->StartFramesClock();
 
 	for(list<Module*>::iterator it = modules.begin(); it != modules.end() && ret; ++it)
 		ret = (*it)->Init();

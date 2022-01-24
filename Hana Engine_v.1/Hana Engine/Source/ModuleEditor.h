@@ -13,6 +13,18 @@ struct SDL_Texture;
 struct SDL_Renderer;
 struct SDL_Rect;
 
+struct AboutInfo {
+
+	unsigned char* system;
+	int cpu;
+	float ram;
+	unsigned char* gpu;
+	unsigned char* gpu_vendor;
+	int vram_capacity;
+	int vram_free;
+	SDL_version sdl_version;
+};
+
 class ModuleEditor : public Module
 {
 public:
@@ -36,14 +48,18 @@ public:
 	void DrawInspectorWindow(bool* p_open) const;
 	void DrawResourcesWindow(bool* p_open) const;
 	void DrawExplorerWindow(bool* p_open) const;
+	void DrawPerformanceWindow(bool* p_open);
 	void DrawTimeControlWindow(bool* p_open) const;
-
 	void DrawEngineInfoWindow(bool* p_open) const;
-	
+	float DrawFPS();
 
 	ModuleEditorCamera* cam;
 private:
 	const char* default_scene_name = "untitled_scene";
 	bool scene_open = true;
+	bool draw_fps = true;
+	std::vector<float> ms_buffer;
+	std::vector<float> fps_buffer;
 	bool window_active[(int) WINDOW_TYPES::MAX + 1];
+	AboutInfo about;
 };

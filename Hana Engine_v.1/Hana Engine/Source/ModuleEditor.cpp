@@ -11,10 +11,10 @@
 #include "imgui_impl_opengl3.h"
 #include <shellapi.h>
 
+
 ModuleEditor::ModuleEditor()
 {
 	cam = new ModuleEditorCamera();
-
 	for (int it = 0; it <= (int) WINDOW_TYPES::MAX; ++it) {
 		window_active[it] = false;
 	}
@@ -43,6 +43,17 @@ bool ModuleEditor::Init()
 	ImGui::CreateContext();
 	ImGui_ImplSDL2_InitForOpenGL(App->window->window, App->renderer);
 	ImGui_ImplOpenGL3_Init("#version 120");
+
+	// --- Added data about performance ---
+	about.system = (unsigned char*)SDL_GetPlatform();
+	about.cpu = SDL_GetCPUCount();
+	about.ram = SDL_GetSystemRAM() / 1024.0f;
+	about.gpu = (unsigned char*)glGetString(GL_RENDERER);
+	about.gpu_vendor = (unsigned char*)glGetString(GL_VENDOR);
+	glGetIntegerv(GL_GPU_MEMORY_INFO_TOTAL_AVAILABLE_MEMORY_NVX, &about.vram_capacity);
+	glGetIntegerv(GL_GPU_MEMORY_INFO_CURRENT_AVAILABLE_VIDMEM_NVX, &about.vram_free);
+	SDL_GetVersion(&about.sdl_version);
+	// ----
 
 	ImGui::StyleColorsDark();
 	
@@ -102,6 +113,7 @@ void ModuleEditor::DrawEditorEnvironment() {
 	if (window_active[(int)WINDOW_TYPES::INSPECTOR])			DrawInspectorWindow(&window_active[(int)WINDOW_TYPES::INSPECTOR]);
 	if (window_active[(int)WINDOW_TYPES::RESOURCES])			DrawResourcesWindow(&window_active[(int)WINDOW_TYPES::RESOURCES]);
 	if (window_active[(int)WINDOW_TYPES::EXPLORER])				DrawExplorerWindow(&window_active[(int)WINDOW_TYPES::EXPLORER]);
+	if (window_active[(int)WINDOW_TYPES::EXPLORER])				DrawPerformanceWindow(&window_active[(int)WINDOW_TYPES::PERFORMANCE]);
 	if (window_active[(int)WINDOW_TYPES::ENGINE_INFO])			DrawEngineInfoWindow(&window_active[(int)WINDOW_TYPES::ENGINE_INFO]);
 	if (window_active[(int)WINDOW_TYPES::IMGUI_DEMO])			ImGui::ShowDemoWindow();
 	if (window_active[(int)WINDOW_TYPES::CONSOLE])				Output->DrawConsole(&window_active[(int)WINDOW_TYPES::CONSOLE]);
@@ -252,6 +264,41 @@ void ModuleEditor::DrawResourcesWindow(bool* p_open) const {
 void ModuleEditor::DrawExplorerWindow(bool* p_open) const {
 	ImGui::Begin("Engine Config");
 	{
+		App->window->WindowMenu();
+	}
+	ImGui::End();
+}
+
+void ModuleEditor::DrawPerformanceWindow(bool* p_open) {
+	ImGui::Begin("Performance");
+	{
+		static SDL_version version;
+		static const float vram_total = about.vram_capacity / 1024.0f;
+		float vram_free = about.vram_free / 1024.0f;
+		float vram_usage = vram_total - vram_free;
+		float frame_rate = 0.0f;
+
+		ImGui::Separator();
+		ImGui::Text("System: %s", about.system);
+		ImGui::Text("SDL Version: %d.%d.%d", about.sdl_version.major,
+			about.sdl_version.minor, about.sdl_version.patch);
+		ImGui::Separator();
+		ImGui::Text("CPUs: %d", about.cpu);
+		ImGui::Text("System RAM: %.1f Gb", about.ram);
+		ImGui::Separator();
+		ImGui::Text("GPU: %s", about.gpu);
+		ImGui::Text("Vendor: %s", about.gpu_vendor);
+		ImGui::Text("VRAM: %.1f Mb", vram_total);
+		ImGui::Text("Vram Usage:  %.1f Mb", vram_usage);
+		ImGui::Text("Vram Available:  %.1f Mb", vram_free);
+		ImGui::Separator();
+		frame_rate = DrawFPS();
+		ImGui::Text("FPS: %i", int(frame_rate));
+		char title[25];
+		sprintf_s(title, 25, "Framerate %.1f", frame_rate);
+		ImGui::PlotHistogram("##framerate", &fps_buffer[0], (int)fps_buffer.size(), 0, title, 0.0f, 1000.f, ImVec2(310, 100));
+		sprintf_s(title, 25, "Milliseconds %.1f", ms_buffer.back());
+		ImGui::PlotHistogram("##milliseconds", &ms_buffer.front(), ms_buffer.size(), 0, title, 0.0f, 40.0f, ImVec2(310, 100));
 	}
 	ImGui::End();
 }
@@ -278,3 +325,29 @@ void ModuleEditor::DrawTimeControlWindow(bool* is_open) const {
 	ImGui::PopStyleVar(3);
 	ImGui::End();
 }
+
+float ModuleEditor::DrawFPS()
+{
+	if (draw_fps)
+	{
+		float fps = Time->GetFPScount();
+		if (fps_buffer.size() == GRAPH_BUFFER_LENGTH)
+		{
+			fps_buffer.erase(fps_buffer.begin());
+		}
+		fps_buffer.push_back(fps);
+
+		if (ms_buffer.size() == GRAPH_BUFFER_LENGTH)
+		{
+			ms_buffer.erase(ms_buffer.begin());
+		}
+		ms_buffer.push_back(Time->GetGameDeltaTime());
+		
+		return fps;
+	}
+	else
+	{
+		return 0.0f;
+	}
+}
+

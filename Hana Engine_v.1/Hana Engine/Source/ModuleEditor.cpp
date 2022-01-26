@@ -103,7 +103,7 @@ void ModuleEditor::DrawEditorEnvironment() {
 	if (window_active[(int)WINDOW_TYPES::INSPECTOR])			DrawInspectorWindow(&window_active[(int)WINDOW_TYPES::INSPECTOR]);
 	if (window_active[(int)WINDOW_TYPES::RESOURCES])			DrawResourcesWindow(&window_active[(int)WINDOW_TYPES::RESOURCES]);
 	if (window_active[(int)WINDOW_TYPES::EXPLORER])				DrawExplorerWindow(&window_active[(int)WINDOW_TYPES::EXPLORER]);
-	//if (window_active[(int)WINDOW_TYPES::PERFORMANCE])			DrawPerformanceWindow(&window_active[(int)WINDOW_TYPES::PERFORMANCE]);
+	if (window_active[(int)WINDOW_TYPES::PERFORMANCE])			DrawPerformanceWindow(&window_active[(int)WINDOW_TYPES::PERFORMANCE]);
 	if (window_active[(int)WINDOW_TYPES::ENGINE_INFO])			DrawEngineInfoWindow(&window_active[(int)WINDOW_TYPES::ENGINE_INFO]);
 	if (window_active[(int)WINDOW_TYPES::ENGINE_CONFIG])		DrawEngineConfigWindow(&window_active[(int)WINDOW_TYPES::ENGINE_CONFIG]);
 	if (window_active[(int)WINDOW_TYPES::IMGUI_DEMO])			ImGui::ShowDemoWindow();
@@ -156,6 +156,7 @@ void ModuleEditor::DrawEditorMainMenu() {
 				if (ImGui::MenuItem("Inspector", NULL, &window_active[(int)WINDOW_TYPES::INSPECTOR])) {}
 				if (ImGui::MenuItem("Engine Config", NULL, &window_active[(int)WINDOW_TYPES::ENGINE_CONFIG])) {}
 				if (ImGui::MenuItem("Explorer", NULL, &window_active[(int)WINDOW_TYPES::EXPLORER])) {}
+				if (ImGui::MenuItem("Performance", NULL, &window_active[(int)WINDOW_TYPES::PERFORMANCE])) {}
 				if (ImGui::MenuItem("Resources", NULL, &window_active[(int)WINDOW_TYPES::RESOURCES])) {}
 				if (ImGui::MenuItem("Time Control", NULL, &window_active[(int)WINDOW_TYPES::TIME_CONTROL])) {}
 				ImGui::EndMenu();

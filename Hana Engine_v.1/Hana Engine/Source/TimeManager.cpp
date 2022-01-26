@@ -20,8 +20,8 @@ bool TimeManager::Init() {
 void TimeManager::Update() {
 	UpdateGameClock();
 	UpdateRealTimeClock();
-
-	++frame_count;
+	UpdateFPS();
+	
 }
 
 void TimeManager::CapFps(unsigned fpsLimit) {
@@ -84,6 +84,17 @@ void TimeManager::UpdateGameClock() {
 	time = game_clock.GetDeltaTime();
 }
 
+void TimeManager::UpdateFPS()
+{
+	++frame_count;
+	if (frames_clock.Read() >= 1000)
+	{
+		last_frame = frame_count;
+		frame_count = 0;
+		frames_clock.Start();
+	}
+}
+
 float TimeManager::GetRealTimeSinceStart() const {
 	return real_time_since_startup;
 }
@@ -106,4 +117,24 @@ void TimeManager::StopGameClock() {
 
 float TimeManager::GetGameDeltaTime() const{
 	return game_clock.GetDeltaTime();
+}
+
+float TimeManager::GetFPScount() const
+{
+	return last_frame;
+}
+
+void TimeManager::StartFramesClock()
+{
+	frames_clock.Start();
+}
+
+float TimeManager::ReadFramesClock()
+{
+	return frames_clock.Read() * float(MSTOSEC);
+}
+
+void TimeManager::StopFramesClock()
+{
+	frames_clock.Stop();
 }

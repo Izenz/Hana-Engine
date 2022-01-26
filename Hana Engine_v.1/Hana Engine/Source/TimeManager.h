@@ -119,6 +119,7 @@ public:
 
 	void CapFps(unsigned fpsLimit);
 	void DrawTimeWindow(bool* p_bool);
+
 	// Real-time clock
 	void StartRealClock();
 	float ReadRealClock();
@@ -133,6 +134,13 @@ public:
 
 	void SetGameTimeScale(float new_ts);
 	float GetGameDeltaTime() const;
+	float GetFPScount() const;
+
+	// Frames clock
+	void StartFramesClock();
+	float ReadFramesClock();
+	void StopFramesClock();
+
 
 private:
 
@@ -140,11 +148,13 @@ private:
 
 	void UpdateRealTimeClock();
 	void UpdateGameClock();
+	void UpdateFPS();
 
 	/********** Attributes **********/
 
 	UINT32 total_ticks, current_tick;
 	unsigned frame_count;			// app graphics frames since game start
+	unsigned last_frame;
 
 	// Real-time clock: Unstoppable clock that keeps the ms from application start
 	Timer rt_clock;
@@ -157,6 +167,8 @@ private:
 
 	float time;						// second since game start (Game Clock)
 	float time_scale = 1.0f;		// scale at which time is passing (Game Clock)
+
+	Timer frames_clock; 
 };
 
 extern TimeManager* Time;

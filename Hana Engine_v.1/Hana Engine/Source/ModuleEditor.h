@@ -3,11 +3,10 @@
 #include "Globals.h"
 #include "TimeManager.h"
 #include "Application.h"
-#include "ModuleRenderExercise.h"
+#include "ModuleScene.h"
 #include "TimeManager.h"
+#include "ModuleScene.h"
 #include <vector>
-
-class ModuleEditorCamera;
 
 struct SDL_Texture;
 struct SDL_Renderer;
@@ -40,8 +39,6 @@ public:
 	void DrawEngineConfigWindow(bool* is_open) const;
 	void DrawEngineInfoWindow(bool* p_open) const;
 	
-
-	ModuleEditorCamera* cam;
 private:
 	const char* default_scene_name = "untitled_scene";
 	bool scene_open = true;

@@ -5,7 +5,7 @@
 #include "GL/glew.h"
 #include "SDL.h"
 #include "Application.h"
-#include "ModuleRenderExercise.h"
+#include "ModuleScene.h"
 #include "ModuleEditor.h"
 #include "ModuleDebugDraw.h"
 #include "ModuleWindow.h"

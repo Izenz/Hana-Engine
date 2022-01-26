@@ -1,8 +1,6 @@
 #include "Globals.h"
 #include "ModuleProgram.h"
-#include "SDL.h"
-#include "GL/glew.h"
-#include "Console.h"
+
 
 ModuleProgram::ModuleProgram() {
 	default_program = 0;
@@ -14,6 +12,7 @@ ModuleProgram::~ModuleProgram() {
 
 bool ModuleProgram::Init()
 {
+	// Default program to paint objects by passing MVP matrices.
 	default_program = CreateShadersProgram("Shaders/vertex_shader.glsl", "Shaders/fragm_shader.glsl");
 	return true;
 }

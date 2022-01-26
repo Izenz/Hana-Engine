@@ -10,10 +10,9 @@ class ModuleRender;
 class ModuleWindow;
 class ModuleTextures;
 class ModuleInput;
-class ModuleRenderExercise;
 class ModuleProgram;
 class ModuleEditor;
-class ModuleRenderExercise;
+class ModuleScene;
 class ModuleDebugDraw;
 class ModuleTexture;
 
@@ -36,7 +35,7 @@ public:
 	ModuleTexture* textures = nullptr;
 	
 	ModuleProgram* program = nullptr;
-	ModuleRenderExercise* exercise = nullptr;
+	ModuleScene* scene = nullptr;
 	ModuleEditor* editor = nullptr;
 	ModuleDebugDraw* debugDraw = nullptr;
 	

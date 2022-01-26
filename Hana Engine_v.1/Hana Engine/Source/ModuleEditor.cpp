@@ -13,8 +13,6 @@
 
 ModuleEditor::ModuleEditor()
 {
-	cam = new ModuleEditorCamera();
-
 	for (int it = 0; it <= (int) WINDOW_TYPES::MAX; ++it) {
 		window_active[it] = false;
 	}
@@ -32,7 +30,6 @@ ModuleEditor::ModuleEditor()
 // Destructor
 ModuleEditor::~ModuleEditor()
 {
-	delete cam;
 }
 
 // Called before render is available
@@ -45,8 +42,6 @@ bool ModuleEditor::Init()
 	ImGui_ImplOpenGL3_Init("#version 120");
 
 	ImGui::StyleColorsDark();
-	
-	cam->Init();
 
 	return true;
 }
@@ -66,8 +61,6 @@ update_status ModuleEditor::PreUpdate()
 
 
 	ImGui::NewFrame();
-	
-	cam->PreUpdate();
 
 	return update_status::UPDATE_CONTINUE;
 }
@@ -81,14 +74,11 @@ update_status ModuleEditor::Update()
 	ImGui::Render();
 	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
-	cam->Update();
 	return update_status::UPDATE_CONTINUE;
 }
 
 update_status ModuleEditor::PostUpdate()
 {
-	cam->PostUpdate();
-	
 	return update_status::UPDATE_CONTINUE;
 }
 
@@ -216,20 +206,17 @@ void ModuleEditor::DrawEngineInfoWindow(bool* is_open) const {
 }
 
 void ModuleEditor::DrawGameSceneWindow(bool* is_open) const {
-	unsigned tex = App->exercise->GetSceneTexture();
+	unsigned tex = App->scene->GetSceneFramebuffer();
 
 	ImGui::Begin("GameWindow", is_open);
 	{
-		// Using a Child allow to fill all the space of the window.
 		ImGui::BeginChild("GameRender");
-		ImVec2 wsize = ImGui::GetWindowSize();
-		// Because I use the texture from OpenGL, I need to invert the V from the UV.
-		ImGui::Image((ImTextureID)tex, wsize, ImVec2(0, 1), ImVec2(1, 0));
-		ImGui::EndChild();
+		const ImVec2 wsize = ImGui::GetContentRegionAvail();
+		
 
-		//ImGui::GetWindowDrawList()->AddText(ImVec2(150.0f, 150.f), IM_COL32(255, 0, 0, 255), "FPS: ");
-		//ImGui::SetCursorPos(ImVec2(wsize.x * 0.5f, wsize.y * 0.5f));
-		//ImGui::Text("FPS: %i", fpsCount);
+		ImGui::Image(reinterpret_cast<void*>(tex), wsize, ImVec2(0, 1), ImVec2(1, 0));
+		App->scene->UpdateRenderValues(wsize.x, wsize.y);
+		ImGui::EndChild();
 	}
 	ImGui::End();
 }
@@ -237,8 +224,6 @@ void ModuleEditor::DrawGameSceneWindow(bool* is_open) const {
 // Called before quitting
 bool ModuleEditor::CleanUp()
 {
-	delete cam;
-
 	ImGui_ImplOpenGL3_Shutdown();
 	ImGui_ImplSDL2_Shutdown();
 	ImGui::DestroyContext();

@@ -5,7 +5,7 @@
 #include "ModuleEditorCamera.h"
 #include "ModuleDebugDraw.h"
 #include "ModuleWindow.h"
-#include "ModuleRenderExercise.h"
+#include "ModuleScene.h"
 #include "SDL.h"
 #include "GL/glew.h"
 
@@ -47,7 +47,7 @@ bool ModuleRender::Init()
 	glEnable(GL_DEPTH_TEST); // Enable depth test
 	glEnable(GL_CULL_FACE); // Enable cull backward faces
 	glDisable(GL_SCISSOR_TEST);
-	glDisable(GL_STENCIL_TEST);
+	//glDisable(GL_STENCIL_TEST);
 
 	glFrontFace(GL_CCW); // Front faces will be counter clockwise
 
@@ -93,11 +93,9 @@ bool ModuleRender::CleanUp()
 
 void ModuleRender::WindowResized(unsigned width, unsigned height)
 {
-
-	LOG("Window resized, re-calculating aspect ratio.");
-	App->editor->cam->SetAspectRatio(width, height);
+	LOG("OS Window resized");
 	App->window->SetWindowSize(width, height);
-	//TODO: Remove line below once exercise is no longer needed.
-	App->exercise->UpdateWindowSize();
 }
+
+
 

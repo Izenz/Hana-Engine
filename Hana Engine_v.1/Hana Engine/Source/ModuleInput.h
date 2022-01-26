@@ -1,8 +1,17 @@
 #pragma once
-#include "Module.h"
+
 #include "Globals.h"
 #include "SDL/include/SDL.h"
 #include "MathGeoLib.h"
+#include "imgui.h"
+#include "imgui_impl_sdl.h"
+#include "imgui_impl_opengl3.h"
+#include "SDL/include/SDL.h"
+
+#include "Module.h"
+#include "ModuleScene.h"
+#include "ModuleEditorCamera.h"
+#include "ModuleRender.h"
 
 typedef unsigned __int8 Uint8;
 

@@ -4,7 +4,7 @@
 #include "MathGeoLib.h"
 #include "ModuleInput.h"
 #include "Application.h"
-#include "ModuleRenderExercise.h"
+#include "ModuleScene.h"
 
 class ModuleEditorCamera : public Module {
 
@@ -41,7 +41,6 @@ public:
 	void SetPosition(const float3& newPos);
 
 	// Getters
-
 	float GetRotationSpeed() { return rotationSpeed; }
 
 private:

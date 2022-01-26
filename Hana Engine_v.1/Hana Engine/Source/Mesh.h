@@ -9,7 +9,7 @@
 #include "MathGeoLib.h"
 #include <assert.h>
 #include <vector>
-#include "ModuleRenderExercise.h"
+#include "ModuleScene.h"
 #include "ModuleEditor.h"
 #include "ModuleEditorCamera.h"
 

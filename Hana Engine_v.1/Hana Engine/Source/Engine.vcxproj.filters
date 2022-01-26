@@ -30,7 +30,6 @@
       <Filter>ImGui</Filter>
     </ClCompile>
     <ClCompile Include="ModuleEditor.cpp" />
-    <ClCompile Include="ModuleRenderExercise.cpp" />
     <ClCompile Include="ModuleEditorCamera.cpp" />
     <ClCompile Include="MathGeoLib_Source\Algorithm\GJK.cpp">
       <Filter>MathGeoLib\Algorithm</Filter>
@@ -164,6 +163,7 @@
     <ClCompile Include="Mesh.cpp" />
     <ClCompile Include="Console.cpp" />
     <ClCompile Include="TimeManager.cpp" />
+    <ClCompile Include="ModuleScene.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
@@ -202,7 +202,6 @@
       <Filter>ImGui</Filter>
     </ClInclude>
     <ClInclude Include="ModuleEditor.h" />
-    <ClInclude Include="ModuleRenderExercise.h" />
     <ClInclude Include="ModuleEditorCamera.h" />
     <ClInclude Include="MathGeoLib_Source\MathBuildConfig.h">
       <Filter>MathGeoLib</Filter>
@@ -437,6 +436,7 @@
     <ClInclude Include="Mesh.h" />
     <ClInclude Include="Console.h" />
     <ClInclude Include="TimeManager.h" />
+    <ClInclude Include="ModuleScene.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="ImGui">

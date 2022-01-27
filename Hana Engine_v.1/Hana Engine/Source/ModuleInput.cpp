@@ -49,22 +49,22 @@ update_status ModuleInput::Update()
 				App->renderer->WindowResized(sdlEvent.window.data1, sdlEvent.window.data2);
 			break;
 		case SDL_KEYDOWN:
-			if (keyboard_state_array[SDL_SCANCODE_W] && !ImGui::IsWindowFocused(ImGuiFocusedFlags_AnyWindow)) {
+			if (keyboard_state_array[SDL_SCANCODE_W] && gameEditorFocused) {
 				App->scene->GetCamera()->MoveForward(keyboard_state_array[SDL_SCANCODE_LSHIFT]);
 			}
-			if (keyboard_state_array[SDL_SCANCODE_S] && !ImGui::IsWindowFocused(ImGuiFocusedFlags_AnyWindow)) {
+			if (keyboard_state_array[SDL_SCANCODE_S] && gameEditorFocused) {
 				App->scene->GetCamera()->MoveBackwards(keyboard_state_array[SDL_SCANCODE_LSHIFT]);
 			}
-			if (keyboard_state_array[SDL_SCANCODE_D] && !ImGui::IsWindowFocused(ImGuiFocusedFlags_AnyWindow)) {
+			if (keyboard_state_array[SDL_SCANCODE_D] && gameEditorFocused) {
 				App->scene->GetCamera()->MoveRight(keyboard_state_array[SDL_SCANCODE_LSHIFT]);
 			}
-			if (keyboard_state_array[SDL_SCANCODE_A] && !ImGui::IsWindowFocused(ImGuiFocusedFlags_AnyWindow)) {
+			if (keyboard_state_array[SDL_SCANCODE_A] && gameEditorFocused) {
 				App->scene->GetCamera()->MoveLeft(keyboard_state_array[SDL_SCANCODE_LSHIFT]);
 			}
-			if (keyboard_state_array[SDL_SCANCODE_Q] && !ImGui::IsWindowFocused(ImGuiFocusedFlags_AnyWindow)) {
+			if (keyboard_state_array[SDL_SCANCODE_Q] && gameEditorFocused) {
 				App->scene->GetCamera()->MoveUp(keyboard_state_array[SDL_SCANCODE_LSHIFT]);
 			}
-			if (keyboard_state_array[SDL_SCANCODE_E] && !ImGui::IsWindowFocused(ImGuiFocusedFlags_AnyWindow)) {
+			if (keyboard_state_array[SDL_SCANCODE_E] && gameEditorFocused) {
 				App->scene->GetCamera()->MoveDown(keyboard_state_array[SDL_SCANCODE_LSHIFT]);
 			}
 			if (keyboard_state_array[SDL_SCANCODE_F] && !ImGui::IsWindowFocused(ImGuiFocusedFlags_AnyWindow)) {
@@ -149,4 +149,9 @@ void ModuleInput::HandleMouseButtonRelease(SDL_MouseButtonEvent& mouseEvent) {
 void ModuleInput::GetMouseMotion(int& x, int& y) {
 	x = int(mouse_pos_dif.x);
 	y = int(mouse_pos_dif.y);
+}
+
+void ModuleInput::SetGameWindowFocus(bool is_focused)
+{
+	gameEditorFocused = is_focused;
 }

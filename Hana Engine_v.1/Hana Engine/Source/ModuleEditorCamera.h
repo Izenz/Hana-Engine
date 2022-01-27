@@ -6,6 +6,31 @@
 #include "Application.h"
 #include "ModuleScene.h"
 
+struct Plan {
+	float3	normal = {0.f, 1.f, 0.f};
+	// Distance from origin to nearest point in the plan
+	float	distance = 0.f;
+};
+
+struct Volume {
+	virtual bool IsOnFrustum(const Frustum& cam, const float3x3& model) const = 0;
+};
+
+struct AABB : public Volume {
+	float3	center{	0.f, 1.f, 0.f };
+	float3	extents{ 0.f, 1.f, 0.f };
+
+	bool IsOnFrustum(const Frustum& cam, const float3x3& model) const final {
+		const float4 globalCenter{ model * float4(center, 1.f) };
+		//const float3 right = transform.GetRight() * extents.x;
+		//const float3 up = transform.GetUp() * extents.y;
+		//const float3 forward = transform.GetForward() * extents.z;
+
+		 
+		return true;
+	}
+};
+
 class ModuleEditorCamera : public Module {
 
 public:

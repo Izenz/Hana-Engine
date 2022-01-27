@@ -25,10 +25,10 @@ update_status ModuleEditorCamera::PreUpdate() {
 }
 
 update_status ModuleEditorCamera::Update() {
-	if (isOrbitEnabled && isMouseControlEnabled && !ImGui::IsWindowFocused(ImGuiFocusedFlags_AnyWindow)) {
+	if (isOrbitEnabled) {
 		Orbit();
 	}
-	else if (isMouseControlEnabled && !isOrbitEnabled && !ImGui::IsWindowFocused(ImGuiFocusedFlags_AnyWindow)) {
+	else if (isMouseControlEnabled) {
 		Roam();
 	}
 
@@ -232,7 +232,5 @@ void ModuleEditorCamera::FocusModel() {
 	// Get Camera to look towards model center
 
 	// Move Camera to fit OBB inside frustum
-
-
-
 }
+

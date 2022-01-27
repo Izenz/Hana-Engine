@@ -30,8 +30,10 @@ public:
 	void HandleMouseButtonClick(SDL_MouseButtonEvent& mouseEvent);
 	void HandleMouseButtonRelease(SDL_MouseButtonEvent& mouseEvent);
 	void GetMouseMotion(int& x, int& y);
+	void SetGameWindowFocus(bool is_focused);
 
 private:
 	const Uint8 *keyboard = NULL;
 	float2 mouse_pos_dif = float2::zero, mouse_wheel_dif = float2::zero;
+	bool gameEditorFocused = false;
 };

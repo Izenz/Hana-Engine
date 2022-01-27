@@ -220,14 +220,17 @@ void ModuleEditor::DrawEngineInfoWindow(bool* is_open) const {
 
 void ModuleEditor::DrawGameSceneWindow(bool* is_open) const {
 	unsigned tex = App->scene->GetSceneFramebuffer();
+	
 
 	ImGui::Begin("GameWindow", is_open);
 	{
+		if (ImGui::IsWindowFocused())	App->input->SetGameWindowFocus(true);
+		else							App->input->SetGameWindowFocus(false);
+
 		ImGui::BeginChild("GameRender");
 		const ImVec2 wsize = ImGui::GetContentRegionAvail();
-		
+		ImGui::Image((ImTextureID)tex, wsize, ImVec2(0, 1), ImVec2(1, 0));
 
-		ImGui::Image(reinterpret_cast<void*>(tex), wsize, ImVec2(0, 1), ImVec2(1, 0));
 		App->scene->UpdateRenderValues(wsize.x, wsize.y);
 		ImGui::EndChild();
 	}
@@ -360,5 +363,9 @@ float ModuleEditor::DrawFPS()
 	{
 		return 0.0f;
 	}
+}
+
+void ModuleEditor::AsignTexture(Texture& text) {
+	//tex = text.id;
 }
 

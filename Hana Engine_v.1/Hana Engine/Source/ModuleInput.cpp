@@ -40,6 +40,7 @@ update_status ModuleInput::Update()
 
 	while (SDL_PollEvent(&sdlEvent) != 0)
 	{
+		ImGui_ImplSDL2_ProcessEvent(&sdlEvent);
 		switch (sdlEvent.type)
 		{
 		case SDL_QUIT:
@@ -49,41 +50,41 @@ update_status ModuleInput::Update()
 				App->renderer->WindowResized(sdlEvent.window.data1, sdlEvent.window.data2);
 			break;
 		case SDL_KEYDOWN:
-			if (keyboard_state_array[SDL_SCANCODE_W] && gameEditorFocused) {
+			if (keyboard_state_array[SDL_SCANCODE_W]) {
 				App->scene->GetCamera()->MoveForward(keyboard_state_array[SDL_SCANCODE_LSHIFT]);
 			}
-			if (keyboard_state_array[SDL_SCANCODE_S] && gameEditorFocused) {
+			if (keyboard_state_array[SDL_SCANCODE_S]) {
 				App->scene->GetCamera()->MoveBackwards(keyboard_state_array[SDL_SCANCODE_LSHIFT]);
 			}
-			if (keyboard_state_array[SDL_SCANCODE_D] && gameEditorFocused) {
+			if (keyboard_state_array[SDL_SCANCODE_D]) {
 				App->scene->GetCamera()->MoveRight(keyboard_state_array[SDL_SCANCODE_LSHIFT]);
 			}
-			if (keyboard_state_array[SDL_SCANCODE_A] && gameEditorFocused) {
+			if (keyboard_state_array[SDL_SCANCODE_A]) {
 				App->scene->GetCamera()->MoveLeft(keyboard_state_array[SDL_SCANCODE_LSHIFT]);
 			}
-			if (keyboard_state_array[SDL_SCANCODE_Q] && gameEditorFocused) {
+			if (keyboard_state_array[SDL_SCANCODE_Q]) {
 				App->scene->GetCamera()->MoveUp(keyboard_state_array[SDL_SCANCODE_LSHIFT]);
 			}
-			if (keyboard_state_array[SDL_SCANCODE_E] && gameEditorFocused) {
+			if (keyboard_state_array[SDL_SCANCODE_E]) {
 				App->scene->GetCamera()->MoveDown(keyboard_state_array[SDL_SCANCODE_LSHIFT]);
 			}
-			if (keyboard_state_array[SDL_SCANCODE_F] && !ImGui::IsWindowFocused(ImGuiFocusedFlags_AnyWindow)) {
+			if (keyboard_state_array[SDL_SCANCODE_F]) {
 				// Focus camera around geometry
 				App->scene->GetCamera()->FocusModel();
 			}
-			if (keyboard_state_array[SDL_SCANCODE_RIGHT] && !ImGui::IsWindowFocused(ImGuiFocusedFlags_AnyWindow)) {
+			if (keyboard_state_array[SDL_SCANCODE_RIGHT]) {
 				App->scene->GetCamera()->RotateCamera(CAM_AXIS::Y_NEGATIVE, keyboard_state_array[SDL_SCANCODE_LSHIFT]);
 			}
-			if (keyboard_state_array[SDL_SCANCODE_LEFT] && !ImGui::IsWindowFocused(ImGuiFocusedFlags_AnyWindow)) {
+			if (keyboard_state_array[SDL_SCANCODE_LEFT]) {
 				App->scene->GetCamera()->RotateCamera(CAM_AXIS::Y, keyboard_state_array[SDL_SCANCODE_LSHIFT]);
 			}
-			if (keyboard_state_array[SDL_SCANCODE_UP] && !ImGui::IsWindowFocused(ImGuiFocusedFlags_AnyWindow)) {
+			if (keyboard_state_array[SDL_SCANCODE_UP]) {
 				App->scene->GetCamera()->RotateCamera(CAM_AXIS::X, keyboard_state_array[SDL_SCANCODE_LSHIFT]);
 			}
-			if (keyboard_state_array[SDL_SCANCODE_DOWN] && !ImGui::IsWindowFocused(ImGuiFocusedFlags_AnyWindow)) {
+			if (keyboard_state_array[SDL_SCANCODE_DOWN]) {
 				App->scene->GetCamera()->RotateCamera(CAM_AXIS::X_NEGATIVE, keyboard_state_array[SDL_SCANCODE_LSHIFT]);
 			}
-			if (keyboard_state_array[SDL_SCANCODE_LALT] && !ImGui::IsWindowFocused(ImGuiFocusedFlags_AnyWindow)) {
+			if (keyboard_state_array[SDL_SCANCODE_LALT]) {
 				App->scene->GetCamera()->ToggleOrbit();
 			}
 			break;
@@ -98,11 +99,11 @@ update_status ModuleInput::Update()
 			mouse_pos_dif.y = float(sdlEvent.motion.yrel);
 			break;
 		case SDL_MOUSEWHEEL:
-			if (sdlEvent.wheel.y > 0 && !ImGui::IsWindowFocused(ImGuiFocusedFlags_AnyWindow)) {
+			if (sdlEvent.wheel.y > 0) {
 				// Scroll up
 				App->scene->GetCamera()->MoveForward(keyboard_state_array[SDL_SCANCODE_LSHIFT]);
 			}
-			else if (sdlEvent.wheel.y < 0 && !ImGui::IsWindowFocused(ImGuiFocusedFlags_AnyWindow)) {
+			else if (sdlEvent.wheel.y < 0) {
 				// Scroll down
 				App->scene->GetCamera()->MoveBackwards(keyboard_state_array[SDL_SCANCODE_LSHIFT]);
 			}

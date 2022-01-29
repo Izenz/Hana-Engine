@@ -1,15 +1,5 @@
 #include "ModuleScene.h"
-#include "ModuleProgram.h"
-#include "Application.h"
-#include "ModuleEditor.h"
-#include "ModuleEditorCamera.h"
-#include "SDL.h"
-#include "GL/glew.h"
-#include "Geometry\Frustum.h"
-#include "MathGeoLib.h"
-#include "ModuleDebugDraw.h"
-#include "debugdraw.h"
-#include "ModuleWindow.h"
+
 
 ModuleScene::ModuleScene() {
 	cam = new ModuleEditorCamera();
@@ -134,11 +124,14 @@ ModuleEditorCamera* ModuleScene::GetCamera() const {
 void ModuleScene::UpdateRenderValues(unsigned _panel_width, unsigned _panel_height)
 {
 	if (panel_width != _panel_width || _panel_height != _panel_height) {
+		LOG("Updating camera values: w: %i, h: %i", _panel_width, _panel_height);
 		panel_width = _panel_width;
 		panel_height = _panel_height;
 		cam->SetAspectRatio(_panel_width, _panel_height);
 
 		// TODO: If there was a previous framebuffer generated, delete it.
+		if (framebuffer != 0)
+			glDeleteFramebuffers(1, &framebuffer);
 		GenerateSceneFramebuffer();
 	}
 }

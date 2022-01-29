@@ -1,13 +1,23 @@
 #pragma once
-#include "Module.h"
-#include "Globals.h"
-#include "ModuleProgram.h"
 #include "SDL.h"
 #include "GL/glew.h"
 #include "Geometry\Frustum.h"
-#include "Model.h"
+#include "GL/glew.h"
+#include "MathGeoLib.h"
+#include "debugdraw.h"
+
+#include "Module.h"
+#include "Globals.h"
+#include "Application.h"
+#include "ModuleProgram.h"
 #include "ModuleTexture.h"
+#include "ModuleProgram.h"
+#include "ModuleEditorCamera.h"
+#include "ModuleWindow.h"
+#include "ModuleDebugDraw.h"
+#include "Model.h"
 #include "Console.h"
+
 
 class ModuleEditorCamera;
 

@@ -13,7 +13,7 @@ ModuleProgram::~ModuleProgram() {
 bool ModuleProgram::Init()
 {
 	// Default program to paint objects by passing MVP matrices.
-	//default_program = CreateShadersProgram("Shaders/vertex_shader.glsl", "Shaders/fragm_shader.glsl");
+	default_program = CreateShadersProgram("Shaders/vertex_shader.glsl", "Shaders/fragm_shader.glsl");
 	return true;
 }
 

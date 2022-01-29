@@ -42,8 +42,7 @@ update_status ModuleScene::Update() {
 	// Unbind texture framebuffer to not mess with other stuff
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
-	cam->Update();
-	
+	cam->Update();	
 	return update_status::UPDATE_CONTINUE;
 }
 

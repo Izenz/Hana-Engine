@@ -1,15 +1,4 @@
 #include "ModuleEditorCamera.h"
-#include "Globals.h"
-#include "Geometry\Frustum.h"
-#include "MathGeoLib.h"
-#include "GL/glew.h"
-#include "SDL.h"
-#include "Application.h"
-#include "ModuleScene.h"
-#include "ModuleEditor.h"
-#include "ModuleDebugDraw.h"
-#include "ModuleWindow.h"
-
 
 
 bool ModuleEditorCamera::Init() {
@@ -164,12 +153,12 @@ void ModuleEditorCamera::MoveDown(bool shiftPressed) {
 }
 
 void ModuleEditorCamera::CameraLookAt(const float3& newTargetPos) {
-	float3 frustumPos = frustum.Pos();
-	float3 targetDir = (newTargetPos - frustumPos).Normalized();
-	float3 newUp = frustum.WorldRight().Cross(targetDir);
+	float3 newDir = (newTargetPos - frustum.Pos()).Normalized();
+	float3 temp_right = float3::unitY.Cross(newDir).Normalized();
+	float3 temp_up = newDir.Cross(temp_right).Normalized();
 
-	frustum.SetFront(targetDir);
-	frustum.SetUp(newUp);
+	frustum.SetFront(newDir);
+	frustum.SetUp(temp_up);
 }
 
 void ModuleEditorCamera::SetAspectRatio(unsigned width, unsigned height) {
@@ -197,36 +186,28 @@ void ModuleEditorCamera::Roam() {
 }
 
 void ModuleEditorCamera::Orbit() {
-	float3 focus = float3::zero;
+	vec focus = float3::zero;		// Focusing Origin for now.
+
 	int motion_x, motion_y;
 	App->input->GetMouseMotion(motion_x, motion_y);
 
-	if (motion_x > 0)
-	{
-		MoveRight(false);
-	}
-	else if (motion_x < 0)
-	{
-		MoveLeft(false);
-	}
+	float x_delta = math::DegToRad(motion_x * orbitSpeed * Time->GetRealDeltaTime());
+	float y_delta = math::DegToRad(motion_y * orbitSpeed * Time->GetRealDeltaTime());
 
-	if (motion_y > 0)
-	{
-		MoveDown(false);
-	}
-	else if (motion_y < 0)
-	{
-		MoveUp(false);
-	}
+	azimuth_angle = Quat::RotateAxisAngle(frustum.WorldRight(), -y_delta);
+	polar_angle = Quat::RotateAxisAngle(frustum.Up(), -x_delta);
+	
+	float3 orbit_dir = float3::zero - frustum.Pos();
+	orbit_dir = (polar_angle * azimuth_angle).Transform(orbit_dir);
 
-	//App->exercise->GetCurrentModelPos(focus);
-	CameraLookAt(focus);
+	frustum.SetPos(focus - orbit_dir);
+	CameraLookAt(orbit_dir);
 }
 
 void ModuleEditorCamera::FocusModel() {
 	// TODO: Complete this function
 	// Get point to look at (model's OBB center point)
-	//Model current_model = App->exercise->GetCurrentModel();
+	
 	//vec modelCenterPos = current_model.GetFocusTarget();
 
 	// Get Camera to look towards model center

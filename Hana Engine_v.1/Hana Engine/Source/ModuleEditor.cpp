@@ -84,7 +84,7 @@ update_status ModuleEditor::Update()
 	
 	ImGui::Render();
 	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
-
+	ImGui::EndFrame();
 	return update_status::UPDATE_CONTINUE;
 }
 
@@ -108,7 +108,7 @@ void ModuleEditor::DrawEditorEnvironment() {
 	if (window_active[(int)WINDOW_TYPES::ENGINE_CONFIG])		DrawEngineConfigWindow(&window_active[(int)WINDOW_TYPES::ENGINE_CONFIG]);
 	if (window_active[(int)WINDOW_TYPES::IMGUI_DEMO])			ImGui::ShowDemoWindow();
 	if (window_active[(int)WINDOW_TYPES::CONSOLE])				Output->DrawConsole(&window_active[(int)WINDOW_TYPES::CONSOLE]);
-	if (window_active[(int)WINDOW_TYPES::TIME_CONTROL])			DrawTimeControlWindow(&window_active[(int)WINDOW_TYPES::TIME_CONTROL]);
+	//if (window_active[(int)WINDOW_TYPES::TIME_CONTROL])			DrawTimeControlWindow(&window_active[(int)WINDOW_TYPES::TIME_CONTROL]);
 }
 
 void ModuleEditor::LoadSceneInEditor() {
@@ -224,9 +224,6 @@ void ModuleEditor::DrawGameSceneWindow(bool* is_open) const {
 
 	ImGui::Begin("GameWindow", is_open);
 	{
-		if (ImGui::IsWindowFocused())	App->input->SetGameWindowFocus(true);
-		else							App->input->SetGameWindowFocus(false);
-
 		ImGui::BeginChild("GameRender");
 		const ImVec2 wsize = ImGui::GetContentRegionAvail();
 		ImGui::Image((ImTextureID)tex, wsize, ImVec2(0, 1), ImVec2(1, 0));
@@ -322,7 +319,7 @@ void ModuleEditor::DrawTimeControlWindow(bool* is_open) const {
 	const ImVec2 ButtonSize = ImVec2(100.0f, 0.0f);
 	ImGuiWindowFlags windowFlags = ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoTitleBar;
 
-	ImGui::SetNextWindowSize(ImVec2(400,60));
+	//ImGui::SetNextWindowSize(ImVec2(400,60));
 	ImGui::PushStyleVar(ImGuiStyleVar_WindowRounding, 0.0f);
 	ImGui::PushStyleVar(ImGuiStyleVar_WindowBorderSize, 0.0f);
 	ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0.0f, 10.0f));

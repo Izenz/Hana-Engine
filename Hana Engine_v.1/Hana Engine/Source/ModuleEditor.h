@@ -53,6 +53,7 @@ public:
 	void DrawEngineInfoWindow(bool* p_open) const;
 	void DrawPerformanceWindow(bool* p_open);
 	float DrawFPS();
+	void AsignTexture(Texture& tex);
 
 private:
 	const char* default_scene_name = "untitled_scene";
@@ -62,4 +63,6 @@ private:
 	std::vector<float> fps_buffer;
 	bool window_active[(int) WINDOW_TYPES::MAX + 1];
 	AboutInfo about;
+	
+	//unsigned tex;
 };

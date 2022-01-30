@@ -164,6 +164,7 @@
     <ClCompile Include="Console.cpp" />
     <ClCompile Include="TimeManager.cpp" />
     <ClCompile Include="ModuleScene.cpp" />
+    <ClCompile Include="Quadtree.cpp" />
     <ClCompile Include="Component.cpp" />
     <ClCompile Include="GameObject.cpp" />
   </ItemGroup>
@@ -439,6 +440,7 @@
     <ClInclude Include="Console.h" />
     <ClInclude Include="TimeManager.h" />
     <ClInclude Include="ModuleScene.h" />
+    <ClInclude Include="Quadtree.h" />
     <ClInclude Include="Component.h" />
     <ClInclude Include="GameObject.h" />
   </ItemGroup>

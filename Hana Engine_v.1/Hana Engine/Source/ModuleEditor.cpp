@@ -9,10 +9,11 @@
 #include "imgui.h"
 #include "imgui_impl_sdl.h"
 #include "imgui_impl_opengl3.h"
-//#include <shellapi.h>
+#include <shellapi.h>
 
 
 ModuleEditor::ModuleEditor()
+
 {
 	for (int it = 0; it <= (int) WINDOW_TYPES::MAX; ++it) {
 		window_active[it] = false;

@@ -28,7 +28,7 @@ void ModuleEditorCamera::InitFrustum() {
 	App->window->GetWindowSize(width, height);
 
 	frustum.SetKind(FrustumSpaceGL, FrustumRightHanded);
-	frustum.SetViewPlaneDistances(0.1f, 100.0f);
+	frustum.SetViewPlaneDistances(0.1f, 1000.0f);
 	frustum.SetHorizontalFovAndAspectRatio(float(DEGTORAD)* 90.0f, float(width) / float(height));
 
 	float3 InitPos(0.0f, 0.0f, 3.0f);

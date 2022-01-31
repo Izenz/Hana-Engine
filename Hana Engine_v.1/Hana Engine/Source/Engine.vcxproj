@@ -99,7 +99,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;_CRT_SECURE_NO_WARNINGS;NOMINMAX;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ProjectDir)\DevIL\include\IL;$(ProjectDir)\assimp\include;$(ProjectDir)\MathGeoLib_Source;$(ProjectDir)\ImGui;.\glew-2.1.0\include;.\SDL\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)\pcg-cpp-0.98\include;$(ProjectDir)\DevIL\include\IL;$(ProjectDir)\assimp\include;$(ProjectDir)\MathGeoLib_Source;$(ProjectDir)\ImGui;.\glew-2.1.0\include;.\SDL\include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>

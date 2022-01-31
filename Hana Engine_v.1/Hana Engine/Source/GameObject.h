@@ -4,8 +4,10 @@
 #include "Component.h"
 #include "Globals.h"
 #include "MathGeoLib.h"
+#include <list>
 #include <vector>
 #include <string>
+#include <memory>
 
 class Component;
 class ComponentTransform;
@@ -16,31 +18,26 @@ class GameObject
 
 public:
 	GameObject();
-	GameObject(GameObject* parent, const float4x4& transform, const char* name = "");
-	GameObject(GameObject* parent, const char* name = "", const float3& translation = float3::zero, const Quat& rotation = Quat::identity, const float3& scale = float3::one);
 	~GameObject();
 
-	void Init(std::string new_name);
+	void Init();
 	void PreUpdate();
 	void Update();
 	void PostUpdate();
 
-	void AddComponent(Component* component);
-	void RemoveComponent(Component* component);
-	Component* CreateComponent(Component::ComponentTypes type) const;
-	Component* GetComponent(Component::ComponentTypes type) const;
+	void AddComponent(Component::COMPONENT_TYPE type);		// Habra que pasar el tipo de component y instanciarlo dentro de la funcion
+	bool RemoveComponent(unsigned id);		// Habra que pasar el uid y/o el tipo de componente.
 	Component* GetComponentById(unsigned int component_id) const;
-	const std::vector<Component*>& GetAllComponents() const;
-	bool CheckComponent(Component::ComponentTypes type);
+	Component* GetComponent(Component::COMPONENT_TYPE type) const;
+	std::vector<Component*>& GetAllComponents() const;
 
-	const std::vector<GameObject*>& GetChildren() const;
+	std::vector<GameObject*>& GetChildren() const;
 
-
-	void SetParent(GameObject* new_parent);
+	void SetParent(GameObject& new_parent);
 	void SetActive(bool flag);
-	void AddChild(GameObject* child);
-	void RemoveChild(GameObject* child);
-	GameObject* GetChild(unsigned int child_id) const;
+	void AddChild(GameObject& child);
+	void RemoveChild(GameObject& child);
+	std::shared_ptr<GameObject> GetChild(unsigned int child_id) const;
 
 private:
 
@@ -51,15 +48,12 @@ private:
 
 	std::string name;
 	unsigned int uid = 0;
-	bool is_active = false;
+	bool is_active = true;
 
 	ComponentTransform* transform = nullptr;
-	std::vector<Component*> components;
-	std::vector<GameObject*> childs;
+	std::list<Component*> components;
+	std::list<std::shared_ptr<GameObject>> childs;
 
-	GameObject* parent = nullptr;
-	ModuleScene* owner_scene = nullptr;
-	
-
-
+	std::shared_ptr<GameObject> parent = nullptr;
+	std::shared_ptr<ModuleScene> owner_scene = nullptr;
 };

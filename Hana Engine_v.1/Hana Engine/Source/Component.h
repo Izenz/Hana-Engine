@@ -1,50 +1,50 @@
 #pragma once
+
+#include "imgui.h"
+#include "stdio.h"
+#include <memory>
+
+#include "Globals.h"
+#include "Application.h"
+
 class GameObject;
 
 class Component
 {
 
 public:
-	enum class ComponentTypes
+	enum class COMPONENT_TYPE
 	{
-		Camera,
-		Mesh,
-		Material,
-		Transform,
-		BoundingBox,
-		Light,
+		//CAMERA,	Game Object?
+		//LIGHT,	Game Object?
+		TRANSFORM,
+		MESH,
+		MATERIAL,
+		BOUNDING_BOX,
 		UNDEFINED
 	};
 
-	GameObject* owner = nullptr;
-
 public:
 	Component();
-	Component(GameObject* new_owner, ComponentTypes type);
+	Component(GameObject& new_owner, COMPONENT_TYPE type);
 	virtual ~Component() = default;
 
-	unsigned int GetId() const;
-	virtual ComponentTypes GetType() const;
+	inline unsigned int GetId() const { return id; };
+	COMPONENT_TYPE GetType() const;
 
-	const GameObject* Parent() const;
+	inline const std::shared_ptr<GameObject> Parent() const { return parent; };
 
-	virtual void Enable();
-	virtual void Disable();
+	inline void Enable() { enabled = true; };
+	inline void Disable() { enabled = false; };
+	inline bool isEnabled() const { return enabled; };
 
 	virtual void PreUpdate();
 	virtual void Update();
 	virtual void PostUpdate();
 
-
-	bool isEnabled() const;
-
 protected:
-
 	bool enabled = false;
-
-
-private:
-	unsigned int SetId();
+	std::shared_ptr<GameObject> parent = nullptr;
 	unsigned int id = 0;
-	ComponentTypes type = ComponentTypes::UNDEFINED;
+	COMPONENT_TYPE type = COMPONENT_TYPE::UNDEFINED;
 };

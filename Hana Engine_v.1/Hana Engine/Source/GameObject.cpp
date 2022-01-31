@@ -7,25 +7,17 @@ GameObject::GameObject()
 
 }
 
-GameObject::GameObject(GameObject* parent, const float4x4& transform, const char* name)
-{
-}
-
-GameObject::GameObject(GameObject* parent, const char* name, const float3& translation, const Quat& rotation, const float3& scale)
-{
-}
-
 GameObject::~GameObject()
 {
 }
 
-void GameObject::Init(std::string new_name)
+void GameObject::Init()
 {
 }
 
 void GameObject::PreUpdate()
 {
-	std::vector<Component*>::iterator it;
+	std::list<Component*>::iterator it;
 	for (it = components.begin(); it != components.end(); ++it)
 	{
 		(*it)->PreUpdate();
@@ -33,7 +25,7 @@ void GameObject::PreUpdate()
 
 	if (childs.size() > 0)
 	{
-		for (GameObject* child : childs)
+		for (auto child : childs)
 		{
 			if(child->is_active)
 				child->PreUpdate();
@@ -43,7 +35,7 @@ void GameObject::PreUpdate()
 
 void GameObject::Update()
 {
-	std::vector<Component*>::iterator it;
+	std::list<Component*>::iterator it;
 	for (it = components.begin(); it != components.end(); ++it)
 	{
 		(*it)->Update();
@@ -51,7 +43,7 @@ void GameObject::Update()
 
 	if (childs.size() > 0)
 	{
-		for (GameObject* child : childs)
+		for (auto child : childs)
 		{
 			if (child->is_active)
 				child->Update();
@@ -61,7 +53,7 @@ void GameObject::Update()
 
 void GameObject::PostUpdate()
 {
-	std::vector<Component*>::iterator it;
+	std::list<Component*>::iterator it;
 	for (it = components.begin(); it != components.end(); ++it)
 	{
 		(*it)->PostUpdate();
@@ -69,7 +61,7 @@ void GameObject::PostUpdate()
 
 	if (childs.size() > 0)
 	{
-		for (GameObject* child : childs)
+		for (auto child : childs)
 		{
 			if (child->is_active)
 				child->PostUpdate();
@@ -77,9 +69,9 @@ void GameObject::PostUpdate()
 	}
 }
 
-void GameObject::AddComponent(Component* component)
+void GameObject::AddComponent(Component::COMPONENT_TYPE type)
 {
-
+	/*
 	switch (component->GetType())
 		{
 		case(Component::ComponentTypes::Transform):
@@ -118,20 +110,16 @@ void GameObject::AddComponent(Component* component)
 			component->owner = this;
 			break;
 		}
-	}
+	}*/
 }
 
 
-void GameObject::RemoveComponent(Component* component)
+bool GameObject::RemoveComponent(unsigned id)
 {
+	return false;
 }
 
-Component* GameObject::CreateComponent(Component::ComponentTypes type) const
-{
-	return nullptr;
-}
-
-Component* GameObject::GetComponent(Component::ComponentTypes type) const
+Component* GameObject::GetComponent(Component::COMPONENT_TYPE type) const
 {
 	for (Component* component : components)
 	{
@@ -140,7 +128,6 @@ Component* GameObject::GetComponent(Component::ComponentTypes type) const
 			return component;
 		}
 	}
-
 	return nullptr;
 }
 
@@ -157,34 +144,26 @@ Component* GameObject::GetComponentById(unsigned int component_id) const
 	return nullptr;
 }
 
-const std::vector<Component*>& GameObject::GetAllComponents() const
+std::vector<Component*>& GameObject::GetAllComponents() const
 {
+	// TODO: insert return statement here
+	std::vector<Component*> result;
+	return result;
+
+}
+
+std::vector<GameObject*>& GameObject::GetChildren() const
+{
+	std::vector<GameObject*> result;
+	return result;
+
 	// TODO: insert return statement here
 }
 
-bool GameObject::CheckComponent(Component::ComponentTypes type)
+void GameObject::SetParent(GameObject& new_parent)
 {
-	for (int i = 0; i < components.size(); i++)
-	{
-		if (components[i]->GetType() == type)
-			return true;
-	}
-	return false;
-}
-
-const std::vector<GameObject*>& GameObject::GetChildren() const
-{
-	// TODO: insert return statement here
-}
-
-void GameObject::SetParent(GameObject* new_parent)
-{
-	if (new_parent == nullptr)
-	{
-		return;
-	}
-	parent = new_parent;
-	parent->AddChild(this);
+	//parent = std::make_shared<GameObject>(new_parent);
+	new_parent.AddChild(*this);
 }
 
 void GameObject::SetActive(bool flag)
@@ -192,37 +171,30 @@ void GameObject::SetActive(bool flag)
 	is_active = flag;
 }
 
-void GameObject::AddChild(GameObject* child)
+void GameObject::AddChild(GameObject& child)
 {
+	std::shared_ptr<GameObject> aux = std::make_shared<GameObject>(child);
 	//Do check if child is already in vector childs
-	if (GetChild(child->uid) != nullptr)
-	{
-		return;
-	}
-	childs.push_back(child);
+	childs.push_back(aux);
 }
 
-void GameObject::RemoveChild(GameObject* child)
+void GameObject::RemoveChild(GameObject& child)
+{
+	/*
+	if (childs.size() > 0)
+	{
+		std::shared_ptr<GameObject> child = std::make_shared<GameObject>(child);
+		childs.remove(child);
+		//child.SetParent(root);
+	}
+	*/
+}
+
+std::shared_ptr<GameObject> GameObject::GetChild(unsigned int child_id) const
 {
 	if (childs.size() > 0)
 	{
-		std::vector<GameObject*>::const_iterator child;
-		for (child = childs.begin(); child < childs.end(); ++child)
-		{
-			if ((*child)->uid == this->uid)
-			{
-				childs.erase(child);
-			}
-		}
-	}
-
-}
-
-GameObject* GameObject::GetChild(unsigned int child_id) const
-{
-	if (childs.size() > 0)
-	{
-		for (GameObject* child : childs)
+		for (auto child : childs)
 		{
 			if (child->uid == child_id)
 			{

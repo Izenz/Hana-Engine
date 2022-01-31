@@ -2,24 +2,19 @@
 
 
 bool ModuleEditorCamera::Init() {
-
 	InitFrustum();
-
+	pitch = frustum.Up();
+	yaw = frustum.Front();
 	return true;
 }
 
 update_status ModuleEditorCamera::PreUpdate() {
-
 	return update_status::UPDATE_CONTINUE;
 }
 
 update_status ModuleEditorCamera::Update() {
-	if (isOrbitEnabled) {
-		Orbit();
-	}
-	else if (isMouseControlEnabled) {
-		Roam();
-	}
+	HandleCameraRotation();
+	HandleCameraMovement();
 
 	return update_status::UPDATE_CONTINUE;
 }
@@ -44,112 +39,95 @@ void ModuleEditorCamera::InitFrustum() {
 	frustum.SetUp(float3::unitY);
 }
 
-void ModuleEditorCamera::RotateCamera(CAM_AXIS axis, bool shiftPressed) {
-	vec oldFront, oldUp;
-	float3x3 rotDeltaMatrix;
-	float step = rotationSpeed * Time->GetRealDeltaTime();
-	if (shiftPressed)	step *= 2.0f;
+void ModuleEditorCamera::HandleCameraMovement() {
+	if (App->input->isKeyPressed(SDL_SCANCODE_W))		MoveForward();
+	if (App->input->isKeyPressed(SDL_SCANCODE_A))		MoveLeft();
+	if (App->input->isKeyPressed(SDL_SCANCODE_S))		MoveBackwards();
+	if (App->input->isKeyPressed(SDL_SCANCODE_D))		MoveRight();
+	if (App->input->isKeyPressed(SDL_SCANCODE_Q))		MoveUp();
+	if (App->input->isKeyPressed(SDL_SCANCODE_E))		MoveDown();	
 
-	switch (axis) {
-	case CAM_AXIS::X:
-		rotDeltaMatrix = float3x3::RotateAxisAngle(frustum.WorldRight(), step);
-		break;
-	case CAM_AXIS::X_NEGATIVE:
-		rotDeltaMatrix = float3x3::RotateAxisAngle(frustum.WorldRight(), -step);
-		break;
-	case CAM_AXIS::Y:
-		rotDeltaMatrix = float3x3::RotateAxisAngle(float3::unitY, step);
-		break;
-	case CAM_AXIS::Y_NEGATIVE:
-		rotDeltaMatrix = float3x3::RotateAxisAngle(float3::unitY, -step);
-		break;
-	default:
-		break;
-	}
-
-	oldFront = frustum.Front().Normalized();
-	frustum.SetFront(rotDeltaMatrix.MulDir(oldFront));
-
-	oldUp = frustum.Up().Normalized();
-	frustum.SetUp(rotDeltaMatrix.MulDir(oldUp));
+	if (App->input->GetWheelMotion().y > 0)				MoveForward();
+	else if (App->input->GetWheelMotion().y < 0)		MoveBackwards();
 }
 
-void ModuleEditorCamera::RotateCameraMouse(CAM_AXIS axis, float step) {
-	vec oldFront, oldUp;
-	float3x3 rotDeltaMatrix;
-
-	switch (axis) {
-	case CAM_AXIS::X:
-		rotDeltaMatrix = float3x3::RotateAxisAngle(frustum.WorldRight(), step * rotationSpeed * Time->GetRealDeltaTime());
-		break;
-	case CAM_AXIS::X_NEGATIVE:
-		rotDeltaMatrix = float3x3::RotateAxisAngle(frustum.WorldRight(), -step * rotationSpeed * Time->GetRealDeltaTime());
-		break;
-	case CAM_AXIS::Y:
-		rotDeltaMatrix = float3x3::RotateAxisAngle(float3::unitY, step * rotationSpeed * Time->GetRealDeltaTime());
-		break;
-	case CAM_AXIS::Y_NEGATIVE:
-		rotDeltaMatrix = float3x3::RotateAxisAngle(float3::unitY, -step * rotationSpeed * Time->GetRealDeltaTime());
-		break;
-	default:
-		break;
+void ModuleEditorCamera::HandleCameraRotation() {
+	if (App->input->isMouseButtonPressed(SDL_BUTTON_LEFT)) {
+		App->input->isKeyPressed(SDL_SCANCODE_LALT) ? Orbit() : RotateCamera();
 	}
-
-	oldFront = frustum.Front().Normalized();
-	frustum.SetFront(rotDeltaMatrix.MulDir(oldFront));
-
-	oldUp = frustum.Up().Normalized();
-	frustum.SetUp(rotDeltaMatrix.MulDir(oldUp));
 }
 
-float4x4 ModuleEditorCamera::GetProjMatrix() {
+float4x4 ModuleEditorCamera::GetProjMatrix() const {
 	return frustum.ComputeProjectionMatrix();
 }
 
-float4x4 ModuleEditorCamera::GetViewMatrix() {
+float4x4 ModuleEditorCamera::GetViewMatrix() const {
 	return float4x4(frustum.ComputeViewMatrix());
 }
 
-void ModuleEditorCamera::MoveForward(bool shiftPressed) {
+void ModuleEditorCamera::MoveForward() {
 	float step = movSpeed * Time->GetRealDeltaTime();
-	if (shiftPressed)	step *= 2.0f;
+	if (App->input->isKeyPressed(SDL_SCANCODE_LSHIFT))	step *= 2.0f;
 
 	frustum.SetPos(frustum.Pos() + frustum.Front().Mul(step));
 }
 
-void ModuleEditorCamera::MoveRight(bool shiftPressed) {
+void ModuleEditorCamera::MoveRight() {
 	float step = movSpeed * Time->GetRealDeltaTime();
-	if (shiftPressed)	step *= 2.0f;
+	if (App->input->isKeyPressed(SDL_SCANCODE_LSHIFT))	step *= 2.0f;
 
 	frustum.SetPos(frustum.Pos() + frustum.WorldRight().Mul(step));
 }
 
-void ModuleEditorCamera::MoveLeft(bool shiftPressed) {
+void ModuleEditorCamera::MoveLeft() {
 	float step = movSpeed * Time->GetRealDeltaTime();
-	if (shiftPressed)	step *= 2.0f;
+	if (App->input->isKeyPressed(SDL_SCANCODE_LSHIFT))	step *= 2.0f;
 
 	frustum.SetPos(frustum.Pos() - frustum.WorldRight().Mul(step));
 }
 
-void ModuleEditorCamera::MoveBackwards(bool shiftPressed) {
+void ModuleEditorCamera::MoveBackwards() {
 	float step = movSpeed * Time->GetRealDeltaTime();
-	if (shiftPressed)	step *= 2.0f;
+	if (App->input->isKeyPressed(SDL_SCANCODE_LSHIFT))	step *= 2.0f;
 
 	frustum.SetPos(frustum.Pos() - frustum.Front().Mul(step));
 }
 
-void ModuleEditorCamera::MoveUp(bool shiftPressed) {
+void ModuleEditorCamera::MoveUp() {
 	float step = movSpeed * Time->GetRealDeltaTime();
-	if (shiftPressed)	step *= 2.0f;
+	if (App->input->isKeyPressed(SDL_SCANCODE_LSHIFT))	step *= 2.0f;
 
 	frustum.SetPos(frustum.Pos() + frustum.Up().Mul(step));
 }
 
-void ModuleEditorCamera::MoveDown(bool shiftPressed) {
+void ModuleEditorCamera::MoveDown() {
 	float step = movSpeed * Time->GetRealDeltaTime();
-	if (shiftPressed)	step *= 2.0f;
+	if (App->input->isKeyPressed(SDL_SCANCODE_LSHIFT))	step *= 2.0f;
 
 	frustum.SetPos(frustum.Pos() - frustum.Up().Mul(step));
+}
+
+void ModuleEditorCamera::RotateCamera()
+{
+	float2 mouse_delta = App->input->GetMouseMotion();
+	float yaw_step = mouse_delta.x * rotationSpeed * Time->GetRealDeltaTime();
+	float pitch_step = mouse_delta.y * rotationSpeed * Time->GetRealDeltaTime();
+
+	if (yaw_step != 0.0f) {
+		math::Quat rotation_vector = Quat::RotateY(yaw_step);
+		yaw = rotation_vector.Mul(frustum.Front()).Normalized();
+		pitch = rotation_vector.Mul(frustum.Up()).Normalized();
+		frustum.SetFront(yaw);
+		frustum.SetUp(pitch);
+	}
+
+	if (pitch_step != 0.0f) {
+		math::Quat rotation_vector = Quat::RotateAxisAngle(frustum.WorldRight(), pitch_step);
+		yaw = rotation_vector.Mul(frustum.Front()).Normalized();
+		pitch = rotation_vector.Mul(frustum.Up()).Normalized();
+		frustum.SetFront(yaw);
+		frustum.SetUp(pitch);
+	}
 }
 
 void ModuleEditorCamera::CameraLookAt(const float3& newTargetPos) {
@@ -165,34 +143,13 @@ void ModuleEditorCamera::SetAspectRatio(unsigned width, unsigned height) {
 	frustum.SetHorizontalFovAndAspectRatio(float(DEGTORAD) * 90.0f, float(width) / float(height));
 }
 
-void ModuleEditorCamera::SetPosition(const float3& newPos) {
-	frustum.SetPos(newPos);
-}
-
-void ModuleEditorCamera::ToggleOrbit() {
-	isOrbitEnabled = !isOrbitEnabled;
-}
-
-void ModuleEditorCamera::ToggleMouseControl() {
-	isMouseControlEnabled = !isMouseControlEnabled;
-}
-
-void ModuleEditorCamera::Roam() {
-	int motion_x, motion_y;
-	App->input->GetMouseMotion(motion_x, motion_y);
-
-	RotateCameraMouse(CAM_AXIS::Y, motion_x * orbitSpeed * Time->GetRealDeltaTime());
-	RotateCameraMouse(CAM_AXIS::X, motion_y * orbitSpeed * Time->GetRealDeltaTime());
-}
-
 void ModuleEditorCamera::Orbit() {
 	vec focus = float3::zero;		// Focusing Origin for now.
 
-	int motion_x, motion_y;
-	App->input->GetMouseMotion(motion_x, motion_y);
+	float2 motion = App->input->GetMouseMotion();
 
-	float x_delta = math::DegToRad(motion_x * orbitSpeed * Time->GetRealDeltaTime());
-	float y_delta = math::DegToRad(motion_y * orbitSpeed * Time->GetRealDeltaTime());
+	float x_delta = math::DegToRad(motion.x * orbitSpeed * Time->GetRealDeltaTime());
+	float y_delta = math::DegToRad(motion.y * orbitSpeed * Time->GetRealDeltaTime());
 
 	azimuth_angle = Quat::RotateAxisAngle(frustum.WorldRight(), -y_delta);
 	polar_angle = Quat::RotateAxisAngle(frustum.Up(), -x_delta);
@@ -204,7 +161,7 @@ void ModuleEditorCamera::Orbit() {
 	CameraLookAt(orbit_dir);
 }
 
-void ModuleEditorCamera::FocusModel() {
+void ModuleEditorCamera::FocusObject() {
 	// TODO: Complete this function
 	// Get point to look at (model's OBB center point)
 	

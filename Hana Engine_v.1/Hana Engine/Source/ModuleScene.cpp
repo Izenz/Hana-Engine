@@ -26,23 +26,20 @@ update_status ModuleScene::PreUpdate()
 }
 
 update_status ModuleScene::Update() {
-	
-	// Draw scene into texture
 	glBindFramebuffer(GL_FRAMEBUFFER, framebuffer);
 
-	// Clear previous frame
 	glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-	// Draw scene to be rendered in Scene Viewer panel.
 	dd::axisTriad(float4x4::identity, 0.1f, 1.0f);
 	dd::xzSquareGrid(-100, 100, 0.0f, 1.0f, dd::colors::Gray);
+
 	DrawScene();
 
-	// Unbind texture framebuffer to not mess with other stuff
+	App->debugDraw->Draw(cam->GetViewMatrix(), cam->GetProjMatrix(), panel_width, panel_height);
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
-	cam->Update();	
+	cam->Update();
 	return update_status::UPDATE_CONTINUE;
 }
 
@@ -52,13 +49,9 @@ update_status ModuleScene::PostUpdate() {
 }
 
 void ModuleScene::DrawScene() {
-	dd::axisTriad(float4x4::identity, 0.1f, 1.0f);
-	dd::xzSquareGrid(-100, 100, 0.0f, 1.0f, dd::colors::Gray);
 	if (!currentModel.IsLoaded())
 		currentModel.Load(currentModelPath);
 	currentModel.Draw();
-
-	App->debugDraw->Draw(cam->GetViewMatrix(), cam->GetProjMatrix(), panel_width, panel_height);
 }
 
 bool ModuleScene::CleanUp() {
@@ -128,7 +121,6 @@ void ModuleScene::UpdateRenderValues(unsigned _panel_width, unsigned _panel_heig
 		panel_height = _panel_height;
 		cam->SetAspectRatio(_panel_width, _panel_height);
 
-		// TODO: If there was a previous framebuffer generated, delete it.
 		if (framebuffer != 0)
 			glDeleteFramebuffers(1, &framebuffer);
 		GenerateSceneFramebuffer();

@@ -3,18 +3,15 @@
 #include "Geometry\Frustum.h"
 #include "MathGeoLib.h"
 #include "GL/glew.h"
+#include "SDL.h"
+#include "SDL/include/SDL_scancode.h"
 #include <cmath>
 
 #include "Application.h"
 #include "Module.h"
-#include "Application.h"
 #include "Globals.h"
-#include "ModuleScene.h"
 #include "ModuleInput.h"
 #include "ModuleScene.h"
-#include "ModuleEditor.h"
-#include "ModuleDebugDraw.h"
-#include "ModuleWindow.h"
 
 
 struct Plan {
@@ -46,46 +43,45 @@ class ModuleEditorCamera : public Module {
 
 public:
 	bool Init();
+
 	update_status PreUpdate() override;
 	update_status Update() override;
 	update_status PostUpdate() override;
 
-	float4x4 GetProjMatrix();
-	float4x4 GetViewMatrix();
+	float4x4 GetProjMatrix() const;
+	float4x4 GetViewMatrix() const;
 
 	// Camera control
+	void MoveForward();
+	void MoveLeft();
+	void MoveRight();
+	void MoveBackwards();
+	void MoveUp();
+	void MoveDown();
 
-	void MoveForward(bool shiftPressed);
-	void MoveLeft(bool shiftPressed);
-	void MoveRight(bool shiftPressed);
-	void MoveBackwards(bool shiftPressed);
-	void MoveUp(bool shiftPressed);
-	void MoveDown(bool shiftPressed);
-
-	void RotateCamera(CAM_AXIS, bool shiftPressed);
-	void RotateCameraMouse(CAM_AXIS, float step);
 	void CameraLookAt(const float3& newTargetPos);
-	void Orbit();
-	void Roam();
-	void FocusModel();
+	void FocusObject();	// TODO
 
 	// Setters
-	
-	void ToggleOrbit();
-	void ToggleMouseControl();
 	void SetAspectRatio(unsigned width, unsigned height);
-	void SetPosition(const float3& newPos);
-
-	// Getters
-	float GetRotationSpeed() { return rotationSpeed; }
 
 private:
 	void InitFrustum();
+	void HandleCameraMovement();
+	void HandleCameraRotation();
+
+	void Orbit();
+	void RotateCamera();
 
 	Frustum frustum;
-	float movSpeed = 0.05f, rotationSpeed = 0.005f, orbitSpeed = 0.02f;
+
+	const float movSpeed = 0.02f;
+	const float rotationSpeed = 0.002f;
+	const float orbitSpeed = 0.02f;
+
 	math::Quat azimuth_angle = math::Quat::identity;
 	math::Quat polar_angle = math::Quat::identity;
-	bool isOrbitEnabled = false, isMouseControlEnabled = false;				//	true when LALT + LMB or LMB is clicked to rotate the camera in the editor.
+
+	float3 pitch, yaw;	// up and front respectively
 };
 

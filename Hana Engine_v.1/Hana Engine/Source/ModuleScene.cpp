@@ -12,6 +12,10 @@ bool ModuleScene::Init() {
 	cam->Init();
 	GenerateSceneFramebuffer();
 
+	randomGenerator = new LCG();
+
+	TestGO();
+
 	currentModelPath = "Models/BakerHouse.fbx";
 	//currentModelPath = "Models/BED.fbx";
 	//currentModelPath = "Models/earth.fbx";
@@ -56,6 +60,7 @@ void ModuleScene::DrawScene() {
 
 bool ModuleScene::CleanUp() {
 	delete cam;
+	delete randomGenerator;
 	currentModel.CleanUp();
 	glDeleteFramebuffers(1, &framebuffer);
 	return true;
@@ -125,4 +130,19 @@ void ModuleScene::UpdateRenderValues(unsigned _panel_width, unsigned _panel_heig
 			glDeleteFramebuffers(1, &framebuffer);
 		GenerateSceneFramebuffer();
 	}
+}
+
+u32 ModuleScene::GenerateUID() const
+{
+	return randomGenerator->IntFast();
+}
+
+void ModuleScene::TestGO() {
+	GameObject* new_go = new GameObject();
+	gameObjects.push_back(new_go);
+
+	Component* asd = new Component(*new_go, Component::COMPONENT_TYPE::UNDEFINED);
+
+	for (GameObject* go : gameObjects)
+		LOG("%s", go->GetName());
 }

@@ -40,7 +40,6 @@ public:
 	ModuleDebugDraw* debugDraw = nullptr;
 	
 private:
-
 	std::list<Module*> modules;
 };
 

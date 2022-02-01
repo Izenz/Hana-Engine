@@ -13,6 +13,7 @@
 
 
 ModuleEditor::ModuleEditor()
+
 {
 	for (int it = 0; it <= (int) WINDOW_TYPES::MAX; ++it) {
 		window_active[it] = false;

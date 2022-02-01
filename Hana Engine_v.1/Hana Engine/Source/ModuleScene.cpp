@@ -12,6 +12,8 @@ bool ModuleScene::Init() {
 	cam->Init();
 	GenerateSceneFramebuffer();
 
+	randomGenerator = new LCG();
+
 	currentModelPath = "Models/BakerHouse.fbx";
 	//currentModelPath = "Models/BED.fbx";
 	//currentModelPath = "Models/earth.fbx";
@@ -63,6 +65,7 @@ void ModuleScene::DrawScene() {
 
 bool ModuleScene::CleanUp() {
 	delete cam;
+	delete randomGenerator;
 	currentModel.CleanUp();
 	glDeleteFramebuffers(1, &framebuffer);
 	return true;
@@ -133,4 +136,9 @@ void ModuleScene::UpdateRenderValues(unsigned _panel_width, unsigned _panel_heig
 			glDeleteFramebuffers(1, &framebuffer);
 		GenerateSceneFramebuffer();
 	}
+}
+
+u32 ModuleScene::GenerateUID() const
+{
+	return randomGenerator->IntFast();
 }

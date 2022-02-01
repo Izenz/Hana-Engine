@@ -4,6 +4,7 @@
 #include "Geometry\Frustum.h"
 #include "GL/glew.h"
 #include "MathGeoLib.h"
+#include "MathGeoLib_Source/Algorithm/Random/LCG.h"
 #include "debugdraw.h"
 
 #include "Module.h"
@@ -39,6 +40,7 @@ public:
 
 	ModuleEditorCamera* GetCamera() const;
 	void UpdateRenderValues(unsigned width, unsigned height);
+	u32 GenerateUID() const;
 private:
 	void DrawScene();
 	void GenerateSceneFramebuffer();
@@ -58,4 +60,6 @@ private:
 	GLuint texture_id = 0;
 	GLuint rbo_id = 0;
 	//std::vector<GameObject> gameObjects;
+
+	math::LCG* randomGenerator;
 };

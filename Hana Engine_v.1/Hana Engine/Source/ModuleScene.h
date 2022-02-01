@@ -1,13 +1,25 @@
 #pragma once
-#include "Module.h"
-#include "Globals.h"
-#include "ModuleProgram.h"
 #include "SDL.h"
 #include "GL/glew.h"
 #include "Geometry\Frustum.h"
-#include "Model.h"
+#include "GL/glew.h"
+#include "MathGeoLib.h"
+#include "MathGeoLib_Source/Algorithm/Random/LCG.h"
+#include "debugdraw.h"
+
+#include "Module.h"
+#include "Globals.h"
+#include "Application.h"
+#include "ModuleProgram.h"
 #include "ModuleTexture.h"
+#include "ModuleProgram.h"
+#include "ModuleEditorCamera.h"
+#include "ModuleWindow.h"
+#include "ModuleDebugDraw.h"
+#include "Model.h"
 #include "Console.h"
+#include "GameObject.h"
+
 
 class ModuleEditorCamera;
 
@@ -25,13 +37,15 @@ public:
 
 	void ChangeModel(const char* file_path);
 	const Model& GetCurrentModel() const;
-	unsigned GetSceneFramebuffer() const;
+	unsigned int GetSceneFramebuffer() const;
 
 	ModuleEditorCamera* GetCamera() const;
 	void UpdateRenderValues(unsigned width, unsigned height);
+	u32 GenerateUID() const;
 private:
 	void DrawScene();
 	void GenerateSceneFramebuffer();
+	void TestGO();
 private:
 
 	Model currentModel;
@@ -41,11 +55,13 @@ private:
 
 	// Render values used to print the editors Game View
 	ModuleEditorCamera* cam;
-	unsigned panel_width = 0, panel_height = 0;
+	unsigned panel_width = 800, panel_height = 300;
+	
 	GLuint framebuffer = 0;
+	GLuint fbo_id = 0;
+	GLuint texture_id = 0;
+	GLuint rbo_id = 0;
+	std::list<GameObject*> gameObjects;
 
-	unsigned int fbo_id = 0;
-	unsigned int texture_id = 0;
-	unsigned int rbo_id = 0;
-	//std::vector<GameObject> gameObjects;
+	math::LCG* randomGenerator;
 };

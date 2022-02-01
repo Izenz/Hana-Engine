@@ -1,14 +1,10 @@
 #include "GameObject.h"
 #include "Component.h"
-#include "Globals.h"
 
 GameObject::GameObject()
 {
-
-}
-
-GameObject::~GameObject()
-{
+	uid = App->scene->GenerateUID();
+	name = "Empty GameObject";
 }
 
 void GameObject::Init()
@@ -17,6 +13,8 @@ void GameObject::Init()
 
 void GameObject::PreUpdate()
 {
+	if (!is_active)	return;
+
 	std::list<Component*>::iterator it;
 	for (it = components.begin(); it != components.end(); ++it)
 	{
@@ -35,6 +33,8 @@ void GameObject::PreUpdate()
 
 void GameObject::Update()
 {
+	if (!is_active)	return;
+
 	std::list<Component*>::iterator it;
 	for (it = components.begin(); it != components.end(); ++it)
 	{
@@ -53,6 +53,8 @@ void GameObject::Update()
 
 void GameObject::PostUpdate()
 {
+	if (!is_active)	return;
+
 	std::list<Component*>::iterator it;
 	for (it = components.begin(); it != components.end(); ++it)
 	{
@@ -69,48 +71,9 @@ void GameObject::PostUpdate()
 	}
 }
 
-void GameObject::AddComponent(Component::COMPONENT_TYPE type)
+void GameObject::AddComponent(Component& component)
 {
-	/*
-	switch (component->GetType())
-		{
-		case(Component::ComponentTypes::Transform):
-		{
-			if (!CheckComponent(Component::ComponentTypes::Transform))
-			{
-				components.push_back(component);
-				transform = (ComponentTransform*)component;
-				component->owner = this;
-			}
-			break;
-		}
-		case(Component::ComponentTypes::Mesh):
-		{
-			if (!CheckComponent(Component::ComponentTypes::Mesh))
-			{
-				components.push_back(component);
-				component->owner = this;
-				//Update bounding box
-			}
-			break;
-		}
-		case(Component::ComponentTypes::Material):
-		{
-			if (CheckComponent(Component::ComponentTypes::Mesh) && !CheckComponent(Component::ComponentTypes::Material))
-			{
-				components.push_back(component);
-				component->owner = this;
-			}
-
-			break;
-		}
-		case(Component::ComponentTypes::Camera):
-		{
-			components.push_back((Component*)component);
-			component->owner = this;
-			break;
-		}
-	}*/
+	components.push_back(&component);
 }
 
 
@@ -119,29 +82,26 @@ bool GameObject::RemoveComponent(unsigned id)
 	return false;
 }
 
-Component* GameObject::GetComponent(Component::COMPONENT_TYPE type) const
+Component& GameObject::GetComponent(Component::COMPONENT_TYPE type) const
 {
 	for (Component* component : components)
 	{
 		if (component->GetType() == type)
 		{
-			return component;
+			return *component;
 		}
 	}
-	return nullptr;
 }
 
-Component* GameObject::GetComponentById(unsigned int component_id) const
+Component& GameObject::GetComponentById(unsigned int component_id) const
 {
 	for (Component* component : components)
 	{
 		if (component->GetId() == component_id)
 		{
-			return component;
+			return *component;
 		}
 	}
-
-	return nullptr;
 }
 
 std::vector<Component*>& GameObject::GetAllComponents() const
@@ -162,7 +122,9 @@ std::vector<GameObject*>& GameObject::GetChildren() const
 
 void GameObject::SetParent(GameObject& new_parent)
 {
-	//parent = std::make_shared<GameObject>(new_parent);
+	if (parent->GetUid() == new_parent.GetUid())	return;
+
+	parent = std::make_shared<GameObject>(new_parent);
 	new_parent.AddChild(*this);
 }
 
@@ -173,24 +135,27 @@ void GameObject::SetActive(bool flag)
 
 void GameObject::AddChild(GameObject& child)
 {
+	for (auto child : childs) {
+		if (child->GetUid() == this->uid)
+			return;
+	}
+
 	std::shared_ptr<GameObject> aux = std::make_shared<GameObject>(child);
-	//Do check if child is already in vector childs
 	childs.push_back(aux);
 }
 
 void GameObject::RemoveChild(GameObject& child)
 {
+	// TODO: Ask Carlos/Marc how the fuck we solve this.
 	/*
 	if (childs.size() > 0)
 	{
-		std::shared_ptr<GameObject> child = std::make_shared<GameObject>(child);
-		childs.remove(child);
-		//child.SetParent(root);
-	}
-	*/
+		std::shared_ptr<GameObject> _child = std::make_shared<GameObject>(child);
+		//childs.remove(_child); // <----ERROR: 
+	}*/
 }
 
-std::shared_ptr<GameObject> GameObject::GetChild(unsigned int child_id) const
+std::shared_ptr<GameObject> GameObject::GetChild(u32 child_id) const
 {
 	if (childs.size() > 0)
 	{

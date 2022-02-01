@@ -18,6 +18,7 @@
 #include "ModuleDebugDraw.h"
 #include "Model.h"
 #include "Console.h"
+#include "GameObject.h"
 
 
 class ModuleEditorCamera;
@@ -44,6 +45,7 @@ public:
 private:
 	void DrawScene();
 	void GenerateSceneFramebuffer();
+	void TestGO();
 private:
 
 	Model currentModel;
@@ -59,7 +61,7 @@ private:
 	GLuint fbo_id = 0;
 	GLuint texture_id = 0;
 	GLuint rbo_id = 0;
-	//std::vector<GameObject> gameObjects;
+	std::list<GameObject*> gameObjects;
 
 	math::LCG* randomGenerator;
 };

@@ -11,7 +11,6 @@ class GameObject;
 
 class Component
 {
-
 public:
 	enum class COMPONENT_TYPE
 	{
@@ -23,14 +22,13 @@ public:
 		BOUNDING_BOX,
 		UNDEFINED
 	};
-
 public:
 	Component();
 	Component(GameObject& new_owner, COMPONENT_TYPE type);
 	virtual ~Component() = default;
 
-	inline unsigned int GetId() const { return id; };
-	COMPONENT_TYPE GetType() const;
+	inline unsigned int GetId() const { return uid; };
+	inline COMPONENT_TYPE GetType() const { return type; };
 
 	inline const std::shared_ptr<GameObject> Parent() const { return parent; };
 
@@ -43,8 +41,8 @@ public:
 	virtual void PostUpdate();
 
 protected:
-	bool enabled = false;
+	bool enabled = true;
 	std::shared_ptr<GameObject> parent = nullptr;
-	unsigned int id = 0;
+	unsigned int uid;
 	COMPONENT_TYPE type = COMPONENT_TYPE::UNDEFINED;
 };

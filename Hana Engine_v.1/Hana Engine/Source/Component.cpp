@@ -1,22 +1,20 @@
 #include "Component.h"
+#include "ModuleScene.h"
 
 Component::Component()
 {
-	//this->id = SetId();
+	uid = App->scene->GenerateUID();
+	type = COMPONENT_TYPE::UNDEFINED;
 }
 
 
 Component::Component(GameObject& new_owner, COMPONENT_TYPE type)
 {
-	//this->id = SetId();
+	uid = App->scene->GenerateUID();
 	this->type = type;
-	// Call owner method AddComponent
-	// this->owner = new_owner;
-}
 
-Component::COMPONENT_TYPE Component::GetType() const
-{
-	return type;
+	parent = std::make_shared<GameObject>(new_owner);
+	new_owner.AddComponent(*this);
 }
 
 void Component::PreUpdate()

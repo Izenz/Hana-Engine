@@ -14,6 +14,8 @@ bool ModuleScene::Init() {
 
 	randomGenerator = new LCG();
 
+	TestGO();
+
 	currentModelPath = "Models/BakerHouse.fbx";
 	//currentModelPath = "Models/BED.fbx";
 	//currentModelPath = "Models/earth.fbx";
@@ -141,4 +143,14 @@ void ModuleScene::UpdateRenderValues(unsigned _panel_width, unsigned _panel_heig
 u32 ModuleScene::GenerateUID() const
 {
 	return randomGenerator->IntFast();
+}
+
+void ModuleScene::TestGO() {
+	GameObject* new_go = new GameObject();
+	gameObjects.push_back(new_go);
+
+	Component* asd = new Component(*new_go, Component::COMPONENT_TYPE::UNDEFINED);
+
+	for (GameObject* go : gameObjects)
+		LOG("%s", go->GetName());
 }

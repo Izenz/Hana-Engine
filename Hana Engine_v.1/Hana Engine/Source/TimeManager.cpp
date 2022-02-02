@@ -29,7 +29,7 @@ void TimeManager::CapFps(unsigned fpsLimit) {
 	if (fpsLimit != 0) {
 		// Calculate how many ms we have to draw each frame
 		float msForEachFrame = 1000.0f / float(fpsLimit);
-		float waitingTime = std::max(0.0f, (msForEachFrame - real_delta_time));
+		float waitingTime = (std::max)(0.0f, (msForEachFrame - real_delta_time));
 
 		// If we have extra time, wait.
 		//std::cout << "We waited for " << std::max(0.0f, (msForEachFrame - real_delta_time));

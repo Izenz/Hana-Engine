@@ -28,3 +28,7 @@ void Component::Update()
 void Component::PostUpdate()
 {
 }
+
+void Component::DrawInspectorPanel()
+{
+}

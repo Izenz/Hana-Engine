@@ -1,5 +1,6 @@
 #pragma once
 #include "Module.h"
+#include "Application.h"
 #include "Globals.h"
 #include "TimeManager.h"
 #include "Application.h"
@@ -7,6 +8,7 @@
 #include "TimeManager.h"
 #include "ModuleScene.h"
 #include <vector>
+#include <string>
 
 struct SDL_Texture;
 struct SDL_Renderer;
@@ -63,6 +65,4 @@ private:
 	std::vector<float> fps_buffer;
 	bool window_active[(int) WINDOW_TYPES::MAX + 1];
 	AboutInfo about;
-	
-	//unsigned tex;
 };

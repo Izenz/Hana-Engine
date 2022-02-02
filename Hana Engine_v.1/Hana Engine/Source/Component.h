@@ -36,10 +36,11 @@ public:
 	inline void Disable() { enabled = false; };
 	inline bool isEnabled() const { return enabled; };
 
-	virtual void PreUpdate();
-	virtual void Update();
-	virtual void PostUpdate();
+	virtual void PreUpdate() = 0;
+	virtual void Update() = 0;
+	virtual void PostUpdate() = 0;
 
+	virtual void DrawInspectorPanel() = 0;
 protected:
 	bool enabled = true;
 	std::shared_ptr<GameObject> parent = nullptr;

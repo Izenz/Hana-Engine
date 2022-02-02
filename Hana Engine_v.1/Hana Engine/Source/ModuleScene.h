@@ -35,17 +35,22 @@ public:
 	update_status Update() override;
 	update_status PostUpdate() override;
 
+	void HandleKeyboardShortcuts();
+
 	void ChangeModel(const char* file_path);
 	const Model& GetCurrentModel() const;
 	unsigned int GetSceneFramebuffer() const;
+	GameObject* GetSelected() const { return selected_object; };
 
 	ModuleEditorCamera* GetCamera() const;
 	void UpdateRenderValues(unsigned width, unsigned height);
 	u32 GenerateUID() const;
+
+	void AddGameObject();
+	void RemoveGameObject(GameObject& go);
 private:
 	void DrawScene();
 	void GenerateSceneFramebuffer();
-	void TestGO();
 private:
 
 	Model currentModel;
@@ -53,7 +58,6 @@ private:
 
 	unsigned renderPanelShader = 0;
 
-	// Render values used to print the editors Game View
 	ModuleEditorCamera* cam;
 	unsigned panel_width = 800, panel_height = 300;
 	
@@ -61,7 +65,10 @@ private:
 	GLuint fbo_id = 0;
 	GLuint texture_id = 0;
 	GLuint rbo_id = 0;
+
 	std::list<GameObject*> gameObjects;
+	GameObject* root;
+	GameObject* selected_object = nullptr;
 
 	math::LCG* randomGenerator;
 };

@@ -128,11 +128,6 @@ void GameObject::SetParent(GameObject& new_parent)
 	new_parent.AddChild(*this);
 }
 
-void GameObject::SetActive(bool flag)
-{
-	is_active = flag;
-}
-
 void GameObject::AddChild(GameObject& child)
 {
 	for (auto child : childs) {
@@ -172,4 +167,15 @@ std::shared_ptr<GameObject> GameObject::GetChild(u32 child_id) const
 	return nullptr;
 }
 
+void GameObject::DrawComponentsInInspectorPanel() const {
+	if (components.size() < 1) {
+		ImGui::Separator();
+		return;
+	}
+
+	for (Component* comp : components) {
+		comp->DrawInspectorPanel();
+		ImGui::Separator();
+	}
+}
 

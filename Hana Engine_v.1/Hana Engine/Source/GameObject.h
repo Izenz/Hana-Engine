@@ -30,22 +30,23 @@ public:
 	Component& GetComponent(Component::COMPONENT_TYPE type) const;
 	inline u32 GetUid() const { return uid; };
 	inline std::string GetName() const { return name; };
+	inline void SetName(const char* name) { this->name = name; };
+	inline char* GetNameChar() { return &name[0]; };
+	inline bool IsEnabled() { return is_active; };
+	inline void SetEnabled(bool value) { is_active = value; };
 	std::vector<Component*>& GetAllComponents() const;
 
 	std::vector<GameObject*>& GetChildren() const;
 
 	void SetParent(GameObject& new_parent);
-	void SetActive(bool flag);
 	void AddChild(GameObject& child);
 	void RemoveChild(GameObject& child);
 	std::shared_ptr<GameObject> GetChild(u32 child_id) const;
 
 	bool operator == (const GameObject& go) const { return uid == go.GetUid(); }
-	bool operator == (std::shared_ptr<GameObject> go) const { return uid == go->GetUid(); }
-
 	bool operator != (const GameObject& go) const { return !operator==(go); }
-	bool operator != (std::shared_ptr<GameObject> go) const { return !operator==(go); }
 
+	void DrawComponentsInInspectorPanel() const;
 private:
 
 public:

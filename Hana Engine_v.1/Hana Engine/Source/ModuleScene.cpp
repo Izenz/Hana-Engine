@@ -13,8 +13,10 @@ bool ModuleScene::Init() {
 	GenerateSceneFramebuffer();
 
 	randomGenerator = new LCG();
+	root = new GameObject();
+	root->SetName("Root");
 
-	TestGO();
+	selected_object = root;
 
 	currentModelPath = "Models/BakerHouse.fbx";
 	//currentModelPath = "Models/BED.fbx";
@@ -30,6 +32,7 @@ update_status ModuleScene::PreUpdate()
 }
 
 update_status ModuleScene::Update() {
+	HandleKeyboardShortcuts();
 	glBindFramebuffer(GL_FRAMEBUFFER, framebuffer);
 
 	glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
@@ -61,6 +64,7 @@ void ModuleScene::DrawScene() {
 bool ModuleScene::CleanUp() {
 	delete cam;
 	delete randomGenerator;
+	delete root;
 	currentModel.CleanUp();
 	glDeleteFramebuffers(1, &framebuffer);
 	return true;
@@ -137,12 +141,18 @@ u32 ModuleScene::GenerateUID() const
 	return randomGenerator->IntFast();
 }
 
-void ModuleScene::TestGO() {
-	GameObject* new_go = new GameObject();
-	gameObjects.push_back(new_go);
+void ModuleScene::AddGameObject() {
+	GameObject* newGO = new GameObject();
+	gameObjects.push_back(newGO);
+}
 
-	Component* asd = new Component(*new_go, Component::COMPONENT_TYPE::UNDEFINED);
+void ModuleScene::RemoveGameObject(GameObject& go) {
+	gameObjects.remove(&go);
+	go.~GameObject();
+}
 
-	for (GameObject* go : gameObjects)
-		LOG("%s", go->GetName());
+void ModuleScene::HandleKeyboardShortcuts() {
+	if (App->input->isKeyPressed(SDL_SCANCODE_DELETE)) {
+		if(selected_object != NULL)		RemoveGameObject(*selected_object);
+	}
 }

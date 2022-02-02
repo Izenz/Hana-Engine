@@ -15,7 +15,7 @@
 ModuleEditor::ModuleEditor()
 
 {
-	for (int it = 0; it <= (int) WINDOW_TYPES::MAX; ++it) {
+	for (int it = 0; it <= (int)WINDOW_TYPES::MAX; ++it) {
 		window_active[it] = false;
 	}
 
@@ -61,7 +61,7 @@ bool ModuleEditor::Init()
 
 update_status ModuleEditor::PreUpdate()
 {
-	
+
 	ImGui_ImplOpenGL3_NewFrame();
 	ImGui_ImplSDL2_NewFrame();
 
@@ -82,7 +82,7 @@ update_status ModuleEditor::Update()
 {
 	DrawEditorMainMenu();
 	DrawEditorEnvironment();
-	
+
 	ImGui::Render();
 	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 	ImGui::EndFrame();
@@ -95,7 +95,7 @@ update_status ModuleEditor::PostUpdate()
 }
 
 void ModuleEditor::DrawEditorEnvironment() {
-	
+
 	CreateDockingSpace();
 	LoadSceneInEditor();
 
@@ -165,7 +165,7 @@ void ModuleEditor::DrawEditorMainMenu() {
 			if (ImGui::MenuItem("ImGUI Demo", NULL, &window_active[(int)WINDOW_TYPES::IMGUI_DEMO])) {}
 			ImGui::EndMenu();
 		}
-		if (ImGui::BeginMenu("Help")){
+		if (ImGui::BeginMenu("Help")) {
 			// TODO: Add documentation windows when we can.
 			if (ImGui::MenuItem("Documentation")) {}
 			ImGui::EndMenu();
@@ -205,7 +205,7 @@ void ModuleEditor::CreateDockingSpace() const {
 }
 
 void ModuleEditor::DrawEngineInfoWindow(bool* is_open) const {
-	
+
 	if (!ImGui::Begin("Hana Engine: Info", is_open)) {
 		ImGui::End();
 		return;
@@ -221,7 +221,7 @@ void ModuleEditor::DrawEngineInfoWindow(bool* is_open) const {
 
 void ModuleEditor::DrawGameSceneWindow(bool* is_open) const {
 	unsigned tex = App->scene->GetSceneFramebuffer();
-	
+
 
 	ImGui::Begin("GameWindow", is_open);
 	{
@@ -241,20 +241,62 @@ bool ModuleEditor::CleanUp()
 	ImGui_ImplOpenGL3_Shutdown();
 	ImGui_ImplSDL2_Shutdown();
 	ImGui::DestroyContext();
-	
+
 	return true;
 }
 
 void ModuleEditor::DrawHierarchyWindow(bool* is_open) const {
 	ImGui::Begin("Hierarchy", is_open);
 	{
+
 	}
 	ImGui::End();
 }
 
 void ModuleEditor::DrawInspectorWindow(bool* is_open) const {
+	GameObject* selected = App->scene->GetSelected();
+	bool isActive = selected->IsEnabled();
+	const char* comp_types[] = { "Transform" };
+	int new_component_type = -1;
+
+	// TODO: Improve centering considering docking
+	const float ItemSpacing = ImGui::GetStyle().ItemSpacing.x;
+	const ImVec2 ButtonSize = ImVec2(200.0f, 0.0f);
+	float horiz_offset_to_center = ImGui::GetWindowWidth() * 0.5 - ButtonSize.x * 0.5;
+
 	ImGui::Begin("Inspector", is_open);
 	{
+		if (selected == NULL)
+			ImGui::End();
+
+		ImGui::Text("Name:");
+		ImGui::SameLine();
+		ImGui::InputText(" ", selected->GetNameChar(), selected->GetName().length() + 1);
+
+		ImGui::Text("ID: ");
+		ImGui::SameLine();
+		ImGui::Text(std::to_string(selected->GetUid()).c_str());
+		ImGui::SameLine();
+		if(ImGui::Checkbox("Enabled", &isActive)) {
+			selected->SetEnabled(isActive);
+		}
+
+		ImGui::Separator();
+
+		selected->DrawComponentsInInspectorPanel();
+
+		ImGui::SameLine(horiz_offset_to_center);
+		if(ImGui::Button("Add Component")) {
+			ImGui::OpenPopup("component_types_popup");
+		}
+		if (ImGui::BeginPopup("component_types_popup")) {
+			ImGui::Text("Component types");
+			ImGui::Separator();
+			for (int i = 0; i < IM_ARRAYSIZE(comp_types); i++)
+				if (ImGui::Selectable(comp_types[i]))
+					new_component_type = i;
+			ImGui::EndPopup();
+		}
 	}
 	ImGui::End();
 }
@@ -262,6 +304,10 @@ void ModuleEditor::DrawInspectorWindow(bool* is_open) const {
 void ModuleEditor::DrawResourcesWindow(bool* is_open) const {
 	ImGui::Begin("Resources", is_open);
 	{
+		ImGui::Text("Resources loaded in memory:");
+		ImGui::Separator();
+		if (!ImGui::CollapsingHeader("Models & meshes")) {}
+		if (!ImGui::CollapsingHeader("Textures")) {}
 	}
 	ImGui::End();
 }
@@ -327,11 +373,11 @@ void ModuleEditor::DrawTimeControlWindow(bool* is_open) const {
 
 	ImGui::Begin("TimeControl", is_open, windowFlags);
 	ImGui::SameLine((ImGui::GetWindowWidth() * 0.5) - ItemSpacing - ButtonSize.x);
-	if(ImGui::Button("Play", ButtonSize)) {
+	if (ImGui::Button("Play", ButtonSize)) {
 		Time->StartGameClock();
 	}
 	ImGui::SameLine();
-	if(ImGui::Button("Stop", ButtonSize)) {
+	if (ImGui::Button("Stop", ButtonSize)) {
 		Time->StopGameClock();
 	}
 	ImGui::PopStyleVar(3);
@@ -354,7 +400,7 @@ float ModuleEditor::DrawFPS()
 			ms_buffer.erase(ms_buffer.begin());
 		}
 		ms_buffer.push_back(Time->GetGameDeltaTime());
-		
+
 		return fps;
 	}
 	else

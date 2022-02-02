@@ -3,6 +3,7 @@ C++ Game Engine Project for educational purpouses. Developed during Master in AA
 
 ## Team Members
 [Marius Dambean Partenia](https://github.com/ermario)
+
 [Joel Herraiz Martí](https://github.com/Izenz)
 
 ## Guide

@@ -16,7 +16,7 @@ bool ModuleScene::Init() {
 	root = new GameObject();
 	root->SetName("Root");
 
-	selected_object = root;
+	TestHierarchy();
 
 	currentModelPath = "Models/BakerHouse.fbx";
 	//currentModelPath = "Models/BED.fbx";
@@ -114,6 +114,27 @@ void ModuleScene::GenerateSceneFramebuffer() {
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }
 
+void ModuleScene::TestHierarchy()
+{
+	GameObject* A = new GameObject();
+	A->SetName("Object A");
+	GameObject* B = new GameObject();
+	B->SetName("Object B");
+	GameObject* C = new GameObject();
+	C->SetName("Object C");
+	GameObject* D = new GameObject();
+	D->SetName("Object D");
+	GameObject* E = new GameObject();
+	E->SetName("Object E");
+
+	AddGameObject(*A);
+	AddGameObject(*B);
+	AddGameObject(*C);
+	AddGameObject(*D);
+	AddGameObject(*E);
+
+}
+
 unsigned ModuleScene::GetSceneFramebuffer() const {
 	return texture_id;
 }
@@ -141,14 +162,25 @@ u32 ModuleScene::GenerateUID() const
 	return randomGenerator->IntFast();
 }
 
-void ModuleScene::AddGameObject() {
+void ModuleScene::AddEmptyGameObject() {
 	GameObject* newGO = new GameObject();
+	newGO->SetParent(*root);
 	gameObjects.push_back(newGO);
+}
+
+void ModuleScene::AddGameObject(GameObject& go) {
+	go.SetParent(*root);
+	gameObjects.push_back(&go);
 }
 
 void ModuleScene::RemoveGameObject(GameObject& go) {
 	gameObjects.remove(&go);
 	go.~GameObject();
+}
+
+void ModuleScene::DrawHierarchy()
+{
+	root->DrawInHierarchy();
 }
 
 void ModuleScene::HandleKeyboardShortcuts() {

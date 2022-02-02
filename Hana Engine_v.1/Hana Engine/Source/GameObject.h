@@ -26,14 +26,14 @@ public:
 
 	void AddComponent(Component& component);
 	bool RemoveComponent(unsigned id);
-	Component& GetComponentById(unsigned int component_id) const;
-	Component& GetComponent(Component::COMPONENT_TYPE type) const;
+	Component* GetComponentById(unsigned int component_id) const;
+	Component* GetComponent(Component::COMPONENT_TYPE type) const;
 	inline u32 GetUid() const { return uid; };
 	inline std::string GetName() const { return name; };
 	inline void SetName(const char* name) { this->name = name; };
 	inline char* GetNameChar() { return &name[0]; };
 	inline bool IsEnabled() { return is_active; };
-	inline void SetEnabled(bool value) { is_active = value; };
+	void SetEnabled(bool value);
 	std::vector<Component*>& GetAllComponents() const;
 
 	std::vector<GameObject*>& GetChildren() const;
@@ -46,6 +46,7 @@ public:
 	bool operator == (const GameObject& go) const { return uid == go.GetUid(); }
 	bool operator != (const GameObject& go) const { return !operator==(go); }
 
+	void DrawInHierarchy();
 	void DrawComponentsInInspectorPanel() const;
 private:
 

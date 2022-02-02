@@ -248,16 +248,14 @@ bool ModuleEditor::CleanUp()
 void ModuleEditor::DrawHierarchyWindow(bool* is_open) const {
 	ImGui::Begin("Hierarchy", is_open);
 	{
-
+		App->scene->DrawHierarchy();
 	}
 	ImGui::End();
 }
 
 void ModuleEditor::DrawInspectorWindow(bool* is_open) const {
 	GameObject* selected = App->scene->GetSelected();
-	bool isActive = selected->IsEnabled();
-	const char* comp_types[] = { "Transform" };
-	int new_component_type = -1;
+	
 
 	// TODO: Improve centering considering docking
 	const float ItemSpacing = ImGui::GetStyle().ItemSpacing.x;
@@ -266,8 +264,11 @@ void ModuleEditor::DrawInspectorWindow(bool* is_open) const {
 
 	ImGui::Begin("Inspector", is_open);
 	{
-		if (selected == NULL)
+		if (selected == NULL) {
 			ImGui::End();
+			return;
+		}
+			
 
 		ImGui::Text("Name:");
 		ImGui::SameLine();
@@ -277,6 +278,8 @@ void ModuleEditor::DrawInspectorWindow(bool* is_open) const {
 		ImGui::SameLine();
 		ImGui::Text(std::to_string(selected->GetUid()).c_str());
 		ImGui::SameLine();
+
+		bool isActive = selected->IsEnabled();
 		if(ImGui::Checkbox("Enabled", &isActive)) {
 			selected->SetEnabled(isActive);
 		}
@@ -285,6 +288,7 @@ void ModuleEditor::DrawInspectorWindow(bool* is_open) const {
 
 		selected->DrawComponentsInInspectorPanel();
 
+		ImGui::NewLine();
 		ImGui::SameLine(horiz_offset_to_center);
 		if(ImGui::Button("Add Component")) {
 			ImGui::OpenPopup("component_types_popup");
@@ -292,9 +296,10 @@ void ModuleEditor::DrawInspectorWindow(bool* is_open) const {
 		if (ImGui::BeginPopup("component_types_popup")) {
 			ImGui::Text("Component types");
 			ImGui::Separator();
-			for (int i = 0; i < IM_ARRAYSIZE(comp_types); i++)
-				if (ImGui::Selectable(comp_types[i]))
-					new_component_type = i;
+			if (ImGui::Selectable("Transform")) {
+				LOG("Added Transform component to GameObject");
+				ComponentTransform* transform = new ComponentTransform(*selected);
+			}
 			ImGui::EndPopup();
 		}
 	}
@@ -407,9 +412,5 @@ float ModuleEditor::DrawFPS()
 	{
 		return 0.0f;
 	}
-}
-
-void ModuleEditor::AsignTexture(Texture& text) {
-	//tex = text.id;
 }
 

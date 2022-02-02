@@ -52,7 +52,7 @@ void ModuleEditorCamera::HandleCameraMovement() {
 }
 
 void ModuleEditorCamera::HandleCameraRotation() {
-	if (App->input->isMouseButtonPressed(SDL_BUTTON_LEFT)) {
+	if (App->input->isMouseButtonPressed(SDL_BUTTON_RIGHT)) {
 		App->input->isKeyPressed(SDL_SCANCODE_LALT) ? Orbit() : RotateCamera();
 	}
 }

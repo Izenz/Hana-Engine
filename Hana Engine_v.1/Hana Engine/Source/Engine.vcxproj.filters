@@ -167,6 +167,7 @@
     <ClCompile Include="Quadtree.cpp" />
     <ClCompile Include="Component.cpp" />
     <ClCompile Include="GameObject.cpp" />
+    <ClCompile Include="ComponentTransform.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application.h" />
@@ -443,6 +444,7 @@
     <ClInclude Include="Quadtree.h" />
     <ClInclude Include="Component.h" />
     <ClInclude Include="GameObject.h" />
+    <ClInclude Include="ComponentTransform.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="ImGui">

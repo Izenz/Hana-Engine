@@ -8,6 +8,7 @@
 #include "TimeManager.h"
 #include "ModuleScene.h"
 #include <vector>
+#include "ComponentTransform.h"
 #include <string>
 
 struct SDL_Texture;
@@ -55,7 +56,6 @@ public:
 	void DrawEngineInfoWindow(bool* p_open) const;
 	void DrawPerformanceWindow(bool* p_open);
 	float DrawFPS();
-	void AsignTexture(Texture& tex);
 
 private:
 	const char* default_scene_name = "untitled_scene";

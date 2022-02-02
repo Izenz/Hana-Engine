@@ -40,23 +40,27 @@ public:
 	void ChangeModel(const char* file_path);
 	const Model& GetCurrentModel() const;
 	unsigned int GetSceneFramebuffer() const;
+	GameObject* GetRoot() const { return root; };
 	GameObject* GetSelected() const { return selected_object; };
+	void SetSelected(GameObject* newSelected) { selected_object = newSelected; };
 
 	ModuleEditorCamera* GetCamera() const;
 	void UpdateRenderValues(unsigned width, unsigned height);
 	u32 GenerateUID() const;
 
-	void AddGameObject();
+	void AddEmptyGameObject();
+	void AddGameObject(GameObject & go);
 	void RemoveGameObject(GameObject& go);
+	void DrawHierarchy(); 
 private:
 	void DrawScene();
 	void GenerateSceneFramebuffer();
+
+	void TestHierarchy();
 private:
 
 	Model currentModel;
 	const char* currentModelPath = "";
-
-	unsigned renderPanelShader = 0;
 
 	ModuleEditorCamera* cam;
 	unsigned panel_width = 800, panel_height = 300;
